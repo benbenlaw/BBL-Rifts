@@ -1,0 +1,20 @@
+{
+  "type": "rifts:rift",
+  "charge_item": { "id": "minecraft:diamond" },
+  "from_dimension": "minecraft:overworld",
+  "to_dimension": "minecraft:the_nether",
+  "startup_time": 200,
+  "open_time": 1200,
+  "closing_warning_time": 100,
+  "active_colors": {
+    "base": { "r": 0.62, "g": 0.22, "b": 1.0 },
+    "bright": { "r": 0.78, "g": 0.55, "b": 1.0 },
+    "boltCore": { "r": 0.92, "g": 0.85, "b": 1.0 }
+  },
+  "closing_colors": {
+    "base": { "r": 1.0, "g": 0.25, "b": 0.2 },
+    "bright": { "r": 1.0, "g": 0.55, "b": 0.35 },
+    "boltCore": { "r": 1.0, "g": 0.9, "b": 0.75 }
+  },
+  "rift_energy_per_tick": 100
+}

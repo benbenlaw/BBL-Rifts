@@ -1,0 +1,11 @@
+{
+  "type": "rifts:infuser",
+  "ingredients": [
+    { "ingredient": "minecraft:diamond" },
+    { "ingredient": "minecraft:dirt" }
+  ],
+  "output": {
+    "id": "minecraft:stone"
+  },
+  "rift_energy_per_tick": 1000
+}

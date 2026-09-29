@@ -1,0 +1,20 @@
+{
+  "type": "rifts:rift",
+  "charge_item": { "id": "minecraft:emerald" },
+  "from_dimension": "minecraft:overworld",
+  "to_dimension": "minecraft:the_nether",
+  "startup_time": 200,
+  "open_time": 1200,
+  "closing_warning_time": 100,
+  "active_colors": {
+    "base": { "r": 0.15, "g": 0.85, "b": 0.35 },
+    "bright": { "r": 0.55, "g": 1.0, "b": 0.65 },
+    "boltCore": { "r": 0.85, "g": 1.0, "b": 0.9 }
+  },
+  "closing_colors": {
+    "base": { "r": 1.0, "g": 0.25, "b": 0.2 },
+    "bright": { "r": 1.0, "g": 0.55, "b": 0.35 },
+    "boltCore": { "r": 1.0, "g": 0.9, "b": 0.75 }
+  },
+  "rift_energy_per_tick": 100
+}
