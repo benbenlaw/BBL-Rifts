@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "rifts:elite_rift_pylon",
+    "B": "rifts:rift_steel_ingot",
+    "C": "#c:ingots/netherite"
+  },
+  "pattern": [
+    " A ",
+    "BBB",
+    "CCC"
+  ],
+  "result": {
+    "id": "rifts:ultimate_rift_pylon"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "rifts:block/elite_rift_pylon_top",
+    "side": "rifts:block/elite_rift_pylon_side"
+  }
+}

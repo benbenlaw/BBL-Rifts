@@ -1,0 +1,6 @@
+{
+  "parent": "rifts:block/template_rift_pipe_inventory",
+  "textures": {
+    "texture": "rifts:block/rift_pipe"
+  }
+}

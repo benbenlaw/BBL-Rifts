@@ -1,0 +1,4 @@
+// 26.1.2	2026-09-29T12:32:15.5405018	Tags for minecraft:block mod id rifts
+bbb89e929a55e09e7d3c8f1a3796b767bfb9d83a data/minecraft/tags/block/mineable/pickaxe.json
+707d93497fae84fb67c2ffd806d24bb02bdcf323 data/minecraft/tags/block/needs_stone_tool.json
+c651f8c0485f3f117e7bae3606cd6dcc2f71e82e data/rifts/tags/block/pylons.json

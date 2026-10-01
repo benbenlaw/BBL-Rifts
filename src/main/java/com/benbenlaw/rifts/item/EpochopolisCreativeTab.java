@@ -18,5 +18,5 @@ public class EpochopolisCreativeTab {
             .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(() -> RiftsBlocks.RIFT_GENERATOR.get().asItem().getDefaultInstance())
             .title(Component.translatable("itemGroup." + Rifts.MOD_ID))
-            .displayItems(EpochopolisItems.ITEMS.getEntries()).build());
+            .displayItems(RiftsItems.ITEMS.getEntries()).build());
 }

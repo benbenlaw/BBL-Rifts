@@ -1,11 +1,11 @@
 package com.benbenlaw.rifts.integration.kubejs;
 
+
 import com.benbenlaw.rifts.item.DisplacerItem;
-import dev.latvian.mods.kubejs.item.ItemBuilder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import org.jspecify.annotations.NonNull;
-
+/*
 public class DisplacerBuilder extends ItemBuilder {
 
 
@@ -15,6 +15,9 @@ public class DisplacerBuilder extends ItemBuilder {
 
     @Override
     public @NonNull Item createObject() {
+
         return new DisplacerItem(createItemProperties());
     }
 }
+
+ */

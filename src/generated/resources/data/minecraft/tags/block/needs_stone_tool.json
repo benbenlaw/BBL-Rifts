@@ -1,0 +1,8 @@
+{
+  "values": [
+    "#rifts:pylons",
+    "rifts:rift_generator",
+    "rifts:rift_infuser",
+    "rifts:rift_storage"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "rifts:rift_steel_ingot",
+    "B": "#minecraft:bars",
+    "C": "rifts:rift_steel_block"
+  },
+  "pattern": [
+    "ABA",
+    "BCB",
+    "ABA"
+  ],
+  "result": {
+    "id": "rifts:rift_storage"
+  }
+}

@@ -3,11 +3,14 @@ package com.benbenlaw.rifts.block;
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.block.custom.RiftGeneratorBlock;
 import com.benbenlaw.rifts.block.custom.RiftInfuserBlock;
+import com.benbenlaw.rifts.block.custom.RiftPipeBlock;
 import com.benbenlaw.rifts.block.custom.RiftPylonBlock;
+import com.benbenlaw.rifts.block.custom.RiftStorageBlock;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
-import com.benbenlaw.rifts.item.EpochopolisItems;
+import com.benbenlaw.rifts.item.RiftsItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,17 +30,36 @@ public class RiftsBlocks {
     public static final DeferredBlock<Block> RIFT_INFUSER = registerBlock("rift_infuser",
             properties -> new RiftInfuserBlock(machineProperties(properties)));
 
-    public static final DeferredBlock<Block> SIMPLE_RIFT_PYLON = registerBlock("simple_rift_pylon",
-            properties -> new RiftPylonBlock(machineProperties(properties), RiftsStartupConfig.SIMPLE_PYLON_GENERATION_RATE.get()));
+    public static final DeferredBlock<Block> BASIC_RIFT_PYLON = registerBlock("basic_rift_pylon",
+            properties -> new RiftPylonBlock(machineProperties(properties), pylonCapacity(0), pylonDrawPerSecond(0)));
 
     public static final DeferredBlock<Block> ADVANCED_RIFT_PYLON = registerBlock("advanced_rift_pylon",
-            properties -> new RiftPylonBlock(machineProperties(properties), RiftsStartupConfig.ADVANCED_PYLON_GENERATION_RATE.get()));
+            properties -> new RiftPylonBlock(machineProperties(properties), pylonCapacity(1), pylonDrawPerSecond(1)));
 
     public static final DeferredBlock<Block> ELITE_RIFT_PYLON = registerBlock("elite_rift_pylon",
-            properties -> new RiftPylonBlock(machineProperties(properties), RiftsStartupConfig.ELITE_PYLON_GENERATION_RATE.get()));
+            properties -> new RiftPylonBlock(machineProperties(properties), pylonCapacity(2), pylonDrawPerSecond(2)));
 
     public static final DeferredBlock<Block> ULTIMATE_RIFT_PYLON = registerBlock("ultimate_rift_pylon",
-            properties -> new RiftPylonBlock(machineProperties(properties), RiftsStartupConfig.ULTIMATE_PYLON_GENERATION_RATE.get()));
+            properties -> new RiftPylonBlock(machineProperties(properties), pylonCapacity(3), pylonDrawPerSecond(3)));
+
+    public static final DeferredBlock<Block> RIFT_STORAGE = registerBlock("rift_storage",
+            properties -> new RiftStorageBlock(machineProperties(properties)));
+
+    public static final DeferredBlock<Block> RIFT_PIPE = registerBlock("rift_pipe",
+            properties -> new RiftPipeBlock(properties.strength(1.5f).noOcclusion()));
+
+    public static final DeferredBlock<Block> RIFT_STEEL_BLOCK = registerBlock("rift_steel_block",
+            properties -> new Block(properties.sound(SoundType.METAL).strength(5.0f)));
+
+    private static int pylonCapacity(int tier) {
+        long capacity = (long) RiftsStartupConfig.PYLON_BASE_CAPACITY.get() * (long) Math.pow(RiftsStartupConfig.PYLON_CAPACITY_MULTIPLIER.get(), tier);
+        return (int) Math.min(Integer.MAX_VALUE, capacity);
+    }
+
+    private static int pylonDrawPerSecond(int tier) {
+        long draw = (long) RiftsStartupConfig.PYLON_BASE_DRAW_PER_SECOND.get() * (long) Math.pow(RiftsStartupConfig.PYLON_DRAW_MULTIPLIER.get(), tier);
+        return (int) Math.min(Integer.MAX_VALUE, draw);
+    }
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function) {
         DeferredBlock<T> toReturn = BLOCKS.registerBlock(name, function);
@@ -46,7 +68,7 @@ public class RiftsBlocks {
     }
 
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
-        EpochopolisItems.ITEMS.registerItem(name, properties -> new BlockItem(block.get(), properties.useBlockDescriptionPrefix()));
+        RiftsItems.ITEMS.registerItem(name, properties -> new BlockItem(block.get(), properties.useBlockDescriptionPrefix()));
     }
 
     private static ToIntFunction<BlockState> litBlockEmission() {

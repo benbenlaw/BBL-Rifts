@@ -1,16 +1,20 @@
 package com.benbenlaw.rifts.block.entity;
 
+import com.benbenlaw.rifts.item.RiftsDataComponents;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentMap;
 import com.benbenlaw.core.block.entity.SyncableBlockEntity;
 import com.benbenlaw.core.block.entity.handler.item.SyncableItemHandler;
 import com.benbenlaw.rifts.block.EpochopolisBlockEntities;
 import com.benbenlaw.rifts.block.capability.InfuserEnergyHandler;
 import com.benbenlaw.rifts.block.custom.RiftInfuserBlock;
-import com.benbenlaw.rifts.block.custom.RiftPylonBlock;
 import com.benbenlaw.rifts.recipe.InfuserRecipe;
 import com.benbenlaw.rifts.recipe.InfuserRecipeInput;
 import com.benbenlaw.rifts.recipe.RiftsRecipeTypes;
 import com.benbenlaw.rifts.screen.infuser.RiftInfuserMenu;
+import com.benbenlaw.rifts.particle.RiftParticleEffects;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -43,10 +47,15 @@ public class RiftInfuserBlockEntity extends SyncableBlockEntity implements MenuP
         @Override
         protected void onContentsChanged(int index, ItemStack previousContents) {
             super.onContentsChanged(index, previousContents);
+            progress = 0;
             updateCachedRecipe();
         }
     };
     private final InfuserEnergyHandler riftEnergyHandler = new InfuserEnergyHandler(1000000, 1000000, this);
+
+    public InfuserEnergyHandler getRiftEnergyHandler() {
+        return riftEnergyHandler;
+    }
 
     private RecipeHolder<InfuserRecipe> cachedRecipe;
 
@@ -88,20 +97,7 @@ public class RiftInfuserBlockEntity extends SyncableBlockEntity implements MenuP
 
         if (level.getGameTime() % TICK_RATE_FOR_RIFT_ENERGY == 0 && riftEnergyHandler.getAmountAsInt() != riftEnergyHandler.getCapacityAsInt()) {
 
-            for (BlockPos pos : BlockPos.betweenClosed(worldPosition.offset(-1, -1, -1), worldPosition.offset(1, 1, 1))) {
-
-                if (pos.equals(worldPosition)) continue;
-                BlockState state = level.getBlockState(pos);
-                if (state.getBlock() instanceof RiftPylonBlock pylon) {
-                    int riftEnergyToAdd = pylon.getGeneratedAmount() * TICK_RATE_FOR_RIFT_ENERGY;
-                    if (riftEnergyToAdd > 0) {
-                        try (Transaction tx = Transaction.openRoot()) {
-                            riftEnergyHandler.insert(riftEnergyToAdd, tx);
-                            tx.commit();
-                        }
-                    }
-                }
-            }
+            RiftPylonBlockEntity.feedFromAdjacentPylons(level, worldPosition, riftEnergyHandler);
         }
 
         boolean running = level.getBlockState(worldPosition).getValue(RiftInfuserBlock.RUNNING);
@@ -127,6 +123,9 @@ public class RiftInfuserBlockEntity extends SyncableBlockEntity implements MenuP
 
         if (canCraft) {
             progress++;
+            if (level instanceof ServerLevel serverLevel && level.getGameTime() % 3 == 0) {
+                RiftParticleEffects.absorb(serverLevel, worldPosition.getX() + 0.5, worldPosition.getY() + 0.9, worldPosition.getZ() + 0.5, 2, 0.7, 1.3, 0.5);
+            }
             if (consumeRiftEnergy(cachedRecipe.value())) {
                 if (progress >= maxProgress) {
                     craftItem();
@@ -143,8 +142,6 @@ public class RiftInfuserBlockEntity extends SyncableBlockEntity implements MenuP
                     new InfuserRecipeInput(inventory, riftEnergyHandler), level
             ).orElse(null);
         }
-
-        System.out.println("Cached recipe updated: " + (cachedRecipe != null ? cachedRecipe.value().output() : "null"));
     }
 
     private boolean canInsertOutput(ItemStack output) {
@@ -175,19 +172,17 @@ public class RiftInfuserBlockEntity extends SyncableBlockEntity implements MenuP
         if (cachedRecipe == null) return;
 
         var recipe = cachedRecipe.value();
-        var ingredients = recipe.ingredients();
-        int[] slotAssignment = recipe.matchSlots(new InfuserRecipeInput(inventory, riftEnergyHandler));
-        if (slotAssignment == null) return;
+        int[] consumption = recipe.consumption(new InfuserRecipeInput(inventory, riftEnergyHandler));
+        if (consumption == null) return;
 
         inventory.runInternal(() -> {
             try (Transaction tx = Transaction.openRoot()) {
 
-                for (int i = 0; i < ingredients.size(); i++) {
-                    int slot = slotAssignment[i];
+                for (int slot = 0; slot < consumption.length; slot++) {
                     ItemResource resource = inventory.getResource(slot);
-                    if (resource.isEmpty()) continue;
+                    if (resource.isEmpty() || consumption[slot] <= 0) continue;
 
-                    inventory.extract(slot, resource, ingredients.get(i).count(), tx);
+                    inventory.extract(slot, resource, consumption[slot], tx);
                 }
 
                 inventory.insert(4, ItemResource.of(recipe.output()), recipe.output().create().getCount(), tx);
@@ -234,5 +229,23 @@ public class RiftInfuserBlockEntity extends SyncableBlockEntity implements MenuP
     @Override
     public void preRemoveSideEffects(@NotNull BlockPos pos, @NotNull BlockState state) {
         dropInventoryContents(inventory);
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        super.collectImplicitComponents(builder);
+        int energy = riftEnergyHandler.getAmountAsInt();
+        if (energy > 0) {
+            builder.set(RiftsDataComponents.RIFT_ENERGY.get(), energy);
+        }
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentGetter components) {
+        super.applyImplicitComponents(components);
+        Integer energy = components.get(RiftsDataComponents.RIFT_ENERGY.get());
+        if (energy != null) {
+            riftEnergyHandler.set(Math.min(energy, riftEnergyHandler.getCapacityAsInt()));
+        }
     }
 }

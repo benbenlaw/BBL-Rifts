@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "#minecraft:lightning_rods",
+    "B": "rifts:rift_steel_ingot",
+    "C": "#c:ingots/copper"
+  },
+  "pattern": [
+    " A ",
+    "BBB",
+    "CCC"
+  ],
+  "result": {
+    "id": "rifts:basic_rift_pylon"
+  }
+}

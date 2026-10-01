@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "rifts:basic_rift_pylon",
+    "B": "rifts:rift_steel_ingot",
+    "C": "#c:ingots/iron"
+  },
+  "pattern": [
+    " A ",
+    "BBB",
+    "CCC"
+  ],
+  "result": {
+    "id": "rifts:advanced_rift_pylon"
+  }
+}

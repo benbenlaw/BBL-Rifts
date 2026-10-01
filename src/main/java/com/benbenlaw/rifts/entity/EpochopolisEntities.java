@@ -19,6 +19,15 @@ public class EpochopolisEntities {
     public static final ResourceKey<EntityType<?>> DISPLACER_KEY =
             ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Rifts.MOD_ID, "displacer"));
 
+    public static final ResourceKey<EntityType<?>> RIFT_ELEMENTAL_KEY =
+            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Rifts.MOD_ID, "rift_elemental"));
+
+    public static final Supplier<EntityType<RiftElemental>> RIFT_ELEMENTAL =
+            ENTITY_TYPES.register("rift_elemental", () -> EntityType.Builder.of(RiftElemental::new, MobCategory.MONSTER)
+                    .sized(1.4F, 2.7F)
+                    .clientTrackingRange(10)
+                    .build(RIFT_ELEMENTAL_KEY));
+
     public static final Supplier<EntityType<DisplacerEntity>> DISPLACER =
             ENTITY_TYPES.register("displacer", () -> EntityType.Builder.<DisplacerEntity>of(DisplacerEntity::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)

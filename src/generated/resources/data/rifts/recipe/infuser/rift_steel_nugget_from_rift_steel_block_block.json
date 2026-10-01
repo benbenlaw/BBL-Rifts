@@ -1,0 +1,13 @@
+{
+  "type": "rifts:infuser",
+  "ingredients": [
+    {
+      "count": 1,
+      "ingredient": "minecraft:iron_nugget"
+    }
+  ],
+  "output": {
+    "id": "rifts:rift_steel_nugget"
+  },
+  "rift_energy_per_tick": 10
+}

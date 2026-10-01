@@ -1,0 +1,11 @@
+// 26.1.2	2026-10-01T11:46:33.7132524	Loot Tables
+096954cb5d90effcdb9aa48cc5cbaa1934eeea55 data/rifts/loot_table/blocks/advanced_rift_pylon.json
+18a613e46931a584af0fe37b03faf28074422067 data/rifts/loot_table/blocks/basic_rift_pylon.json
+668cb53547151506a3027a2c898aca8464a8ab30 data/rifts/loot_table/blocks/elite_rift_pylon.json
+75b9253952952b54912ded1fedf9d7dccc82ed0e data/rifts/loot_table/blocks/rift_generator.json
+07a9cdb1731760c84b5d8bc31c20a23bbae253bd data/rifts/loot_table/blocks/rift_infuser.json
+b4a854af1c0009336d6fa31bf72ff2eabcb9a901 data/rifts/loot_table/blocks/rift_pipe.json
+d5b7b015521201f0fd8e18ac8a102465d91daae8 data/rifts/loot_table/blocks/rift_steel_block.json
+f7dfe81cf07ce4ddf99739482a380dda71460880 data/rifts/loot_table/blocks/rift_storage.json
+ab010a840297e845d5c0c9687e42262b04564dda data/rifts/loot_table/blocks/ultimate_rift_pylon.json
+0650109eb3ca9acf7ba953d63b62f2b71f6b1493 data/rifts/loot_table/entities/rift_elemental.json

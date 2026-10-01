@@ -20,4 +20,12 @@ public interface RiftEnergyHandler {
     int insert(int amount, TransactionContext transaction);
 
     int extract(int amount, TransactionContext transaction);
+
+    default boolean canInsert() {
+        return true;
+    }
+
+    default boolean canExtract() {
+        return true;
+    }
 }

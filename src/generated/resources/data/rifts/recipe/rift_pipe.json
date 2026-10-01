@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "rifts:rift_steel_ingot"
+  },
+  "pattern": [
+    "AAA",
+    "   ",
+    "AAA"
+  ],
+  "result": {
+    "count": 8,
+    "id": "rifts:rift_pipe"
+  }
+}

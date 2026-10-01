@@ -20,7 +20,12 @@ public class DataGenerators {
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        //Data Maps
-        generator.addProvider(true, new EpochopolisDataMapProvider(packOutput, lookupProvider));
+        generator.addProvider(true, new RiftsDataMapProvider(packOutput, lookupProvider));
+        generator.addProvider(true, new RiftsLangProvider(packOutput));
+        generator.addProvider(true, new RiftsModelProvider(packOutput));
+        generator.addProvider(true, new RiftsLootTableProvider(packOutput, lookupProvider));
+        generator.addProvider(true, new RiftsBlockTagsProvider(packOutput, lookupProvider));
+        generator.addProvider(true, new RiftsItemTagsProvider(packOutput, lookupProvider));
+        generator.addProvider(true, new RiftsRecipesProvider.Runner(packOutput, lookupProvider));
     }
 }

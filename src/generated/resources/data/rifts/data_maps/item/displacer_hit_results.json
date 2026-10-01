@@ -1,0 +1,15 @@
+{
+  "values": {
+    "rifts:displacer": {
+      "chance": 0.75,
+      "conversions": {
+        "minecraft:deepslate": "minecraft:deepslate_diamond_ore",
+        "minecraft:stone": "minecraft:diamond_ore"
+      },
+      "entity_conversions": {
+        "minecraft:iron_golem": "rifts:rift_elemental"
+      },
+      "radius": 3
+    }
+  }
+}

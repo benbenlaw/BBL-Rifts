@@ -1,14 +1,17 @@
 package com.benbenlaw.rifts.block.entity;
 
+import com.benbenlaw.rifts.item.RiftsDataComponents;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentMap;
 import com.benbenlaw.core.block.entity.SyncableBlockEntity;
 import com.benbenlaw.core.block.entity.handler.item.SyncableItemHandler;
 import com.benbenlaw.rifts.block.EpochopolisBlockEntities;
 import com.benbenlaw.rifts.block.capability.InfuserEnergyHandler;
-import com.benbenlaw.rifts.block.custom.RiftPylonBlock;
 import com.benbenlaw.rifts.recipe.InfuserRecipe;
 import com.benbenlaw.rifts.recipe.RiftRecipe;
 import com.benbenlaw.rifts.screen.generator.RiftGeneratorMenu;
 import net.minecraft.core.BlockPos;
+import com.benbenlaw.rifts.particle.RiftParticleEffects;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -69,6 +72,10 @@ public class RiftGeneratorBlockEntity extends SyncableBlockEntity implements Men
 
     private final InfuserEnergyHandler riftEnergyHandler = new InfuserEnergyHandler(1000000, 1000000, this);
 
+    public InfuserEnergyHandler getRiftEnergyHandler() {
+        return riftEnergyHandler;
+    }
+
     public RiftGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(EpochopolisBlockEntities.RIFT_GENERATOR_BLOCK_ENTITY.get(), pos, state);
         this.data = new ContainerData() {
@@ -112,20 +119,7 @@ public class RiftGeneratorBlockEntity extends SyncableBlockEntity implements Men
 
         if (level.getGameTime() % TICK_RATE_FOR_RIFT_ENERGY == 0 && riftEnergyHandler.getAmountAsInt() != riftEnergyHandler.getCapacityAsInt()) {
 
-            for (BlockPos pos : BlockPos.betweenClosed(worldPosition.offset(-1, -1, -1), worldPosition.offset(1, 1, 1))) {
-
-                if (pos.equals(worldPosition)) continue;
-                BlockState state = level.getBlockState(pos);
-                if (state.getBlock() instanceof RiftPylonBlock pylon) {
-                    int riftEnergyToAdd = pylon.getGeneratedAmount() * TICK_RATE_FOR_RIFT_ENERGY;
-                    if (riftEnergyToAdd > 0) {
-                        try (Transaction tx = Transaction.openRoot()) {
-                            riftEnergyHandler.insert(riftEnergyToAdd, tx);
-                            tx.commit();
-                        }
-                    }
-                }
-            }
+            RiftPylonBlockEntity.feedFromAdjacentPylons(level, worldPosition, riftEnergyHandler);
         }
 
 
@@ -160,8 +154,7 @@ public class RiftGeneratorBlockEntity extends SyncableBlockEntity implements Men
         float intensity = (float) progress / maxProgress;
 
         int count = 1 + Math.round(intensity * 3);
-        serverLevel.sendParticles(ParticleTypes.PORTAL, cx, y, cz, count,
-                0.25 * (0.4 + intensity), 0.05, 0.25 * (0.4 + intensity), 0.01);
+        RiftParticleEffects.absorb(serverLevel, cx, y, cz, count, 0.7, 1.3 + intensity * 0.5, 0.4);
 
         if (intensity > 0.8f) {
             serverLevel.sendParticles(ParticleTypes.END_ROD, cx, y, cz, 1, 0.15, 0.05, 0.15, 0.005);
@@ -427,11 +420,11 @@ public class RiftGeneratorBlockEntity extends SyncableBlockEntity implements Men
             return;
         }
 
-        serverLevel.sendParticles(ParticleTypes.REVERSE_PORTAL, cx, lowerY, cz, 5, 0.45, 0.15, 0.45, 0.02);
+        RiftParticleEffects.absorb(serverLevel, cx, lowerY, cz, 4, 1.0, 2.0, 0.8);
         serverLevel.sendParticles(ParticleTypes.END_ROD, cx, upperY, cz, 2, 0.35, 0.15, 0.35, 0.015);
 
         if (state == RiftState.CLOSING) {
-            serverLevel.sendParticles(ParticleTypes.PORTAL, cx, lowerY, cz, 8, 0.5, 0.3, 0.5, 0.05);
+            RiftParticleEffects.absorb(serverLevel, cx, lowerY, cz, 8, 1.0, 2.2, 1.0);
         }
     }
 
@@ -523,5 +516,23 @@ public class RiftGeneratorBlockEntity extends SyncableBlockEntity implements Men
         }
         displacedPlayers.clear();
         setChunkForced(false);
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        super.collectImplicitComponents(builder);
+        int energy = riftEnergyHandler.getAmountAsInt();
+        if (energy > 0) {
+            builder.set(RiftsDataComponents.RIFT_ENERGY.get(), energy);
+        }
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentGetter components) {
+        super.applyImplicitComponents(components);
+        Integer energy = components.get(RiftsDataComponents.RIFT_ENERGY.get());
+        if (energy != null) {
+            riftEnergyHandler.set(Math.min(energy, riftEnergyHandler.getCapacityAsInt()));
+        }
     }
 }

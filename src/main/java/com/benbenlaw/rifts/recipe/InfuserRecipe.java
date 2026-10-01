@@ -58,37 +58,46 @@ public record InfuserRecipe(NonNullList<SizedIngredient> ingredients, ItemStackT
         buffer.writeInt(recipe.riftEnergyPerTick);
     }
 
-    public int[] matchSlots(InfuserRecipeInput input) {
-        boolean[] usedSlots = new boolean[4];
-        int[] assignment = new int[ingredients.size()];
+    public int[] consumption(InfuserRecipeInput input) {
+        int slots = 4;
+        int[] remaining = new int[slots];
+        for (int slot = 0; slot < slots; slot++) {
+            remaining[slot] = input.getItem(slot).getCount();
+        }
+        int[] consumed = new int[slots];
 
-        for (int i = 0; i < ingredients.size(); i++) {
-            SizedIngredient ingredient = ingredients.get(i);
-            int foundSlot = -1;
-            for (int slot = 0; slot < 4; slot++) {
-                if (usedSlots[slot]) continue;
-                if (ingredient.test(input.getItem(slot))) {
-                    foundSlot = slot;
+        for (SizedIngredient ingredient : ingredients) {
+            int needed = ingredient.count();
+            for (int slot = 0; slot < slots && needed > 0; slot++) {
+                if (remaining[slot] > 0 && ingredient.ingredient().test(input.getItem(slot))) {
+                    int taken = Math.min(needed, remaining[slot]);
+                    remaining[slot] -= taken;
+                    consumed[slot] += taken;
+                    needed -= taken;
+                }
+            }
+            if (needed > 0) return null;
+        }
+
+        for (int slot = 0; slot < slots; slot++) {
+            ItemStack stack = input.getItem(slot);
+            if (stack.isEmpty()) continue;
+            boolean matchesAnIngredient = false;
+            for (SizedIngredient ingredient : ingredients) {
+                if (ingredient.ingredient().test(stack)) {
+                    matchesAnIngredient = true;
                     break;
                 }
             }
-            if (foundSlot == -1) return null;
-            usedSlots[foundSlot] = true;
-            assignment[i] = foundSlot;
+            if (!matchesAnIngredient) return null;
         }
 
-        for (int slot = 0; slot < 4; slot++) {
-            if (!usedSlots[slot] && !input.getItem(slot).isEmpty()) {
-                return null;
-            }
-        }
-
-        return assignment;
+        return consumed;
     }
 
     @Override
     public boolean matches(@NotNull InfuserRecipeInput input, @NotNull Level level) {
-        return matchSlots(input) != null;
+        return consumption(input) != null;
     }
     @Override
     public @NonNull ItemStack assemble(InfuserRecipeInput recipeInput) {

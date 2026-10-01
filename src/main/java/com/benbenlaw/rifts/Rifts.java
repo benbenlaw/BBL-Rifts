@@ -6,11 +6,15 @@ import com.benbenlaw.rifts.block.entity.renderer.RiftGeneratorBlockEntityRendere
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
 import com.benbenlaw.rifts.entity.EpochopolisEntities;
 import com.benbenlaw.rifts.item.EpochopolisCreativeTab;
-import com.benbenlaw.rifts.item.EpochopolisItems;
+import com.benbenlaw.rifts.item.RiftsDataComponents;
+import com.benbenlaw.rifts.item.RiftsItems;
+import com.benbenlaw.rifts.particle.RiftAbsorbParticle;
+import com.benbenlaw.rifts.particle.RiftsParticles;
 import com.benbenlaw.rifts.recipe.RiftsRecipeTypes;
 import com.benbenlaw.rifts.screen.EpochopolisMenuTypes;
 import com.benbenlaw.rifts.screen.generator.RiftGeneratorScreen;
 import com.benbenlaw.rifts.screen.infuser.RIftInfuserScreen;
+import com.benbenlaw.rifts.screen.pylon.RiftPylonScreen;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -22,6 +26,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,10 +41,12 @@ public class Rifts {
 
         RiftsBlocks.BLOCKS.register(eventBus);
         EpochopolisBlockEntities.BLOCK_ENTITIES.register(eventBus);
-        EpochopolisItems.ITEMS.register(eventBus);
+        RiftsItems.ITEMS.register(eventBus);
+        RiftsDataComponents.COMPONENTS.register(eventBus);
         EpochopolisCreativeTab.CREATIVE_MODE_TABS.register(eventBus);
         EpochopolisEntities.ENTITY_TYPES.register(eventBus);
         EpochopolisMenuTypes.MENUS.register(eventBus);
+        RiftsParticles.PARTICLES.register(eventBus);
         RiftsRecipeTypes.SERIALIZER.register(eventBus);
         RiftsRecipeTypes.TYPES.register(eventBus);
 
@@ -59,9 +66,15 @@ public class Rifts {
         }
 
         @SubscribeEvent
+        public static void registerParticleProviders(final RegisterParticleProvidersEvent event) {
+            event.registerSpriteSet(RiftsParticles.RIFT_ABSORB.get(), RiftAbsorbParticle.Provider::new);
+        }
+
+        @SubscribeEvent
         public static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(EpochopolisMenuTypes.RIFT_GENERATOR_MENU.get(), RiftGeneratorScreen::new);
             event.register(EpochopolisMenuTypes.RIFT_INFUSER_MENU.get(), RIftInfuserScreen::new);
+            event.register(EpochopolisMenuTypes.RIFT_PYLON_MENU.get(), RiftPylonScreen::new);
         }
     }
 

@@ -1,12 +1,17 @@
 package com.benbenlaw.rifts.entity;
 
 import com.benbenlaw.rifts.datamaps.DisplacerConversions;
-import com.benbenlaw.rifts.datamaps.EpochopolisDataMaps;
-import com.benbenlaw.rifts.item.EpochopolisItems;
+import com.benbenlaw.rifts.datamaps.RiftsDataMaps;
+import com.benbenlaw.rifts.item.RiftsItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ConversionParams;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import org.jspecify.annotations.NonNull;
 
 public class DisplacerEntity extends ThrowableItemProjectile {
@@ -38,7 +44,7 @@ public class DisplacerEntity extends ThrowableItemProjectile {
             return;
         }
 
-        DisplacerConversions config = getItem().typeHolder().getData(EpochopolisDataMaps.DISPLACER_HIT_RESULTS);
+        DisplacerConversions config = getItem().typeHolder().getData(RiftsDataMaps.DISPLACER_HIT_RESULTS);
         if (config == null || config.conversions().isEmpty()) {
             this.discard();
             return;
@@ -72,7 +78,34 @@ public class DisplacerEntity extends ThrowableItemProjectile {
     }
 
     @Override
+    protected void onHitEntity(@NonNull EntityHitResult result) {
+        super.onHitEntity(result);
+
+        if (level() instanceof ServerLevel serverLevel && result.getEntity() instanceof Mob target) {
+            DisplacerConversions config = getItem().typeHolder().getData(RiftsDataMaps.DISPLACER_HIT_RESULTS);
+            EntityType<?> replacement = config == null ? null : config.entityConversions().get(target.getType());
+            if (replacement != null) {
+                convert(serverLevel, target, (EntityType<? extends Mob>) replacement);
+            }
+        }
+
+        this.discard();
+    }
+
+    private static <T extends Mob> void convert(ServerLevel level, Mob target, EntityType<T> replacement) {
+        double x = target.getX();
+        double y = target.getY() + target.getBbHeight() / 2;
+        double z = target.getZ();
+
+        T converted = target.convertTo(replacement, ConversionParams.single(target, false, false), mob -> {});
+        if (converted != null) {
+            level.sendParticles(ParticleTypes.PORTAL, x, y, z, 40, 0.5, 0.8, 0.5, 0.3);
+            level.playSound(null, x, y, z, SoundEvents.PORTAL_TRAVEL, SoundSource.HOSTILE, 0.3F, 1.5F);
+        }
+    }
+
+    @Override
     protected @NonNull Item getDefaultItem() {
-        return EpochopolisItems.DISPLACER.get();
+        return RiftsItems.DISPLACER.get();
     }
 }
