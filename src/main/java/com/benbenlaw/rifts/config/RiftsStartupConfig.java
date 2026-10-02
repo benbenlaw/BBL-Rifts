@@ -26,6 +26,12 @@ public class RiftsStartupConfig {
     public static final ModConfigSpec.ConfigValue<Double> CHUNK_NEIGHBOUR_BLEND;
     public static final ModConfigSpec.ConfigValue<Double> CHUNK_DIFFUSION_RATE;
     public static final ModConfigSpec.ConfigValue<Boolean> ELEMENTAL_ON_DEPLETION;
+    public static final ModConfigSpec.ConfigValue<Integer> RIFT_TOOL_CAPACITY;
+    public static final ModConfigSpec.ConfigValue<Integer> RIFT_TOOL_ENERGY_PER_DAMAGE;
+    public static final ModConfigSpec.ConfigValue<Integer> RIFT_ARMOR_CAPACITY;
+    public static final ModConfigSpec.ConfigValue<Integer> RIFT_ARMOR_ENERGY_PER_DAMAGE;
+    public static final ModConfigSpec.ConfigValue<Integer> CHARGER_ENERGY_CAPACITY;
+    public static final ModConfigSpec.ConfigValue<Integer> CHARGER_RATE_PER_TICK;
     public static final ModConfigSpec.ConfigValue<Integer> ACCELERATOR_BASE_EXTRA_TICKS;
     public static final ModConfigSpec.ConfigValue<Integer> ACCELERATOR_EXTRA_TICKS_MULTIPLIER;
     public static final ModConfigSpec.ConfigValue<Integer> ACCELERATOR_BASE_ENERGY_PER_TICK;
@@ -64,6 +70,23 @@ public class RiftsStartupConfig {
                 .defineInRange("storage_capacity", 10000000, 1, Integer.MAX_VALUE);
         PIPE_TRANSFER_PER_TICK = BUILDER.comment("Most rift energy a pipe network moves per tick")
                 .defineInRange("pipe_transfer_per_tick", 20000, 1, Integer.MAX_VALUE);
+
+        BUILDER.pop();
+
+        BUILDER.push("Rift Gear");
+
+        RIFT_TOOL_CAPACITY = BUILDER.comment("Rift energy a rift steel tool holds")
+                .defineInRange("rift_tool_capacity", 20000, 1, Integer.MAX_VALUE);
+        RIFT_TOOL_ENERGY_PER_DAMAGE = BUILDER.comment("Rift energy a rift steel tool spends for each point of durability damage it would normally take")
+                .defineInRange("rift_tool_energy_per_damage", 20, 0, Integer.MAX_VALUE);
+        RIFT_ARMOR_CAPACITY = BUILDER.comment("Rift energy each piece of rift steel armor holds")
+                .defineInRange("rift_armor_capacity", 40000, 1, Integer.MAX_VALUE);
+        RIFT_ARMOR_ENERGY_PER_DAMAGE = BUILDER.comment("Rift energy a piece of rift steel armor spends for each point of durability damage it would normally take")
+                .defineInRange("rift_armor_energy_per_damage", 40, 0, Integer.MAX_VALUE);
+        CHARGER_ENERGY_CAPACITY = BUILDER.comment("Rift energy a rift charger can hold")
+                .defineInRange("charger_energy_capacity", 100000, 1, Integer.MAX_VALUE);
+        CHARGER_RATE_PER_TICK = BUILDER.comment("Most rift energy a rift charger puts into each item every tick")
+                .defineInRange("charger_rate_per_tick", 500, 1, Integer.MAX_VALUE);
 
         BUILDER.pop();
 

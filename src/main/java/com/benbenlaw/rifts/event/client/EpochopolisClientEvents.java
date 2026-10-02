@@ -4,6 +4,7 @@ import com.benbenlaw.core.util.TooltipUtil;
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import com.benbenlaw.rifts.item.RiftsDataComponents;
+import com.benbenlaw.rifts.item.energy.RiftEnergyItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import com.benbenlaw.rifts.block.custom.RiftPylonBlock;
@@ -35,7 +36,10 @@ public class EpochopolisClientEvents {
         ItemStack stack = event.getItemStack();
 
         Integer storedEnergy = stack.get(RiftsDataComponents.RIFT_ENERGY.get());
-        if (storedEnergy != null && storedEnergy > 0) {
+        if (stack.getItem() instanceof RiftEnergyItem energyItem) {
+            event.getToolTip().add(Component.translatable("tooltip.rifts.item_energy",
+                    String.format("%,d", RiftEnergyItem.getEnergy(stack)), String.format("%,d", energyItem.getMaxEnergy())).withStyle(ChatFormatting.AQUA));
+        } else if (storedEnergy != null && storedEnergy > 0) {
             event.getToolTip().add(Component.translatable("tooltip.rifts.stored_energy", String.format("%,d", storedEnergy)).withStyle(ChatFormatting.AQUA));
         }
 

@@ -38,6 +38,12 @@ public class CapabilityEvents {
         event.registerBlockEntity(Capabilities.Item.BLOCK, RiftsBlockEntities.RIFT_FURNACE_BLOCK_ENTITY.get(),
                 (furnace, side) -> furnace.getItemHandler());
 
+        event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, RiftsBlockEntities.RIFT_CHARGER_BLOCK_ENTITY.get(),
+                (charger, side) -> RiftEnergyViews.insertOnly(charger.getRiftEnergyHandler()));
+
+        event.registerBlockEntity(Capabilities.Item.BLOCK, RiftsBlockEntities.RIFT_CHARGER_BLOCK_ENTITY.get(),
+                (charger, side) -> charger.getItemHandler());
+
         event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, RiftsBlockEntities.RIFT_CRUSHER_BLOCK_ENTITY.get(),
                 (crusher, side) -> RiftEnergyViews.insertOnly(crusher.getRiftEnergyHandler()));
 

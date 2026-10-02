@@ -1,8 +1,8 @@
-// 26.1.2	2026-10-02T14:38:28.4318022	Tags for minecraft:block mod id rifts
+// 26.1.2	2026-10-02T16:10:55.0746121	Tags for minecraft:block mod id rifts
 ac3b0aabf9b8adec09de1c74629f87b3895e8efc data/minecraft/tags/block/logs.json
 dffeadaa8b3c1e290593311c9ed6f97d89f8a4ee data/minecraft/tags/block/mineable/axe.json
-a26ce08d4be146107479ef8e44f444f52d0b9626 data/minecraft/tags/block/mineable/pickaxe.json
-410ac63a80f3c39ed721bc2431a8cd99ee160dcc data/minecraft/tags/block/needs_stone_tool.json
+ad175bf4b8ee081f751a5c7c0344733f286ac37c data/minecraft/tags/block/mineable/pickaxe.json
+71d4967bcce5f86670873eb09a12f14525ac2b55 data/minecraft/tags/block/needs_stone_tool.json
 9f85da0c9b2d3d87c27add6a3554e26f9c010161 data/minecraft/tags/block/planks.json
 685398595ca6389133e4dd23405e92b695ae17f6 data/minecraft/tags/block/wooden_slabs.json
 d4d0ca1f2132f9b38ce58880f3d360b7e2666413 data/minecraft/tags/block/wooden_stairs.json

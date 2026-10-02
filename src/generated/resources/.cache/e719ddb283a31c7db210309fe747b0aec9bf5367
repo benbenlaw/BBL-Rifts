@@ -1,6 +1,18 @@
-// 26.1.2	2026-10-01T17:42:26.4573679	Tags for minecraft:item mod id rifts
+// 26.1.2	2026-10-02T16:10:55.0736083	Tags for minecraft:item mod id rifts
+c9063c25bad0fa7dadb4a2f2fdb1bc4cf713864d data/minecraft/tags/item/axes.json
+e84ffdd029a62f963448a11ff8b4e4194d987bb9 data/minecraft/tags/item/chest_armor.json
+13cf11dd7588532190a87e84c982089a3642d586 data/minecraft/tags/item/foot_armor.json
+9b421001168ffb3763b3df11be5abdcc30aba970 data/minecraft/tags/item/head_armor.json
+0ea134f3e9cdd17c6e0814dbba09a47e5f1e6ec2 data/minecraft/tags/item/hoes.json
+8175f37cd1a21e6450a0e8de4803a18cec7876ef data/minecraft/tags/item/leg_armor.json
 ac3b0aabf9b8adec09de1c74629f87b3895e8efc data/minecraft/tags/item/logs.json
+42e1aabe4851c398e4c95256018ca2ed5e551daf data/minecraft/tags/item/pickaxes.json
 9f85da0c9b2d3d87c27add6a3554e26f9c010161 data/minecraft/tags/item/planks.json
+f97c51fa67e30dbcc226caa6c4cbf54429cfaf0b data/minecraft/tags/item/shovels.json
+ca954e1caa1a0290d9cbef12b0a960267b6238ce data/minecraft/tags/item/spears.json
+196ec4c2bef33e3b0821bf8af4b4522e8a47bdbf data/minecraft/tags/item/swords.json
 685398595ca6389133e4dd23405e92b695ae17f6 data/minecraft/tags/item/wooden_slabs.json
 d4d0ca1f2132f9b38ce58880f3d360b7e2666413 data/minecraft/tags/item/wooden_stairs.json
 c651f8c0485f3f117e7bae3606cd6dcc2f71e82e data/rifts/tags/item/pylons.json
+83e39341d8bbc2edc7ccd3a2679646fca37200fc data/rifts/tags/item/repairs_rift_steel_armor.json
+83e39341d8bbc2edc7ccd3a2679646fca37200fc data/rifts/tags/item/rift_steel_tool_materials.json

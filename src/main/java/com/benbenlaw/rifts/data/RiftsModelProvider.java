@@ -45,6 +45,7 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
         machine(blockModels, RiftsBlocks.RIFT_INFUSER.get());
         litMachine(blockModels, RiftsBlocks.RIFT_FURNACE.get());
         litMachine(blockModels, RiftsBlocks.RIFT_CRUSHER.get());
+        machine(blockModels, RiftsBlocks.RIFT_CHARGER.get());
 
         blockModels.createTrivialCube(RiftsBlocks.RIFT_STORAGE.get());
         blockModels.createTrivialCube(RiftsBlocks.CREATIVE_RIFT_STORAGE.get());
@@ -75,6 +76,16 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
         itemModels.generateFlatItem(RiftsItems.RIFT_WRENCH.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_INGOT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_NUGGET.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_SHOVEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_HOE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateSpear(RiftsItems.RIFT_STEEL_SPEAR.get());
+        itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_HELMET.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_CHESTPLATE.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_LEGGINGS.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_BOOTS.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_ELEMENTAL_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
     }
 

@@ -4,7 +4,9 @@ import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import com.benbenlaw.rifts.item.energy.RiftEnergyItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -18,5 +20,14 @@ public class EpochopolisCreativeTab {
             .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(() -> RiftsBlocks.RIFT_GENERATOR.get().asItem().getDefaultInstance())
             .title(Component.translatable("itemGroup." + Rifts.MOD_ID))
-            .displayItems(RiftsItems.ITEMS.getEntries()).build());
+            .displayItems((parameters, output) -> {
+                for (var entry : RiftsItems.ITEMS.getEntries()) {
+                    output.accept(new ItemStack(entry.get()));
+                    if (entry.get() instanceof RiftEnergyItem energyItem) {
+                        ItemStack charged = new ItemStack(entry.get());
+                        RiftEnergyItem.setEnergy(charged, energyItem.getMaxEnergy());
+                        output.accept(charged);
+                    }
+                }
+            }).build());
 }

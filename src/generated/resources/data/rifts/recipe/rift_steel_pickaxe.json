@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "rifts:rift_steel_ingot",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "AAA",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "id": "rifts:rift_steel_pickaxe"
+  }
+}

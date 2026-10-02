@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "rifts:block/rift_charger",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "rifts:block/rift_charger",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "rifts:block/rift_charger"
+    },
+    "facing=south": {
+      "model": "rifts:block/rift_charger",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "rifts:block/rift_charger",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "rifts:block/rift_charger",
+      "y": 270
+    }
+  }
+}

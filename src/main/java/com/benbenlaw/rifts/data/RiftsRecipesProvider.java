@@ -112,6 +112,102 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
                 .save(output);
 
+        //Rift Steel Gear
+        shaped(RecipeCategory.COMBAT, RiftsItems.RIFT_STEEL_SWORD)
+                .pattern("A")
+                .pattern("A")
+                .pattern("S")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('S', Items.STICK)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.TOOLS, RiftsItems.RIFT_STEEL_PICKAXE)
+                .pattern("AAA")
+                .pattern(" S ")
+                .pattern(" S ")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('S', Items.STICK)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.TOOLS, RiftsItems.RIFT_STEEL_AXE)
+                .pattern("AA")
+                .pattern("AS")
+                .pattern(" S")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('S', Items.STICK)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.TOOLS, RiftsItems.RIFT_STEEL_SHOVEL)
+                .pattern("A")
+                .pattern("S")
+                .pattern("S")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('S', Items.STICK)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.TOOLS, RiftsItems.RIFT_STEEL_HOE)
+                .pattern("AA")
+                .pattern(" S")
+                .pattern(" S")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('S', Items.STICK)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.COMBAT, RiftsItems.RIFT_STEEL_SPEAR)
+                .pattern("  A")
+                .pattern(" S ")
+                .pattern("S  ")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('S', Items.STICK)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.COMBAT, RiftsItems.RIFT_STEEL_HELMET)
+                .pattern("AAA")
+                .pattern("A A")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.COMBAT, RiftsItems.RIFT_STEEL_CHESTPLATE)
+                .pattern("A A")
+                .pattern("AAA")
+                .pattern("AAA")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.COMBAT, RiftsItems.RIFT_STEEL_LEGGINGS)
+                .pattern("AAA")
+                .pattern("A A")
+                .pattern("A A")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.COMBAT, RiftsItems.RIFT_STEEL_BOOTS)
+                .pattern("A A")
+                .pattern("A A")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        //Rift Charger
+        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_CHARGER)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('B', Tags.Items.INGOTS_COPPER)
+                .define('C', Items.REDSTONE_BLOCK)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
         //Rift Crusher
         shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_CRUSHER)
                 .pattern("ABA")

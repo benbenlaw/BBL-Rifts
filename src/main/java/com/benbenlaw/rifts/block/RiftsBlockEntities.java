@@ -1,6 +1,7 @@
 package com.benbenlaw.rifts.block;
 
 import com.benbenlaw.rifts.Rifts;
+import com.benbenlaw.rifts.block.entity.RiftChargerBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftCrusherBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftFurnaceBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftGeneratorBlockEntity;
@@ -27,6 +28,10 @@ public class RiftsBlockEntities {
     public static final Supplier<BlockEntityType<RiftInfuserBlockEntity>> RIFT_INFUSER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("rift_infuser_block_entity", () ->
                     new BlockEntityType<>(RiftInfuserBlockEntity::new, RiftsBlocks.RIFT_INFUSER.get()));
+
+    public static final Supplier<BlockEntityType<RiftChargerBlockEntity>> RIFT_CHARGER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("rift_charger_block_entity", () ->
+                    new BlockEntityType<>(RiftChargerBlockEntity::new, RiftsBlocks.RIFT_CHARGER.get()));
 
     public static final Supplier<BlockEntityType<RiftCrusherBlockEntity>> RIFT_CRUSHER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("rift_crusher_block_entity", () ->

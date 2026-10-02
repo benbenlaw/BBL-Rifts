@@ -1,6 +1,7 @@
 package com.benbenlaw.rifts.block;
 
 import com.benbenlaw.rifts.Rifts;
+import com.benbenlaw.rifts.block.custom.RiftChargerBlock;
 import com.benbenlaw.rifts.block.custom.RiftCreativeStorageBlock;
 import com.benbenlaw.rifts.block.custom.RiftCrusherBlock;
 import com.benbenlaw.rifts.block.custom.RiftFurnaceBlock;
@@ -58,6 +59,9 @@ public class RiftsBlocks {
 
     public static final DeferredBlock<Block> ULTIMATE_TICK_ACCELERATOR = registerBlock("ultimate_tick_accelerator",
             properties -> new RiftTickAcceleratorBlock(machineProperties(properties), acceleratorExtraTicks(3), acceleratorEnergyPerTick(3)));
+
+    public static final DeferredBlock<Block> RIFT_CHARGER = registerBlock("rift_charger",
+            properties -> new RiftChargerBlock(machineProperties(properties)));
 
     public static final DeferredBlock<Block> RIFT_CRUSHER = registerBlock("rift_crusher",
             properties -> new RiftCrusherBlock(machineProperties(properties).lightLevel(litBlockEmission())));

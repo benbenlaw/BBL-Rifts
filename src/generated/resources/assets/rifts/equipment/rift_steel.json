@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "rifts:rift_steel"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "rifts:rift_steel"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "rifts:rift_steel"
+      }
+    ]
+  }
+}

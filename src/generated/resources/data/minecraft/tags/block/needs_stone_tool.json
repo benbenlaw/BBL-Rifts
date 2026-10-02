@@ -1,6 +1,7 @@
 {
   "values": [
     "rifts:rift_crusher",
+    "rifts:rift_charger",
     "rifts:basic_tick_accelerator",
     "rifts:advanced_tick_accelerator",
     "rifts:elite_tick_accelerator",

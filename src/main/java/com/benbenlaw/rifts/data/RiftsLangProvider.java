@@ -23,6 +23,7 @@ public class RiftsLangProvider extends LanguageProvider {
 
         addBlock(RiftsBlocks.RIFT_GENERATOR, "Rift Generator");
         addBlock(RiftsBlocks.RIFT_INFUSER, "Rift Infuser");
+        addBlock(RiftsBlocks.RIFT_CHARGER, "Rift Charger");
         addBlock(RiftsBlocks.RIFT_CRUSHER, "Rift Crusher");
         addBlock(RiftsBlocks.RIFT_FURNACE, "Rift Furnace");
         addBlock(RiftsBlocks.BASIC_TICK_ACCELERATOR, "Basic Tick Accelerator");
@@ -46,11 +47,22 @@ public class RiftsLangProvider extends LanguageProvider {
         addItem(RiftsItems.RIFT_SCANNER, "Rift Scanner");
         addItem(RiftsItems.RIFT_WRENCH, "Rift Wrench");
         addItem(RiftsItems.RIFT_STEEL_INGOT, "Rift Steel Ingot");
+        addItem(RiftsItems.RIFT_STEEL_SWORD, "Rift Steel Sword");
+        addItem(RiftsItems.RIFT_STEEL_PICKAXE, "Rift Steel Pickaxe");
+        addItem(RiftsItems.RIFT_STEEL_AXE, "Rift Steel Axe");
+        addItem(RiftsItems.RIFT_STEEL_SHOVEL, "Rift Steel Shovel");
+        addItem(RiftsItems.RIFT_STEEL_HOE, "Rift Steel Hoe");
+        addItem(RiftsItems.RIFT_STEEL_SPEAR, "Rift Steel Spear");
+        addItem(RiftsItems.RIFT_STEEL_HELMET, "Rift Steel Helmet");
+        addItem(RiftsItems.RIFT_STEEL_CHESTPLATE, "Rift Steel Chestplate");
+        addItem(RiftsItems.RIFT_STEEL_LEGGINGS, "Rift Steel Leggings");
+        addItem(RiftsItems.RIFT_STEEL_BOOTS, "Rift Steel Boots");
         addItem(RiftsItems.RIFT_ELEMENTAL_SPAWN_EGG, "Rift Elemental Spawn Egg");
         addEntityType(EpochopolisEntities.DISPLACER, "Displacer");
         addEntityType(EpochopolisEntities.RIFT_ELEMENTAL, "Rift Elemental");
 
         add("tooltip.rifts.stored_energy", "Stored Rift Energy: %1$s");
+        add("tooltip.rifts.item_energy", "Rift Energy: %1$s / %2$s");
 
         add("jei.rifts.displacer_conversions", "Displacer Conversions");
         add("jei.rifts.crusher", "Crushing");

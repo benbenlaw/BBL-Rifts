@@ -23,6 +23,7 @@ public class DataGenerators {
         generator.addProvider(true, new RiftsDataMapProvider(packOutput, lookupProvider));
         generator.addProvider(true, new RiftsLangProvider(packOutput));
         generator.addProvider(true, new RiftsModelProvider(packOutput));
+        generator.addProvider(true, new RiftsEquipmentAssetProvider(packOutput));
         generator.addProvider(true, new RiftsEntityLootTableProvider(packOutput, lookupProvider));
         generator.addProvider(true, new RiftsBlockTagsProvider(packOutput, lookupProvider));
         generator.addProvider(true, new RiftsItemTagsProvider(packOutput, lookupProvider));
