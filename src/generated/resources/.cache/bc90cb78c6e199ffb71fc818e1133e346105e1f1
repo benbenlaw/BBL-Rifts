@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-29T14:33:18.2790459	rifts Recipes
+// 26.1.2	2026-10-01T17:42:26.4622965	rifts Recipes
 59af5733d4f75b9bc33208afb26fd00071685fc7 data/minecraft/advancement/recipes/misc/rift_steel_block.json
 bc8059b80269e047bb0c870e18296b0ee7174a89 data/minecraft/advancement/recipes/misc/rift_steel_ingot.json
 b9022e02c9f1d0877da33af0e9e1eccfe7e4254a data/minecraft/advancement/recipes/misc/rift_steel_ingot_from_rift_steel_block_block.json
@@ -15,6 +15,9 @@ dc13b2956c99f4692a3c3adadd847309a86694a8 data/rifts/advancement/recipes/infuser/
 c927cc65b7c54dd5855e3d5d2010c7cf24a0a7cb data/rifts/advancement/recipes/misc/displacer.json
 9174291ac5ff6b39f402e3bbc36af95062436205 data/rifts/advancement/recipes/misc/elite_rift_pylon.json
 44206e9e3ca70fb0d75c81896c9b35c813e98bd9 data/rifts/advancement/recipes/misc/rift_pipe.json
+1618beaa2794417e9a5526734deb6533a510940f data/rifts/advancement/recipes/misc/rift_planks.json
+8634eb600411f0d6ed345d159c64761613a25c2a data/rifts/advancement/recipes/misc/rift_plank_slab.json
+91822601131961193c9e0b8f41f7bfba66164178 data/rifts/advancement/recipes/misc/rift_plank_stairs.json
 848eea390a08735cbef5ea1fd50739af2369c33d data/rifts/advancement/recipes/misc/rift_storage.json
 aafa3de6cf2740f192c34a65f980130cd0d27705 data/rifts/advancement/recipes/misc/ultimate_rift_pylon.json
 22e9f7f3055b9d14c2672405b397c63af1f3773e data/rifts/recipe/advanced_rift_pylon.json
@@ -25,5 +28,8 @@ c7db9e635e720477d94d4e9cdbe0e686887aab96 data/rifts/recipe/infuser/rift_steel_bl
 27d862ef85215bf7b9bbe0a90752d162f91af9ca data/rifts/recipe/infuser/rift_steel_ingot_from_rift_steel_block_block.json
 7abf2de536aaa2f28ac80bde6d5d9a218929ca52 data/rifts/recipe/infuser/rift_steel_nugget_from_rift_steel_block_block.json
 17a63541dfc2727cc61f8ba5226593bf2df570b2 data/rifts/recipe/rift_pipe.json
+9816dfc472748cdeec51cd227f7bf4cffff8776c data/rifts/recipe/rift_planks.json
+16c330ee4222ccdd029a447f25477b5d163c9c71 data/rifts/recipe/rift_plank_slab.json
+60b55c254426511bc47cbd2da859a587886778a5 data/rifts/recipe/rift_plank_stairs.json
 b5b48e4ae6a211200ba20edbe3a4a40ec27ea044 data/rifts/recipe/rift_storage.json
 a14f9e2932b9af7a2c6fcab0d964f6c0816851b7 data/rifts/recipe/ultimate_rift_pylon.json

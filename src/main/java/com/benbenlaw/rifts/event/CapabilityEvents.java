@@ -1,7 +1,7 @@
 package com.benbenlaw.rifts.event;
 
 import com.benbenlaw.rifts.Rifts;
-import com.benbenlaw.rifts.block.EpochopolisBlockEntities;
+import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.block.capability.RiftEnergyViews;
 import com.benbenlaw.rifts.block.capability.RiftsCapabilities;
 import com.benbenlaw.rifts.block.pipe.RiftPipeNetworks;
@@ -19,16 +19,16 @@ public class CapabilityEvents {
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, EpochopolisBlockEntities.RIFT_PYLON_BLOCK_ENTITY.get(),
+        event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, RiftsBlockEntities.RIFT_PYLON_BLOCK_ENTITY.get(),
                 (pylon, side) -> RiftEnergyViews.extractOnly(pylon.getRiftEnergyHandler()));
 
-        event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, EpochopolisBlockEntities.RIFT_GENERATOR_BLOCK_ENTITY.get(),
+        event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, RiftsBlockEntities.RIFT_GENERATOR_BLOCK_ENTITY.get(),
                 (generator, side) -> RiftEnergyViews.insertOnly(generator.getRiftEnergyHandler()));
 
-        event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, EpochopolisBlockEntities.RIFT_INFUSER_BLOCK_ENTITY.get(),
+        event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, RiftsBlockEntities.RIFT_INFUSER_BLOCK_ENTITY.get(),
                 (infuser, side) -> RiftEnergyViews.insertOnly(infuser.getRiftEnergyHandler()));
 
-        event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, EpochopolisBlockEntities.RIFT_STORAGE_BLOCK_ENTITY.get(),
+        event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, RiftsBlockEntities.RIFT_STORAGE_BLOCK_ENTITY.get(),
                 (storage, side) -> storage.getRiftEnergyHandler());
     }
 

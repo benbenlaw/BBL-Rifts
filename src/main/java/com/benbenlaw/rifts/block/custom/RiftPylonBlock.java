@@ -1,7 +1,7 @@
 package com.benbenlaw.rifts.block.custom;
 
 import com.benbenlaw.core.block.SyncableBlock;
-import com.benbenlaw.rifts.block.EpochopolisBlockEntities;
+import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.block.entity.RiftPylonBlockEntity;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -68,7 +68,7 @@ public class RiftPylonBlock extends SyncableBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
-        return createTickerHelper(blockEntityType, EpochopolisBlockEntities.RIFT_PYLON_BLOCK_ENTITY.get(),
+        return createTickerHelper(blockEntityType, RiftsBlockEntities.RIFT_PYLON_BLOCK_ENTITY.get(),
                 (thisLevel, thisPos, thisState, thisEntity) -> thisEntity.tick());
     }
 }

@@ -23,9 +23,9 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-public class RiftsLootTableProvider extends LootTableProvider {
+public class RiftsEntityLootTableProvider extends LootTableProvider {
 
-    public RiftsLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+    public RiftsEntityLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, Set.of(), List.of(
                 new SubProviderEntry(EntityLoot::new, LootContextParamSets.ENTITY),
                 new SubProviderEntry(RiftsBlockLootProvider::new, LootContextParamSets.BLOCK)
@@ -40,6 +40,7 @@ public class RiftsLootTableProvider extends LootTableProvider {
 
         @Override
         public void generate() {
+
             add(EpochopolisEntities.RIFT_ELEMENTAL.get(), LootTable.lootTable()
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))

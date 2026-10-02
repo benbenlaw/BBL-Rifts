@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "rifts:rift_log"
+  ],
+  "result": {
+    "count": 4,
+    "id": "rifts:rift_planks"
+  }
+}

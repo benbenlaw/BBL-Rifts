@@ -9,7 +9,10 @@
       "entity_conversions": {
         "minecraft:iron_golem": "rifts:rift_elemental"
       },
-      "radius": 3
+      "radius": 3,
+      "tag_conversions": {
+        "#minecraft:logs": "rifts:rift_log"
+      }
     }
   }
 }

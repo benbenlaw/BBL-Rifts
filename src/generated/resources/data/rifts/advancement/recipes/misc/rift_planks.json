@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_rift_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rifts:rift_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rifts:rift_planks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_rift_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rifts:rift_planks"
+    ]
+  }
+}

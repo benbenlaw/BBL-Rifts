@@ -8,9 +8,10 @@ import com.benbenlaw.rifts.block.custom.RiftPylonBlock;
 import com.benbenlaw.rifts.block.custom.RiftStorageBlock;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
 import com.benbenlaw.rifts.item.RiftsItems;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -50,6 +51,18 @@ public class RiftsBlocks {
 
     public static final DeferredBlock<Block> RIFT_STEEL_BLOCK = registerBlock("rift_steel_block",
             properties -> new Block(properties.sound(SoundType.METAL).strength(5.0f)));
+
+    public static final DeferredBlock<Block> RIFT_LOG = registerBlock("rift_log",
+            properties -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).setId(ResourceKey.create(Registries.BLOCK, Rifts.identifier("rift_log")))));
+
+    public static final DeferredBlock<Block> RIFT_PLANKS = registerBlock("rift_planks",
+            properties -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(ResourceKey.create(Registries.BLOCK, Rifts.identifier("rift_planks")))));
+
+    public static final DeferredBlock<Block> RIFT_PLANK_STAIRS = registerBlock("rift_plank_stairs",
+            properties -> new StairBlock(RIFT_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS).setId(ResourceKey.create(Registries.BLOCK, Rifts.identifier("rift_plank_stairs")))));
+
+    public static final DeferredBlock<Block> RIFT_PLANK_SLAB = registerBlock("rift_plank_slab",
+            properties -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB).setId(ResourceKey.create(Registries.BLOCK, Rifts.identifier("rift_plank_slab")))));
 
     private static int pylonCapacity(int tier) {
         long capacity = (long) RiftsStartupConfig.PYLON_BASE_CAPACITY.get() * (long) Math.pow(RiftsStartupConfig.PYLON_CAPACITY_MULTIPLIER.get(), tier);

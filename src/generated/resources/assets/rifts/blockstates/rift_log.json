@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "rifts:block/rift_log",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "rifts:block/rift_log"
+    },
+    "axis=z": {
+      "model": "rifts:block/rift_log",
+      "x": 90
+    }
+  }
+}

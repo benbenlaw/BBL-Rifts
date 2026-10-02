@@ -4,7 +4,7 @@ import com.benbenlaw.rifts.item.RiftsDataComponents;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import com.benbenlaw.core.block.entity.SyncableBlockEntity;
-import com.benbenlaw.rifts.block.EpochopolisBlockEntities;
+import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.block.capability.RiftEnergyContainerData;
 import com.benbenlaw.rifts.block.capability.SimpleRiftEnergyHandler;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
@@ -28,7 +28,7 @@ public class RiftStorageBlockEntity extends SyncableBlockEntity implements MenuP
     private final ContainerData data;
 
     public RiftStorageBlockEntity(BlockPos pos, BlockState state) {
-        super(EpochopolisBlockEntities.RIFT_STORAGE_BLOCK_ENTITY.get(), pos, state);
+        super(RiftsBlockEntities.RIFT_STORAGE_BLOCK_ENTITY.get(), pos, state);
         int capacity = RiftsStartupConfig.STORAGE_CAPACITY.get();
         this.riftEnergyHandler = new SimpleRiftEnergyHandler(capacity) {
             @Override

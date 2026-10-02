@@ -45,6 +45,14 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
         blockModels.createTrivialCube(RiftsBlocks.RIFT_STORAGE.get());
         blockModels.createTrivialCube(RiftsBlocks.RIFT_STEEL_BLOCK.get());
 
+        blockModels.woodProvider(RiftsBlocks.RIFT_LOG.get()).log(RiftsBlocks.RIFT_LOG.get());
+
+        blockModels.family(RiftsBlocks.RIFT_PLANKS.get())
+                .slab(RiftsBlocks.RIFT_PLANK_SLAB.get())
+                .stairs(RiftsBlocks.RIFT_PLANK_STAIRS.get());
+
+
+
         pylon(blockModels, RiftsBlocks.BASIC_RIFT_PYLON.get());
         pylon(blockModels, RiftsBlocks.ADVANCED_RIFT_PYLON.get());
         pylon(blockModels, RiftsBlocks.ELITE_RIFT_PYLON.get());

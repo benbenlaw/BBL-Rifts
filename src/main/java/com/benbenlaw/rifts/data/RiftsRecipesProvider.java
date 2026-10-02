@@ -131,5 +131,21 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
                 .save(output,  "rift_steel_block_from_rift_steel_block_block");
 
+        //Rift
+        shapeless(RecipeCategory.MISC, RiftsBlocks.RIFT_PLANKS, 4).requires(RiftsBlocks.RIFT_LOG).unlockedBy("has_rift_log", has(RiftsBlocks.RIFT_LOG)).save(output);
+
+        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_PLANK_STAIRS, 4)
+                .pattern("A  ")
+                .pattern("AA ")
+                .pattern("AAA")
+                .define('A', RiftsBlocks.RIFT_PLANKS)
+                .unlockedBy("has_rift_planks", has(RiftsBlocks.RIFT_PLANKS))
+                .save(output);
+
+        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_PLANK_SLAB, 6)
+                .pattern("AAA")
+                .define('A', RiftsBlocks.RIFT_PLANKS)
+                .unlockedBy("has_rift_planks", has(RiftsBlocks.RIFT_PLANKS))
+                .save(output);
     }
 }

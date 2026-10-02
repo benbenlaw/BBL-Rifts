@@ -17,4 +17,9 @@ public class RiftParticleEffects {
                     Math.cos(theta) * distance, dy, Math.sin(theta) * distance, 1.0);
         }
     }
+
+    // One packet for the whole burst: with count > 0 the client gives each mote a gaussian offset scaled by spread
+    public static void burst(ServerLevel level, double x, double y, double z, int count, double spread) {
+        level.sendParticles(RiftsParticles.RIFT_ABSORB.get(), x, y, z, count, 0, 0, 0, spread);
+    }
 }

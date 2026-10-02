@@ -28,6 +28,11 @@ public class RiftsLangProvider extends LanguageProvider {
         addBlock(RiftsBlocks.ELITE_RIFT_PYLON, "Elite Rift Pylon");
         addBlock(RiftsBlocks.ULTIMATE_RIFT_PYLON, "Ultimate Rift Pylon");
 
+        addBlock(RiftsBlocks.RIFT_LOG, "Rift Log");
+        addBlock(RiftsBlocks.RIFT_PLANKS, "Rift Planks");
+        addBlock(RiftsBlocks.RIFT_PLANK_STAIRS, "Rift Plank Stairs");
+        addBlock(RiftsBlocks.RIFT_PLANK_SLAB, "Rift Plank Slab");
+
         addItem(RiftsItems.DISPLACER, "Displacer");
         addItem(RiftsItems.RIFT_SCANNER, "Rift Scanner");
         addItem(RiftsItems.RIFT_WRENCH, "Rift Wrench");
@@ -37,6 +42,8 @@ public class RiftsLangProvider extends LanguageProvider {
         addEntityType(EpochopolisEntities.RIFT_ELEMENTAL, "Rift Elemental");
 
         add("tooltip.rifts.stored_energy", "Stored Rift Energy: %1$s");
+
+        add("jei.rifts.displacer_conversions", "Displacer Conversions");
 
         add("tooltip.rifts.basic_rift_pylon", PYLON_TOOLTIP);
         add("tooltip.rifts.advanced_rift_pylon", PYLON_TOOLTIP);

@@ -4,18 +4,16 @@ import com.benbenlaw.rifts.item.RiftsDataComponents;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import com.benbenlaw.core.block.entity.SyncableBlockEntity;
-import com.benbenlaw.rifts.block.EpochopolisBlockEntities;
+import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.block.capability.RiftEnergyContainerData;
 import com.benbenlaw.rifts.block.capability.SimpleRiftEnergyHandler;
 import com.benbenlaw.rifts.block.capability.RiftEnergyHandler;
 import com.benbenlaw.rifts.block.custom.RiftPylonBlock;
-import com.benbenlaw.rifts.config.RiftsStartupConfig;
 import com.benbenlaw.rifts.world.RiftEnergyData;
 import com.benbenlaw.rifts.particle.RiftsParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,7 +41,7 @@ public class RiftPylonBlockEntity extends SyncableBlockEntity implements MenuPro
     private final ContainerData data;
 
     public RiftPylonBlockEntity(BlockPos pos, BlockState state) {
-        super(EpochopolisBlockEntities.RIFT_PYLON_BLOCK_ENTITY.get(), pos, state);
+        super(RiftsBlockEntities.RIFT_PYLON_BLOCK_ENTITY.get(), pos, state);
         int capacity = state.getBlock() instanceof RiftPylonBlock pylon ? pylon.getCapacity() : 0;
         this.riftEnergyHandler = new SimpleRiftEnergyHandler(capacity) {
             @Override

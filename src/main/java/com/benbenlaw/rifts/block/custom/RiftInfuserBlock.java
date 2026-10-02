@@ -1,7 +1,7 @@
 package com.benbenlaw.rifts.block.custom;
 
 import com.benbenlaw.core.block.SyncableBlock;
-import com.benbenlaw.rifts.block.EpochopolisBlockEntities;
+import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.block.entity.RiftInfuserBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -50,7 +50,7 @@ public class RiftInfuserBlock extends SyncableBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
-        return createTickerHelper(blockEntityType, EpochopolisBlockEntities.RIFT_INFUSER_BLOCK_ENTITY.get(),
+        return createTickerHelper(blockEntityType, RiftsBlockEntities.RIFT_INFUSER_BLOCK_ENTITY.get(),
                 (thisLevel, thisPos, thisState, thisEntity) -> thisEntity.tick());
     }
 }

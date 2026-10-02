@@ -31,6 +31,20 @@ public class RiftsBlockTagsProvider extends BlockTagsProvider {
                         RiftsBlocks.RIFT_STORAGE.get(),
                         RiftsBlocks.RIFT_PIPE.get());
 
+        tag(BlockTags.MINEABLE_WITH_AXE)
+                .add(
+                        RiftsBlocks.RIFT_LOG.get(),
+                        RiftsBlocks.RIFT_PLANKS.get(),
+                        RiftsBlocks.RIFT_PLANK_SLAB.get(),
+                        RiftsBlocks.RIFT_PLANK_STAIRS.get()
+                )
+        ;
+
+        tag(BlockTags.LOGS).add(RiftsBlocks.RIFT_LOG.get());
+        tag(BlockTags.PLANKS).add(RiftsBlocks.RIFT_PLANKS.get());
+        tag(BlockTags.WOODEN_STAIRS).add(RiftsBlocks.RIFT_PLANK_STAIRS.get());
+        tag(BlockTags.WOODEN_SLABS).add(RiftsBlocks.RIFT_PLANK_SLAB.get());
+
         tag(BlockTags.NEEDS_STONE_TOOL)
                 .addTag(EpochopolisTags.Blocks.PYLONS)
                 .add(RiftsBlocks.RIFT_GENERATOR.get(),

@@ -34,6 +34,12 @@ public class RiftsBlockLootProvider extends BlockLootSubProvider {
 
         dropSelf(RiftsBlocks.RIFT_PIPE.get());
         dropSelf(RiftsBlocks.RIFT_STEEL_BLOCK.get());
+        dropSelf(RiftsBlocks.RIFT_LOG.get());
+        dropSelf(RiftsBlocks.RIFT_PLANKS.get());
+        dropSelf(RiftsBlocks.RIFT_PLANK_STAIRS.get());
+
+        this.add(RiftsBlocks.RIFT_PLANK_SLAB.get(), this::createSlabItemTable);
+
     }
 
     private void dropWithRiftEnergy(Block block) {

@@ -5,9 +5,8 @@ import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import com.benbenlaw.core.block.entity.SyncableBlockEntity;
 import com.benbenlaw.core.block.entity.handler.item.SyncableItemHandler;
-import com.benbenlaw.rifts.block.EpochopolisBlockEntities;
+import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.block.capability.InfuserEnergyHandler;
-import com.benbenlaw.rifts.recipe.InfuserRecipe;
 import com.benbenlaw.rifts.recipe.RiftRecipe;
 import com.benbenlaw.rifts.screen.generator.RiftGeneratorMenu;
 import net.minecraft.core.BlockPos;
@@ -77,7 +76,7 @@ public class RiftGeneratorBlockEntity extends SyncableBlockEntity implements Men
     }
 
     public RiftGeneratorBlockEntity(BlockPos pos, BlockState state) {
-        super(EpochopolisBlockEntities.RIFT_GENERATOR_BLOCK_ENTITY.get(), pos, state);
+        super(RiftsBlockEntities.RIFT_GENERATOR_BLOCK_ENTITY.get(), pos, state);
         this.data = new ContainerData() {
             @Override
             public int get(int index) {

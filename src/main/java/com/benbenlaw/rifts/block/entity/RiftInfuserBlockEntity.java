@@ -5,7 +5,7 @@ import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import com.benbenlaw.core.block.entity.SyncableBlockEntity;
 import com.benbenlaw.core.block.entity.handler.item.SyncableItemHandler;
-import com.benbenlaw.rifts.block.EpochopolisBlockEntities;
+import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.block.capability.InfuserEnergyHandler;
 import com.benbenlaw.rifts.block.custom.RiftInfuserBlock;
 import com.benbenlaw.rifts.recipe.InfuserRecipe;
@@ -26,8 +26,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemUtil;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -60,7 +58,7 @@ public class RiftInfuserBlockEntity extends SyncableBlockEntity implements MenuP
     private RecipeHolder<InfuserRecipe> cachedRecipe;
 
     public RiftInfuserBlockEntity(BlockPos pos, BlockState state) {
-        super(EpochopolisBlockEntities.RIFT_INFUSER_BLOCK_ENTITY.get(), pos, state);
+        super(RiftsBlockEntities.RIFT_INFUSER_BLOCK_ENTITY.get(), pos, state);
         this.data = new ContainerData() {
             @Override
             public int get(int index) {

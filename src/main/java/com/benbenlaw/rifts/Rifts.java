@@ -1,6 +1,6 @@
 package com.benbenlaw.rifts;
 
-import com.benbenlaw.rifts.block.EpochopolisBlockEntities;
+import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import com.benbenlaw.rifts.block.entity.renderer.RiftGeneratorBlockEntityRenderer;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
@@ -40,7 +40,7 @@ public class Rifts {
     public Rifts(final IEventBus eventBus, final ModContainer modContainer) {
 
         RiftsBlocks.BLOCKS.register(eventBus);
-        EpochopolisBlockEntities.BLOCK_ENTITIES.register(eventBus);
+        RiftsBlockEntities.BLOCK_ENTITIES.register(eventBus);
         RiftsItems.ITEMS.register(eventBus);
         RiftsDataComponents.COMPONENTS.register(eventBus);
         EpochopolisCreativeTab.CREATIVE_MODE_TABS.register(eventBus);
@@ -62,7 +62,7 @@ public class Rifts {
 
         @SubscribeEvent
         public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-            event.registerBlockEntityRenderer(EpochopolisBlockEntities.RIFT_GENERATOR_BLOCK_ENTITY.get(), RiftGeneratorBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(RiftsBlockEntities.RIFT_GENERATOR_BLOCK_ENTITY.get(), RiftGeneratorBlockEntityRenderer::new);
         }
 
         @SubscribeEvent

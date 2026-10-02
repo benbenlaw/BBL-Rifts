@@ -6,6 +6,8 @@ import com.benbenlaw.rifts.item.RiftsItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import com.benbenlaw.rifts.entity.EpochopolisEntities;
+import com.benbenlaw.rifts.block.RiftsBlocks;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.DataMapProvider;
@@ -26,6 +28,8 @@ public class RiftsDataMapProvider extends DataMapProvider {
                         new DisplacerConversions(3, 0.75F, Map.of(
                                 Blocks.STONE, Blocks.DIAMOND_ORE,
                                 Blocks.DEEPSLATE, Blocks.DEEPSLATE_DIAMOND_ORE
+                        ), Map.of(
+                                BlockTags.LOGS, RiftsBlocks.RIFT_LOG.get()
                         ), Map.of(
                                 EntityType.IRON_GOLEM, EpochopolisEntities.RIFT_ELEMENTAL.get()
                         )),

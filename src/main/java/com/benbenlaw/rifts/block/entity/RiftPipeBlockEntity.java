@@ -1,6 +1,6 @@
 package com.benbenlaw.rifts.block.entity;
 
-import com.benbenlaw.rifts.block.EpochopolisBlockEntities;
+import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.block.pipe.PipeMode;
 import com.benbenlaw.rifts.block.pipe.RiftPipeNetworks;
 import net.minecraft.core.BlockPos;
@@ -20,7 +20,7 @@ public class RiftPipeBlockEntity extends BlockEntity {
     private final EnumMap<Direction, PipeMode> modes = new EnumMap<>(Direction.class);
 
     public RiftPipeBlockEntity(BlockPos pos, BlockState state) {
-        super(EpochopolisBlockEntities.RIFT_PIPE_BLOCK_ENTITY.get(), pos, state);
+        super(RiftsBlockEntities.RIFT_PIPE_BLOCK_ENTITY.get(), pos, state);
     }
 
     public @Nullable PipeMode getMode(Direction direction) {

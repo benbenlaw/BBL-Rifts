@@ -3,7 +3,12 @@ package com.benbenlaw.rifts.entity;
 import com.benbenlaw.rifts.datamaps.DisplacerConversions;
 import com.benbenlaw.rifts.datamaps.RiftsDataMaps;
 import com.benbenlaw.rifts.item.RiftsItems;
+import com.benbenlaw.rifts.particle.RiftParticleEffects;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.state.properties.Property;
+
+import java.util.Map;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -45,7 +50,7 @@ public class DisplacerEntity extends ThrowableItemProjectile {
         }
 
         DisplacerConversions config = getItem().typeHolder().getData(RiftsDataMaps.DISPLACER_HIT_RESULTS);
-        if (config == null || config.conversions().isEmpty()) {
+        if (config == null || (config.conversions().isEmpty() && config.tagConversions().isEmpty())) {
             this.discard();
             return;
         }
@@ -62,8 +67,8 @@ public class DisplacerEntity extends ThrowableItemProjectile {
             }
 
             BlockState state = serverLevel.getBlockState(pos);
-            Block replacement = config.conversions().get(state.getBlock());
-            if (replacement == null) {
+            Block replacement = findReplacement(config, state);
+            if (replacement == null || replacement == state.getBlock()) {
                 continue;
             }
 
@@ -71,10 +76,37 @@ public class DisplacerEntity extends ThrowableItemProjectile {
                 continue;
             }
 
-            serverLevel.setBlockAndUpdate(pos.immutable(), replacement.defaultBlockState());
+            serverLevel.setBlockAndUpdate(pos.immutable(), copyProperties(state, replacement.defaultBlockState()));
+            RiftParticleEffects.burst(serverLevel, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 8, 0.7);
         }
 
         this.discard();
+    }
+
+    private static Block findReplacement(DisplacerConversions config, BlockState state) {
+        Block exact = config.conversions().get(state.getBlock());
+        if (exact != null) {
+            return exact;
+        }
+        for (Map.Entry<TagKey<Block>, Block> entry : config.tagConversions().entrySet()) {
+            if (state.is(entry.getKey())) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
+    private static BlockState copyProperties(BlockState from, BlockState to) {
+        for (Property<?> property : from.getProperties()) {
+            if (to.hasProperty(property)) {
+                to = copyProperty(from, to, property);
+            }
+        }
+        return to;
+    }
+
+    private static <T extends Comparable<T>> BlockState copyProperty(BlockState from, BlockState to, Property<T> property) {
+        return to.setValue(property, from.getValue(property));
     }
 
     @Override
