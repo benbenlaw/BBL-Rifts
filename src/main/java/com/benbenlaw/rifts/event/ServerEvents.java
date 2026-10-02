@@ -4,8 +4,10 @@ import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.datamaps.RiftsDataMaps;
 import com.benbenlaw.rifts.entity.EpochopolisEntities;
 import com.benbenlaw.rifts.entity.RiftElemental;
+import com.benbenlaw.rifts.recipe.RiftsRecipeTypes;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 
@@ -16,6 +18,11 @@ public class ServerEvents {
     public static void registerDataMaps(RegisterDataMapTypesEvent event) {
         event.register(RiftsDataMaps.DISPLACER_HIT_RESULTS);
         event.register(RiftsDataMaps.BIOME_RIFT_ENERGY);
+    }
+
+    @SubscribeEvent
+    public static void onDatapackSync(OnDatapackSyncEvent event) {
+        event.sendRecipes(RiftsRecipeTypes.CRUSHER_TYPE.get());
     }
 
     @SubscribeEvent

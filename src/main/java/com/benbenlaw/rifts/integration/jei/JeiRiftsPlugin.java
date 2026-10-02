@@ -1,11 +1,14 @@
 package com.benbenlaw.rifts.integration.jei;
 
 import com.benbenlaw.rifts.Rifts;
+import com.benbenlaw.rifts.block.RiftsBlocks;
 import com.benbenlaw.rifts.datamaps.DisplacerConversions;
 import com.benbenlaw.rifts.datamaps.RiftsDataMaps;
+import com.benbenlaw.rifts.event.client.ClientRecipeCache;
 import com.benbenlaw.rifts.item.RiftsItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -37,15 +40,22 @@ public class JeiRiftsPlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new DisplacerConversionCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new CrusherCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addCraftingStation(DisplacerConversionCategory.RECIPE_TYPE, new ItemStack(RiftsItems.DISPLACER.get()));
+        registration.addCraftingStation(RecipeTypes.SMELTING, new ItemStack(RiftsBlocks.RIFT_FURNACE.get()));
+        registration.addCraftingStation(CrusherCategory.RECIPE_TYPE, new ItemStack(RiftsBlocks.RIFT_CRUSHER.get()));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
+        registration.addRecipes(CrusherCategory.RECIPE_TYPE, ClientRecipeCache.getCrusherRecipes().entrySet().stream()
+                .map(entry -> new CrusherJeiRecipe(entry.getKey(), entry.getValue()))
+                .toList());
+
         DisplacerConversions config = RiftsItems.DISPLACER.get().builtInRegistryHolder().getData(RiftsDataMaps.DISPLACER_HIT_RESULTS);
         if (config == null) return;
 

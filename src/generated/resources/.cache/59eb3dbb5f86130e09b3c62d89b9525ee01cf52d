@@ -1,7 +1,13 @@
-// 26.1.2	2026-10-02T09:48:53.1008978	Loot Tables
+// 26.1.2	2026-10-02T14:38:28.4328114	Loot Tables
 096954cb5d90effcdb9aa48cc5cbaa1934eeea55 data/rifts/loot_table/blocks/advanced_rift_pylon.json
+aa40660968b392146c6e63a3db4580ed2887a583 data/rifts/loot_table/blocks/advanced_tick_accelerator.json
 18a613e46931a584af0fe37b03faf28074422067 data/rifts/loot_table/blocks/basic_rift_pylon.json
+b46dd21378ef16c7d879cbf3e95d0df5be6f0e05 data/rifts/loot_table/blocks/basic_tick_accelerator.json
+5f354730b748e59b1db6fb4222a608c0dc48cb00 data/rifts/loot_table/blocks/creative_rift_storage.json
 668cb53547151506a3027a2c898aca8464a8ab30 data/rifts/loot_table/blocks/elite_rift_pylon.json
+1da0b2ca7209ea17388a907124d21ff7cb087fc7 data/rifts/loot_table/blocks/elite_tick_accelerator.json
+6e1d936f7aa6acb83849aac639d8f0b41aa60125 data/rifts/loot_table/blocks/rift_crusher.json
+eb9bd68a5f3b597b9b0d4b22956902ede8d1766d data/rifts/loot_table/blocks/rift_furnace.json
 75b9253952952b54912ded1fedf9d7dccc82ed0e data/rifts/loot_table/blocks/rift_generator.json
 07a9cdb1731760c84b5d8bc31c20a23bbae253bd data/rifts/loot_table/blocks/rift_infuser.json
 6b9128d0cd0c69691963debfde1c0d1b8226271a data/rifts/loot_table/blocks/rift_log.json
@@ -12,4 +18,5 @@ a95d033010431d4f8731e963314372b4602c23a8 data/rifts/loot_table/blocks/rift_plank
 d5b7b015521201f0fd8e18ac8a102465d91daae8 data/rifts/loot_table/blocks/rift_steel_block.json
 f7dfe81cf07ce4ddf99739482a380dda71460880 data/rifts/loot_table/blocks/rift_storage.json
 ab010a840297e845d5c0c9687e42262b04564dda data/rifts/loot_table/blocks/ultimate_rift_pylon.json
+05958e68e211d9345bf84d260639f2169d30dfda data/rifts/loot_table/blocks/ultimate_tick_accelerator.json
 0650109eb3ca9acf7ba953d63b62f2b71f6b1493 data/rifts/loot_table/entities/rift_elemental.json

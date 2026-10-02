@@ -6,16 +6,14 @@ import net.minecraft.core.component.DataComponentMap;
 import com.benbenlaw.core.block.entity.SyncableBlockEntity;
 import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.block.capability.RiftEnergyContainerData;
-import com.benbenlaw.rifts.block.capability.SimpleRiftEnergyHandler;
 import com.benbenlaw.rifts.block.capability.RiftEnergyHandler;
+import com.benbenlaw.rifts.block.capability.SimpleRiftEnergyHandler;
 import com.benbenlaw.rifts.block.custom.RiftPylonBlock;
 import com.benbenlaw.rifts.world.RiftEnergyData;
 import com.benbenlaw.rifts.particle.RiftsParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -104,27 +102,6 @@ public class RiftPylonBlockEntity extends SyncableBlockEntity implements MenuPro
         serverLevel.sendParticles(RiftsParticles.RIFT_ABSORB.get(),
                 worldPosition.getX() + 0.5, worldPosition.getY() + 0.6, worldPosition.getZ() + 0.5,
                 0, dx, dy, dz, 1.0);
-    }
-
-    public static void feedFromAdjacentPylons(Level level, BlockPos centre, RiftEnergyHandler target) {
-        for (BlockPos pos : BlockPos.betweenClosed(centre.offset(-1, -1, -1), centre.offset(1, 1, 1))) {
-            if (pos.equals(centre)) continue;
-            int space = target.getCapacityAsInt() - target.getAmountAsInt();
-            if (space <= 0) return;
-
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof RiftPylonBlockEntity pylon) {
-                try (Transaction tx = Transaction.openRoot()) {
-                    int extracted = pylon.riftEnergyHandler.extract(space, tx);
-                    if (extracted > 0) {
-                        int inserted = target.insert(extracted, tx);
-                        if (inserted == extracted) {
-                            tx.commit();
-                        }
-                    }
-                }
-            }
-        }
     }
 
     @Override

@@ -1,0 +1,19 @@
+{
+  "type": "rifts:crusher",
+  "bonus": {
+    "chance": 0.25,
+    "item": {
+      "id": "minecraft:raw_gold"
+    }
+  },
+  "ingredient": {
+    "count": 1,
+    "ingredient": "#c:ores/gold"
+  },
+  "output": {
+    "count": 2,
+    "id": "minecraft:raw_gold"
+  },
+  "processing_time": 100,
+  "rift_energy_per_tick": 80
+}

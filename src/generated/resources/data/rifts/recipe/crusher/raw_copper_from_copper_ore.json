@@ -1,0 +1,19 @@
+{
+  "type": "rifts:crusher",
+  "bonus": {
+    "chance": 0.5,
+    "item": {
+      "id": "minecraft:raw_copper"
+    }
+  },
+  "ingredient": {
+    "count": 1,
+    "ingredient": "#c:ores/copper"
+  },
+  "output": {
+    "count": 6,
+    "id": "minecraft:raw_copper"
+  },
+  "processing_time": 100,
+  "rift_energy_per_tick": 80
+}

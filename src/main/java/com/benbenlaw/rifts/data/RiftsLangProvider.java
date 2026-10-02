@@ -9,6 +9,8 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class RiftsLangProvider extends LanguageProvider {
 
+    private static final String ACCELERATOR_TOOLTIP = "Gives each adjacent machine or crop %1$s extra ticks every tick, using %2$s rift energy per tick while it is working. Needs a rift pipe for energy.";
+
     private static final String PYLON_TOOLTIP = "Stores %1$s rift energy and draws %2$s per second from the chunk it is in.";
 
     public RiftsLangProvider(PackOutput output) {
@@ -21,6 +23,13 @@ public class RiftsLangProvider extends LanguageProvider {
 
         addBlock(RiftsBlocks.RIFT_GENERATOR, "Rift Generator");
         addBlock(RiftsBlocks.RIFT_INFUSER, "Rift Infuser");
+        addBlock(RiftsBlocks.RIFT_CRUSHER, "Rift Crusher");
+        addBlock(RiftsBlocks.RIFT_FURNACE, "Rift Furnace");
+        addBlock(RiftsBlocks.BASIC_TICK_ACCELERATOR, "Basic Tick Accelerator");
+        addBlock(RiftsBlocks.ADVANCED_TICK_ACCELERATOR, "Advanced Tick Accelerator");
+        addBlock(RiftsBlocks.ELITE_TICK_ACCELERATOR, "Elite Tick Accelerator");
+        addBlock(RiftsBlocks.ULTIMATE_TICK_ACCELERATOR, "Ultimate Tick Accelerator");
+        addBlock(RiftsBlocks.CREATIVE_RIFT_STORAGE, "Creative Rift Storage");
         addBlock(RiftsBlocks.RIFT_STORAGE, "Rift Storage");
         addBlock(RiftsBlocks.RIFT_PIPE, "Rift Pipe");
         addBlock(RiftsBlocks.BASIC_RIFT_PYLON, "Basic Rift Pylon");
@@ -44,6 +53,13 @@ public class RiftsLangProvider extends LanguageProvider {
         add("tooltip.rifts.stored_energy", "Stored Rift Energy: %1$s");
 
         add("jei.rifts.displacer_conversions", "Displacer Conversions");
+        add("jei.rifts.crusher", "Crushing");
+        add("jei.rifts.crusher.bonus_chance", "Bonus output: %1$s%% chance");
+
+        add("tooltip.rifts.basic_tick_accelerator", ACCELERATOR_TOOLTIP);
+        add("tooltip.rifts.advanced_tick_accelerator", ACCELERATOR_TOOLTIP);
+        add("tooltip.rifts.elite_tick_accelerator", ACCELERATOR_TOOLTIP);
+        add("tooltip.rifts.ultimate_tick_accelerator", ACCELERATOR_TOOLTIP);
 
         add("tooltip.rifts.basic_rift_pylon", PYLON_TOOLTIP);
         add("tooltip.rifts.advanced_rift_pylon", PYLON_TOOLTIP);

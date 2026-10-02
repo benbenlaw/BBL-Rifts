@@ -1,0 +1,32 @@
+{
+  "criteria": {
+    "has_rift_steel": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rifts:rift_steel_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rifts:crusher/gravel_from_cobblestone"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_rift_steel"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rifts:crusher/gravel_from_cobblestone"
+    ]
+  },
+  "sends_telemetry_event": true
+}

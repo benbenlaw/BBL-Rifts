@@ -1,0 +1,19 @@
+{
+  "type": "rifts:crusher",
+  "bonus": {
+    "chance": 0.5,
+    "item": {
+      "id": "minecraft:redstone"
+    }
+  },
+  "ingredient": {
+    "count": 1,
+    "ingredient": "#c:ores/redstone"
+  },
+  "output": {
+    "count": 8,
+    "id": "minecraft:redstone"
+  },
+  "processing_time": 100,
+  "rift_energy_per_tick": 80
+}

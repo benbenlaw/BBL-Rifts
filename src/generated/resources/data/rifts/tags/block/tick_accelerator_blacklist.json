@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#rifts:pylons",
+    "rifts:rift_generator",
+    "rifts:basic_tick_accelerator",
+    "rifts:advanced_tick_accelerator",
+    "rifts:elite_tick_accelerator",
+    "rifts:ultimate_tick_accelerator"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "type": "rifts:crusher",
+  "bonus": {
+    "chance": 0.5,
+    "item": {
+      "id": "minecraft:raw_iron"
+    }
+  },
+  "ingredient": {
+    "count": 1,
+    "ingredient": "#c:ores/iron"
+  },
+  "output": {
+    "count": 2,
+    "id": "minecraft:raw_iron"
+  },
+  "processing_time": 100,
+  "rift_energy_per_tick": 80
+}

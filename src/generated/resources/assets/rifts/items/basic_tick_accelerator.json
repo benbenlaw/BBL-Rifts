@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "rifts:block/basic_tick_accelerator"
+  }
+}

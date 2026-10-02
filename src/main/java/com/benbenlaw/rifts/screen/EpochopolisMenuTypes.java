@@ -1,6 +1,8 @@
 package com.benbenlaw.rifts.screen;
 
 import com.benbenlaw.rifts.Rifts;
+import com.benbenlaw.rifts.screen.crusher.RiftCrusherMenu;
+import com.benbenlaw.rifts.screen.furnace.RiftFurnaceMenu;
 import com.benbenlaw.rifts.screen.generator.RiftGeneratorMenu;
 import com.benbenlaw.rifts.screen.infuser.RiftInfuserMenu;
 import com.benbenlaw.rifts.screen.pylon.RiftPylonMenu;
@@ -19,6 +21,12 @@ public class EpochopolisMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<RiftInfuserMenu>> RIFT_INFUSER_MENU = MENUS.register("rift_infuser_menu",
             () -> IMenuTypeExtension.create(RiftInfuserMenu::new));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<RiftCrusherMenu>> RIFT_CRUSHER_MENU = MENUS.register("rift_crusher_menu",
+            () -> IMenuTypeExtension.create(RiftCrusherMenu::new));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<RiftFurnaceMenu>> RIFT_FURNACE_MENU = MENUS.register("rift_furnace_menu",
+            () -> IMenuTypeExtension.create(RiftFurnaceMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<RiftPylonMenu>> RIFT_PYLON_MENU = MENUS.register("rift_pylon_menu",
             () -> IMenuTypeExtension.create(RiftPylonMenu::new));

@@ -14,6 +14,7 @@ public class EpochopolisTags {
 
         public static final TagKey<Block> SYNCED_ACROSS_TIMELINES = tag("synced_across_timelines");
         public static final TagKey<Block> PYLONS = tag("pylons");
+        public static final TagKey<Block> TICK_ACCELERATOR_BLACKLIST = tag("tick_accelerator_blacklist");
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(Rifts.identifier(name));

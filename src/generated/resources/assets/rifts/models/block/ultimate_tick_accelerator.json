@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "rifts:block/ultimate_tick_accelerator_top",
+    "side": "rifts:block/ultimate_tick_accelerator_side"
+  }
+}

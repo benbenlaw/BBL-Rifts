@@ -1,11 +1,15 @@
 package com.benbenlaw.rifts.block;
 
 import com.benbenlaw.rifts.Rifts;
+import com.benbenlaw.rifts.block.custom.RiftCreativeStorageBlock;
+import com.benbenlaw.rifts.block.custom.RiftCrusherBlock;
+import com.benbenlaw.rifts.block.custom.RiftFurnaceBlock;
 import com.benbenlaw.rifts.block.custom.RiftGeneratorBlock;
 import com.benbenlaw.rifts.block.custom.RiftInfuserBlock;
 import com.benbenlaw.rifts.block.custom.RiftPipeBlock;
 import com.benbenlaw.rifts.block.custom.RiftPylonBlock;
 import com.benbenlaw.rifts.block.custom.RiftStorageBlock;
+import com.benbenlaw.rifts.block.custom.RiftTickAcceleratorBlock;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
 import com.benbenlaw.rifts.item.RiftsItems;
 import net.minecraft.core.registries.Registries;
@@ -43,6 +47,27 @@ public class RiftsBlocks {
     public static final DeferredBlock<Block> ULTIMATE_RIFT_PYLON = registerBlock("ultimate_rift_pylon",
             properties -> new RiftPylonBlock(machineProperties(properties), pylonCapacity(3), pylonDrawPerSecond(3)));
 
+    public static final DeferredBlock<Block> BASIC_TICK_ACCELERATOR = registerBlock("basic_tick_accelerator",
+            properties -> new RiftTickAcceleratorBlock(machineProperties(properties), acceleratorExtraTicks(0), acceleratorEnergyPerTick(0)));
+
+    public static final DeferredBlock<Block> ADVANCED_TICK_ACCELERATOR = registerBlock("advanced_tick_accelerator",
+            properties -> new RiftTickAcceleratorBlock(machineProperties(properties), acceleratorExtraTicks(1), acceleratorEnergyPerTick(1)));
+
+    public static final DeferredBlock<Block> ELITE_TICK_ACCELERATOR = registerBlock("elite_tick_accelerator",
+            properties -> new RiftTickAcceleratorBlock(machineProperties(properties), acceleratorExtraTicks(2), acceleratorEnergyPerTick(2)));
+
+    public static final DeferredBlock<Block> ULTIMATE_TICK_ACCELERATOR = registerBlock("ultimate_tick_accelerator",
+            properties -> new RiftTickAcceleratorBlock(machineProperties(properties), acceleratorExtraTicks(3), acceleratorEnergyPerTick(3)));
+
+    public static final DeferredBlock<Block> RIFT_CRUSHER = registerBlock("rift_crusher",
+            properties -> new RiftCrusherBlock(machineProperties(properties).lightLevel(litBlockEmission())));
+
+    public static final DeferredBlock<Block> RIFT_FURNACE = registerBlock("rift_furnace",
+            properties -> new RiftFurnaceBlock(machineProperties(properties).lightLevel(litBlockEmission())));
+
+    public static final DeferredBlock<Block> CREATIVE_RIFT_STORAGE = registerBlock("creative_rift_storage",
+            properties -> new RiftCreativeStorageBlock(machineProperties(properties)));
+
     public static final DeferredBlock<Block> RIFT_STORAGE = registerBlock("rift_storage",
             properties -> new RiftStorageBlock(machineProperties(properties)));
 
@@ -63,6 +88,16 @@ public class RiftsBlocks {
 
     public static final DeferredBlock<Block> RIFT_PLANK_SLAB = registerBlock("rift_plank_slab",
             properties -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB).setId(ResourceKey.create(Registries.BLOCK, Rifts.identifier("rift_plank_slab")))));
+
+    private static int acceleratorExtraTicks(int tier) {
+        long extra = (long) RiftsStartupConfig.ACCELERATOR_BASE_EXTRA_TICKS.get() * (long) Math.pow(RiftsStartupConfig.ACCELERATOR_EXTRA_TICKS_MULTIPLIER.get(), tier);
+        return (int) Math.min(Integer.MAX_VALUE, extra);
+    }
+
+    private static int acceleratorEnergyPerTick(int tier) {
+        long energy = (long) RiftsStartupConfig.ACCELERATOR_BASE_ENERGY_PER_TICK.get() * (long) Math.pow(RiftsStartupConfig.ACCELERATOR_ENERGY_MULTIPLIER.get(), tier);
+        return (int) Math.min(Integer.MAX_VALUE, energy);
+    }
 
     private static int pylonCapacity(int tier) {
         long capacity = (long) RiftsStartupConfig.PYLON_BASE_CAPACITY.get() * (long) Math.pow(RiftsStartupConfig.PYLON_CAPACITY_MULTIPLIER.get(), tier);

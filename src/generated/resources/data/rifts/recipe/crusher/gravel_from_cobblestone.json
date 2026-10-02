@@ -1,0 +1,18 @@
+{
+  "type": "rifts:crusher",
+  "bonus": {
+    "chance": 0.1,
+    "item": {
+      "id": "minecraft:flint"
+    }
+  },
+  "ingredient": {
+    "count": 1,
+    "ingredient": "minecraft:cobblestone"
+  },
+  "output": {
+    "id": "minecraft:gravel"
+  },
+  "processing_time": 100,
+  "rift_energy_per_tick": 80
+}

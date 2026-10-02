@@ -28,8 +28,13 @@ public class RiftsBlockTagsProvider extends BlockTagsProvider {
                 .addTag(EpochopolisTags.Blocks.PYLONS)
                 .add(RiftsBlocks.RIFT_GENERATOR.get(),
                         RiftsBlocks.RIFT_INFUSER.get(),
+                        RiftsBlocks.RIFT_FURNACE.get(),
                         RiftsBlocks.RIFT_STORAGE.get(),
                         RiftsBlocks.RIFT_PIPE.get());
+
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(RiftsBlocks.RIFT_CRUSHER.get());
+
+        tag(BlockTags.NEEDS_STONE_TOOL).add(RiftsBlocks.RIFT_CRUSHER.get());
 
         tag(BlockTags.MINEABLE_WITH_AXE)
                 .add(
@@ -45,10 +50,33 @@ public class RiftsBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.WOODEN_STAIRS).add(RiftsBlocks.RIFT_PLANK_STAIRS.get());
         tag(BlockTags.WOODEN_SLABS).add(RiftsBlocks.RIFT_PLANK_SLAB.get());
 
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
+                        RiftsBlocks.BASIC_TICK_ACCELERATOR.get(),
+                        RiftsBlocks.ADVANCED_TICK_ACCELERATOR.get(),
+                        RiftsBlocks.ELITE_TICK_ACCELERATOR.get(),
+                        RiftsBlocks.ULTIMATE_TICK_ACCELERATOR.get());
+
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(RiftsBlocks.CREATIVE_RIFT_STORAGE.get());
+
+        tag(BlockTags.NEEDS_STONE_TOOL).add(
+                        RiftsBlocks.BASIC_TICK_ACCELERATOR.get(),
+                        RiftsBlocks.ADVANCED_TICK_ACCELERATOR.get(),
+                        RiftsBlocks.ELITE_TICK_ACCELERATOR.get(),
+                        RiftsBlocks.ULTIMATE_TICK_ACCELERATOR.get());
+
+        tag(EpochopolisTags.Blocks.TICK_ACCELERATOR_BLACKLIST)
+                .addTag(EpochopolisTags.Blocks.PYLONS)
+                .add(RiftsBlocks.RIFT_GENERATOR.get(),
+                        RiftsBlocks.BASIC_TICK_ACCELERATOR.get(),
+                        RiftsBlocks.ADVANCED_TICK_ACCELERATOR.get(),
+                        RiftsBlocks.ELITE_TICK_ACCELERATOR.get(),
+                        RiftsBlocks.ULTIMATE_TICK_ACCELERATOR.get());
+
         tag(BlockTags.NEEDS_STONE_TOOL)
                 .addTag(EpochopolisTags.Blocks.PYLONS)
                 .add(RiftsBlocks.RIFT_GENERATOR.get(),
                         RiftsBlocks.RIFT_INFUSER.get(),
+                        RiftsBlocks.RIFT_FURNACE.get(),
                         RiftsBlocks.RIFT_STORAGE.get());
     }
 }

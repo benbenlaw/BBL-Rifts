@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "rifts:rift_steel_ingot",
+    "B": "minecraft:flint",
+    "C": "minecraft:piston"
+  },
+  "pattern": [
+    "ABA",
+    "BCB",
+    "AAA"
+  ],
+  "result": {
+    "id": "rifts:rift_crusher"
+  }
+}

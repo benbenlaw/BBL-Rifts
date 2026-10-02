@@ -14,10 +14,12 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.Optional;
 
@@ -41,8 +43,11 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
         machine(blockModels, RiftsBlocks.RIFT_GENERATOR.get());
         machine(blockModels, RiftsBlocks.RIFT_INFUSER.get());
+        litMachine(blockModels, RiftsBlocks.RIFT_FURNACE.get());
+        litMachine(blockModels, RiftsBlocks.RIFT_CRUSHER.get());
 
         blockModels.createTrivialCube(RiftsBlocks.RIFT_STORAGE.get());
+        blockModels.createTrivialCube(RiftsBlocks.CREATIVE_RIFT_STORAGE.get());
         blockModels.createTrivialCube(RiftsBlocks.RIFT_STEEL_BLOCK.get());
 
         blockModels.woodProvider(RiftsBlocks.RIFT_LOG.get()).log(RiftsBlocks.RIFT_LOG.get());
@@ -58,6 +63,11 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
         pylon(blockModels, RiftsBlocks.ELITE_RIFT_PYLON.get());
         pylon(blockModels, RiftsBlocks.ULTIMATE_RIFT_PYLON.get());
 
+        pylon(blockModels, RiftsBlocks.BASIC_TICK_ACCELERATOR.get());
+        pylon(blockModels, RiftsBlocks.ADVANCED_TICK_ACCELERATOR.get());
+        pylon(blockModels, RiftsBlocks.ELITE_TICK_ACCELERATOR.get());
+        pylon(blockModels, RiftsBlocks.ULTIMATE_TICK_ACCELERATOR.get());
+
         pipe(blockModels, RiftsBlocks.RIFT_PIPE.get());
 
         itemModels.generateFlatItem(RiftsItems.DISPLACER.get(), ModelTemplates.FLAT_ITEM);
@@ -71,6 +81,18 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
     private static void machine(BlockModelGenerators blockModels, Block block) {
         MultiVariant model = plainVariant(TexturedModel.ORIENTABLE_ONLY_TOP.create(block, blockModels.modelOutput));
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, model).with(ROTATION_FACING));
+    }
+
+    private static void litMachine(BlockModelGenerators blockModels, Block block) {
+        MultiVariant off = plainVariant(TexturedModel.ORIENTABLE_ONLY_TOP.create(block, blockModels.modelOutput));
+        Material frontOn = TextureMapping.getBlockTexture(block, "_front_on");
+        MultiVariant on = plainVariant(TexturedModel.ORIENTABLE_ONLY_TOP.get(block)
+                .updateTextures(textures -> textures.put(TextureSlot.FRONT, frontOn))
+                .createWithSuffix(block, "_on", blockModels.modelOutput));
+
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+                .with(createBooleanModelDispatch(BlockStateProperties.LIT, on, off))
+                .with(ROTATION_FACING));
     }
 
     private static void pylon(BlockModelGenerators blockModels, Block block) {

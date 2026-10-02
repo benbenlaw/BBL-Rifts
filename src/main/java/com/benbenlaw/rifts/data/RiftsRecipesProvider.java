@@ -2,6 +2,7 @@ package com.benbenlaw.rifts.data;
 
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.block.RiftsBlocks;
+import com.benbenlaw.rifts.data.custom.CrusherRecipeBuilder;
 import com.benbenlaw.rifts.data.custom.InfuserRecipeBuilder;
 import com.benbenlaw.rifts.item.RiftsItems;
 import net.minecraft.core.HolderLookup;
@@ -40,6 +41,13 @@ public class RiftsRecipesProvider extends RecipeProvider {
         }
     }
 
+    private void ore(net.minecraft.tags.TagKey<net.minecraft.world.item.Item> ore, net.minecraft.world.item.Item result, int count, float bonusChance, String name) {
+        CrusherRecipeBuilder.crusherRecipe(new SizedIngredient(tag(ore), 1), new ItemStackTemplate(result, count))
+                .bonus(new ItemStackTemplate(result), bonusChance)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output, name);
+    }
+
     @Override
     protected void buildRecipes() {
 
@@ -60,6 +68,89 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .pattern("   ")
                 .pattern("AAA")
                 .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        //Tick Accelerators
+        shaped(RecipeCategory.MISC, RiftsBlocks.BASIC_TICK_ACCELERATOR)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('B', Items.REDSTONE)
+                .define('C', Items.CLOCK)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.MISC, RiftsBlocks.ADVANCED_TICK_ACCELERATOR)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('B', Tags.Items.INGOTS_GOLD)
+                .define('C', RiftsBlocks.BASIC_TICK_ACCELERATOR)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.MISC, RiftsBlocks.ELITE_TICK_ACCELERATOR)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('B', Tags.Items.GEMS_DIAMOND)
+                .define('C', RiftsBlocks.ADVANCED_TICK_ACCELERATOR)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.MISC, RiftsBlocks.ULTIMATE_TICK_ACCELERATOR)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('B', Tags.Items.INGOTS_NETHERITE)
+                .define('C', RiftsBlocks.ELITE_TICK_ACCELERATOR)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        //Rift Crusher
+        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_CRUSHER)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("AAA")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('B', Items.FLINT)
+                .define('C', Items.PISTON)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        //Crushing
+        ore(Tags.Items.ORES_IRON, Items.RAW_IRON, 2, 0.5F, "raw_iron_from_iron_ore");
+        ore(Tags.Items.ORES_GOLD, Items.RAW_GOLD, 2, 0.25F, "raw_gold_from_gold_ore");
+        ore(Tags.Items.ORES_COPPER, Items.RAW_COPPER, 6, 0.5F, "raw_copper_from_copper_ore");
+        ore(Tags.Items.ORES_COAL, Items.COAL, 3, 0.25F, "coal_from_coal_ore");
+        ore(Tags.Items.ORES_REDSTONE, Items.REDSTONE, 8, 0.5F, "redstone_from_redstone_ore");
+        ore(Tags.Items.ORES_LAPIS, Items.LAPIS_LAZULI, 10, 0.5F, "lapis_from_lapis_ore");
+
+        CrusherRecipeBuilder.crusherRecipe(SizedIngredient.of(Items.STONE, 1), new ItemStackTemplate(Items.COBBLESTONE))
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output, "cobblestone_from_stone");
+        CrusherRecipeBuilder.crusherRecipe(SizedIngredient.of(Items.COBBLESTONE, 1), new ItemStackTemplate(Items.GRAVEL))
+                .bonus(new ItemStackTemplate(Items.FLINT), 0.1F)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output, "gravel_from_cobblestone");
+        CrusherRecipeBuilder.crusherRecipe(SizedIngredient.of(Items.GRAVEL, 1), new ItemStackTemplate(Items.SAND))
+                .bonus(new ItemStackTemplate(Items.FLINT), 0.2F)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output, "sand_from_gravel");
+
+        //Rift Furnace
+        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_FURNACE)
+                .pattern("AAA")
+                .pattern("ABA")
+                .pattern("CCC")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('B', Items.FURNACE)
+                .define('C', Tags.Items.INGOTS_COPPER)
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
                 .save(output);
 

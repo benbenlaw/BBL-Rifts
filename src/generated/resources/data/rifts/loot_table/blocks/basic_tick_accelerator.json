@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "rifts:rift_energy"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "rifts:basic_tick_accelerator"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "rifts:blocks/basic_tick_accelerator"
+}

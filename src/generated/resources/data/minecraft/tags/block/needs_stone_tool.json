@@ -1,8 +1,14 @@
 {
   "values": [
+    "rifts:rift_crusher",
+    "rifts:basic_tick_accelerator",
+    "rifts:advanced_tick_accelerator",
+    "rifts:elite_tick_accelerator",
+    "rifts:ultimate_tick_accelerator",
     "#rifts:pylons",
     "rifts:rift_generator",
     "rifts:rift_infuser",
+    "rifts:rift_furnace",
     "rifts:rift_storage"
   ]
 }

@@ -91,13 +91,6 @@ public class RiftInfuserBlockEntity extends SyncableBlockEntity implements MenuP
     public void tick() {
         if (level.isClientSide()) return;
 
-        int TICK_RATE_FOR_RIFT_ENERGY = 1;
-
-        if (level.getGameTime() % TICK_RATE_FOR_RIFT_ENERGY == 0 && riftEnergyHandler.getAmountAsInt() != riftEnergyHandler.getCapacityAsInt()) {
-
-            RiftPylonBlockEntity.feedFromAdjacentPylons(level, worldPosition, riftEnergyHandler);
-        }
-
         boolean running = level.getBlockState(worldPosition).getValue(RiftInfuserBlock.RUNNING);
         if (!running) {
             progress = 0;
