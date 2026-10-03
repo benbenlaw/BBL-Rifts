@@ -1,0 +1,11 @@
+{
+  "type": "rifts:rift",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "rifts:rift_wastes"
+    },
+    "settings": "rifts:rift_islands"
+  }
+}

@@ -51,6 +51,9 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
         blockModels.createTrivialCube(RiftsBlocks.CREATIVE_RIFT_STORAGE.get());
         blockModels.createTrivialCube(RiftsBlocks.RIFT_STEEL_BLOCK.get());
 
+        blockModels.createTrivialCube(RiftsBlocks.RIFT_STONE.get());
+        blockModels.createTrivialBlock(RiftsBlocks.RIFT_LEAVES.get(), TexturedModel.LEAVES);
+
         blockModels.woodProvider(RiftsBlocks.RIFT_LOG.get()).log(RiftsBlocks.RIFT_LOG.get());
 
         blockModels.family(RiftsBlocks.RIFT_PLANKS.get())

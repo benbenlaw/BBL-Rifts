@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-02T16:10:55.0761169	Model Definitions - rifts
+// 26.1.2	2026-10-03T10:19:10.8882934	Model Definitions - rifts
 b1584db9f052ea6cecc879409ac47ed80270f51c assets/rifts/blockstates/advanced_rift_pylon.json
 f9668aed61668d116587e8fe29147345d97d09f0 assets/rifts/blockstates/advanced_tick_accelerator.json
 90782f487722e8318a410fa948e41468f5b75d52 assets/rifts/blockstates/basic_rift_pylon.json
@@ -11,12 +11,14 @@ a6359177c04507969995feb0c88a73e25644ba38 assets/rifts/blockstates/rift_charger.j
 d19217213e71fa19ae22a275c0560efe71ba4e85 assets/rifts/blockstates/rift_furnace.json
 67c28dddc418890c1165f25ea1c6e497bee86ef0 assets/rifts/blockstates/rift_generator.json
 f7f3daaf95d381f0734a1ad67c8e906345ad8544 assets/rifts/blockstates/rift_infuser.json
+83e59c57b737cacea3f7e6edb4a5191b99472cea assets/rifts/blockstates/rift_leaves.json
 0ebcf6b10cd73bbca99fbb2e19835d4433b693d7 assets/rifts/blockstates/rift_log.json
 97793a643482150544d8fb2e514abe1a06e6dfa1 assets/rifts/blockstates/rift_pipe.json
 fd2603b9591a98eb69a3c7dba5b5e2fab8bed9a8 assets/rifts/blockstates/rift_planks.json
 eafc02f6d9bdb4d2dee32aeba429a4be60a50f2a assets/rifts/blockstates/rift_plank_slab.json
 fc36e9b5a6438aaeb28c5e7469353327d1a33cfd assets/rifts/blockstates/rift_plank_stairs.json
 fc11e7e1bd938b1848af5866d02adc8727003c58 assets/rifts/blockstates/rift_steel_block.json
+b515dd5743d758bc3b2fafa57309956e082fffca assets/rifts/blockstates/rift_stone.json
 fad4fbce949cdcb3705a9cab11fe3048991c11b6 assets/rifts/blockstates/rift_storage.json
 9206ca55a7648ffca56f3bfab4e384b2b0052bf3 assets/rifts/blockstates/ultimate_rift_pylon.json
 7ff4446b59be86d94d27fc00eb3042da693f2075 assets/rifts/blockstates/ultimate_tick_accelerator.json
@@ -34,6 +36,7 @@ e6268245f6b1fc0695cd2d263f332743ab836e2e assets/rifts/items/elite_rift_pylon.jso
 7a9c4214cb859e0b8f42212d6c057d439ab520de assets/rifts/items/rift_furnace.json
 24ea5e75b995ce63bf208e7422d2e558eaf78c13 assets/rifts/items/rift_generator.json
 a8004d1523273d40b35ac60807b8dbb9d2c9f13e assets/rifts/items/rift_infuser.json
+9051366caf797249e1f5d3863e434e765c86582a assets/rifts/items/rift_leaves.json
 b69afd1e2347e8b83b6a5a33e7701c390322ead5 assets/rifts/items/rift_log.json
 c916caefb32ee620c0b1ac82ca0cfd43490a65b4 assets/rifts/items/rift_pipe.json
 b8f53227d2c6ff827926fdf67d38f1b6e07b254f assets/rifts/items/rift_planks.json
@@ -53,6 +56,7 @@ f1752bf632378683df7c8f34ed3c56b0c1e5c29b assets/rifts/items/rift_steel_nugget.js
 893b534d638cdc3ef7e5871cbf239e0eb0bf80bb assets/rifts/items/rift_steel_shovel.json
 5b69e22990372aad0e61ec129bc9bf6985d7d1e1 assets/rifts/items/rift_steel_spear.json
 3b8f2eafffb999f1eaf78dca601b0423a3bbc57a assets/rifts/items/rift_steel_sword.json
+8dd367bacf9725d2b279b83b7bcb0cf55d1721be assets/rifts/items/rift_stone.json
 faadb4a4355b736fdf4d6750496644c187a3c824 assets/rifts/items/rift_storage.json
 2e24c6c90de03e2c485a3360481deb5c32be7af6 assets/rifts/items/rift_wrench.json
 69e22c2e1e8ae6bd2c08e68ebae9c786b691a9ff assets/rifts/items/ultimate_rift_pylon.json
@@ -71,6 +75,7 @@ c2dd9d5351595cbac951324c59c7b447ff583e05 assets/rifts/models/block/rift_crusher_
 c1be41bab33660468930b0ede71d26dbacd71971 assets/rifts/models/block/rift_furnace_on.json
 a748ba0cc2499224b8faacb9b2af732986c86fbd assets/rifts/models/block/rift_generator.json
 a0e94c47e9d38f265c85390dc1a36bcb971dedbd assets/rifts/models/block/rift_infuser.json
+046dba42028085d198823cc242d81e10591cba5b assets/rifts/models/block/rift_leaves.json
 2f51b61bf4c2548c699484ddfa795d20fb0ea309 assets/rifts/models/block/rift_log.json
 c52a36a81fd057e3afd71f5be33e80e325793e30 assets/rifts/models/block/rift_pipe_arm.json
 e8b6d80535819da2fc375894cac749f8d791fc9c assets/rifts/models/block/rift_pipe_core.json
@@ -82,6 +87,7 @@ ca44f36927a8001acf65ba20d5f85d0feefb8246 assets/rifts/models/block/rift_plank_sl
 b014ec62951f4349ee2719cffe1286a853791e7c assets/rifts/models/block/rift_plank_stairs_inner.json
 f79a32bdbf2e1635bd2618813374043b44205774 assets/rifts/models/block/rift_plank_stairs_outer.json
 309f9b17caa6ef8755dc24d31ebfbf1c91a41dbc assets/rifts/models/block/rift_steel_block.json
+724bb6b7d2c61a3cf5c7fbf647815e1fec206f17 assets/rifts/models/block/rift_stone.json
 50001f9f96a35da52eb816563a96622e9b75cd5f assets/rifts/models/block/rift_storage.json
 ddf426ccf6004b964ecef57c73eea7fef761ff05 assets/rifts/models/block/ultimate_rift_pylon.json
 c487f246f7486779d7f94db62df0bae70d1bcc9e assets/rifts/models/block/ultimate_tick_accelerator.json

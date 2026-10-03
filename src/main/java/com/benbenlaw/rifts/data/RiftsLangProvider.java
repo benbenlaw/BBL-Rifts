@@ -2,6 +2,7 @@ package com.benbenlaw.rifts.data;
 
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.block.RiftsBlocks;
+import com.benbenlaw.rifts.data.worldgen.RiftsWorldGen;
 import com.benbenlaw.rifts.entity.EpochopolisEntities;
 import com.benbenlaw.rifts.item.RiftsItems;
 import net.minecraft.data.PackOutput;
@@ -21,6 +22,9 @@ public class RiftsLangProvider extends LanguageProvider {
     protected void addTranslations() {
         add("itemGroup." + Rifts.MOD_ID, "Rifts");
 
+        addDimension(RiftsWorldGen.RIFT_LEVEL, "The Rift");
+        addBiome(RiftsWorldGen.RIFT_BIOME, "Rift Wastes");
+
         addBlock(RiftsBlocks.RIFT_GENERATOR, "Rift Generator");
         addBlock(RiftsBlocks.RIFT_INFUSER, "Rift Infuser");
         addBlock(RiftsBlocks.RIFT_CHARGER, "Rift Charger");
@@ -38,6 +42,8 @@ public class RiftsLangProvider extends LanguageProvider {
         addBlock(RiftsBlocks.ELITE_RIFT_PYLON, "Elite Rift Pylon");
         addBlock(RiftsBlocks.ULTIMATE_RIFT_PYLON, "Ultimate Rift Pylon");
 
+        addBlock(RiftsBlocks.RIFT_STONE, "Rift Stone");
+        addBlock(RiftsBlocks.RIFT_LEAVES, "Rift Leaves");
         addBlock(RiftsBlocks.RIFT_LOG, "Rift Log");
         addBlock(RiftsBlocks.RIFT_PLANKS, "Rift Planks");
         addBlock(RiftsBlocks.RIFT_PLANK_STAIRS, "Rift Plank Stairs");
@@ -60,6 +66,7 @@ public class RiftsLangProvider extends LanguageProvider {
         addItem(RiftsItems.RIFT_ELEMENTAL_SPAWN_EGG, "Rift Elemental Spawn Egg");
         addEntityType(EpochopolisEntities.DISPLACER, "Displacer");
         addEntityType(EpochopolisEntities.RIFT_ELEMENTAL, "Rift Elemental");
+        addEntityType(EpochopolisEntities.NATURAL_RIFT, "Rift");
 
         add("tooltip.rifts.stored_energy", "Stored Rift Energy: %1$s");
         add("tooltip.rifts.item_energy", "Rift Energy: %1$s / %2$s");

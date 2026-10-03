@@ -11,6 +11,7 @@ import com.benbenlaw.rifts.block.custom.RiftPylonBlock;
 import com.benbenlaw.rifts.block.custom.RiftTickAcceleratorBlock;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
 import com.benbenlaw.rifts.entity.EpochopolisEntities;
+import com.benbenlaw.rifts.entity.client.NaturalRiftRenderer;
 import com.benbenlaw.rifts.entity.client.RiftElementalRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +30,7 @@ public class EpochopolisClientEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EpochopolisEntities.DISPLACER.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EpochopolisEntities.RIFT_ELEMENTAL.get(), RiftElementalRenderer::new);
+        event.registerEntityRenderer(EpochopolisEntities.NATURAL_RIFT.get(), NaturalRiftRenderer::new);
     }
 
     @SubscribeEvent

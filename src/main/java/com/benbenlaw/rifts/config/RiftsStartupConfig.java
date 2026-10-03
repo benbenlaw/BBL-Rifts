@@ -39,6 +39,12 @@ public class RiftsStartupConfig {
     public static final ModConfigSpec.ConfigValue<Integer> ACCELERATOR_MAX_EXTRA_TICKS;
     public static final ModConfigSpec.ConfigValue<Double> ACCELERATOR_RANDOM_TICKS_PER_EXTRA_TICK;
     public static final ModConfigSpec.ConfigValue<Double> ELEMENTAL_DEPLETION_THRESHOLD;
+    public static final ModConfigSpec.ConfigValue<Boolean> NATURAL_RIFTS_ENABLED;
+    public static final ModConfigSpec.ConfigValue<Integer> NATURAL_RIFT_CHECK_INTERVAL_TICKS;
+    public static final ModConfigSpec.ConfigValue<Double> NATURAL_RIFT_SPAWN_CHANCE;
+    public static final ModConfigSpec.ConfigValue<Integer> NATURAL_RIFT_LIFETIME_TICKS;
+    public static final ModConfigSpec.ConfigValue<Integer> NATURAL_RIFT_MAX_NEARBY;
+    public static final ModConfigSpec.ConfigValue<java.util.List<? extends String>> NATURAL_RIFT_DIMENSIONS;
 
     static {
 
@@ -123,6 +129,23 @@ public class RiftsStartupConfig {
                 .define("elemental_on_depletion", true);
         ELEMENTAL_DEPLETION_THRESHOLD = BUILDER.comment("A Rift Elemental is summoned when a draw leaves a chunk below this fraction of its capacity (0.05 = 5%). It can summon again after the chunk refills to twice this.")
                 .defineInRange("elemental_depletion_threshold", 0.05, 0.0, 0.5);
+
+        BUILDER.pop();
+
+        BUILDER.push("Natural Rifts");
+
+        NATURAL_RIFTS_ENABLED = BUILDER.comment("Let rifts to the rift dimension open on their own in the overworld")
+                .define("natural_rifts_enabled", true);
+        NATURAL_RIFT_DIMENSIONS = BUILDER.comment("Dimensions where natural rifts can open. Dimensions with a ceiling (like the nether) are skipped")
+                .defineListAllowEmpty("natural_rift_dimensions", java.util.List.of("minecraft:overworld"), () -> "minecraft:overworld", o -> o instanceof String);
+        NATURAL_RIFT_CHECK_INTERVAL_TICKS = BUILDER.comment("Ticks between spawn attempts near each player")
+                .defineInRange("natural_rift_check_interval_ticks", 1200, 20, Integer.MAX_VALUE);
+        NATURAL_RIFT_SPAWN_CHANCE = BUILDER.comment("Chance each attempt opens a rift")
+                .defineInRange("natural_rift_spawn_chance", 0.25, 0.0, 1.0);
+        NATURAL_RIFT_LIFETIME_TICKS = BUILDER.comment("Ticks an overworld rift stays open")
+                .defineInRange("natural_rift_lifetime_ticks", 6000, 20, Integer.MAX_VALUE);
+        NATURAL_RIFT_MAX_NEARBY = BUILDER.comment("No new rift opens near a player who already has this many within 96 blocks")
+                .defineInRange("natural_rift_max_nearby", 2, 1, 100);
 
         BUILDER.pop();
 

@@ -42,6 +42,7 @@ public class RiftsItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.FOOT_ARMOR).add(RiftsItems.RIFT_STEEL_BOOTS.get());
 
         tag(ItemTags.LOGS).add(RiftsBlocks.RIFT_LOG.get().asItem());
+        tag(ItemTags.LEAVES).add(RiftsBlocks.RIFT_LEAVES.get().asItem());
         tag(ItemTags.PLANKS).add(RiftsBlocks.RIFT_PLANKS.get().asItem());
         tag(ItemTags.WOODEN_STAIRS).add(RiftsBlocks.RIFT_PLANK_STAIRS.get().asItem());
         tag(ItemTags.WOODEN_SLABS).add(RiftsBlocks.RIFT_PLANK_SLAB.get().asItem());

@@ -65,12 +65,16 @@ public class RiftGeneratorBlockEntityRenderer implements BlockEntityRenderer<Rif
         float[] brightColor = state.riftClosing ? state.closingBright : state.activeBright;
         float[] boltCore = state.riftClosing ? state.closingBoltCore : state.activeBoltCore;
 
-        Vec3 camera = cameraRenderState.pos;
         BlockPos pos = state.blockPos;
 
         Vec3 lowerWorld = new Vec3(pos.getX() + 0.5, pos.getY() + LOWER_HEIGHT, pos.getZ() + 0.5);
         Vec3 upperWorld = new Vec3(pos.getX() + 0.5, pos.getY() + UPPER_HEIGHT, pos.getZ() + 0.5);
 
+        submitRift(poseStack, submitNodeCollector, cameraRenderState.pos, lowerWorld, upperWorld, time, spin, color, brightColor, boltCore);
+    }
+
+    public void submitRift(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Vec3 camera, Vec3 lowerWorld, Vec3 upperWorld,
+                           long time, float spin, float[] color, float[] brightColor, float[] boltCore) {
         Vec3 lowerOrigin = lowerWorld.subtract(camera);
         Vec3 upperOrigin = upperWorld.subtract(camera);
 

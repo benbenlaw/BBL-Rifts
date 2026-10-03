@@ -22,6 +22,17 @@ public class EpochopolisEntities {
     public static final ResourceKey<EntityType<?>> RIFT_ELEMENTAL_KEY =
             ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Rifts.MOD_ID, "rift_elemental"));
 
+    public static final ResourceKey<EntityType<?>> NATURAL_RIFT_KEY =
+            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Rifts.MOD_ID, "natural_rift"));
+
+    public static final Supplier<EntityType<NaturalRift>> NATURAL_RIFT =
+            ENTITY_TYPES.register("natural_rift", () -> EntityType.Builder.<NaturalRift>of(NaturalRift::new, MobCategory.MISC)
+                    .sized(1.2F, 2.5F)
+                    .fireImmune()
+                    .noSummon()
+                    .clientTrackingRange(12)
+                    .build(NATURAL_RIFT_KEY));
+
     public static final Supplier<EntityType<RiftElemental>> RIFT_ELEMENTAL =
             ENTITY_TYPES.register("rift_elemental", () -> EntityType.Builder.of(RiftElemental::new, MobCategory.MONSTER)
                     .sized(1.4F, 2.7F)

@@ -46,6 +46,9 @@ public class RiftsBlockTagsProvider extends BlockTagsProvider {
         ;
 
         tag(BlockTags.LOGS).add(RiftsBlocks.RIFT_LOG.get());
+        tag(BlockTags.LEAVES).add(RiftsBlocks.RIFT_LEAVES.get());
+        tag(BlockTags.MINEABLE_WITH_HOE).add(RiftsBlocks.RIFT_LEAVES.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(RiftsBlocks.RIFT_STONE.get());
         tag(BlockTags.PLANKS).add(RiftsBlocks.RIFT_PLANKS.get());
         tag(BlockTags.WOODEN_STAIRS).add(RiftsBlocks.RIFT_PLANK_STAIRS.get());
         tag(BlockTags.WOODEN_SLABS).add(RiftsBlocks.RIFT_PLANK_SLAB.get());

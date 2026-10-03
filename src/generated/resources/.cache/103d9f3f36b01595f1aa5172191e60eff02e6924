@@ -1,0 +1,10 @@
+// 26.1.2	2026-10-03T10:19:10.8882934	Registries
+75fc20544a9ab04bf50f39bf5aade3ce729ec9cc data/rifts/dimension/rift.json
+a1f4ed66a34589eee533158436aa47e355474797 data/rifts/dimension_type/rift.json
+52c41efdd2fbc96d9755f585419c74ff39fcf224 data/rifts/worldgen/biome/rift_wastes.json
+1d196daef5d408394842bb195131430177668409 data/rifts/worldgen/configured_feature/rift_tree.json
+bd1e1359c1d113e92be7b70e0770cc17c21116fb data/rifts/worldgen/noise/island_detail.json
+d91276685239c54af699872f04f655b1fed948fe data/rifts/worldgen/noise/island_height.json
+26a1d0bc0ed8e30b9160913986dce877008da337 data/rifts/worldgen/noise/island_mask.json
+3a343c5196fd0c5ed1cd0555be140ceea60dab0c data/rifts/worldgen/noise_settings/rift_islands.json
+99d13461816376a54d9cab1798e35e002424c5d5 data/rifts/worldgen/placed_feature/rift_trees.json

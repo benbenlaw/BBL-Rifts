@@ -1,9 +1,10 @@
-// 26.1.2	2026-10-02T16:10:55.0736083	Tags for minecraft:item mod id rifts
+// 26.1.2	2026-10-03T10:19:10.8841862	Tags for minecraft:item mod id rifts
 c9063c25bad0fa7dadb4a2f2fdb1bc4cf713864d data/minecraft/tags/item/axes.json
 e84ffdd029a62f963448a11ff8b4e4194d987bb9 data/minecraft/tags/item/chest_armor.json
 13cf11dd7588532190a87e84c982089a3642d586 data/minecraft/tags/item/foot_armor.json
 9b421001168ffb3763b3df11be5abdcc30aba970 data/minecraft/tags/item/head_armor.json
 0ea134f3e9cdd17c6e0814dbba09a47e5f1e6ec2 data/minecraft/tags/item/hoes.json
+367fad4a8765cbea3a715101511c062a0c63a818 data/minecraft/tags/item/leaves.json
 8175f37cd1a21e6450a0e8de4803a18cec7876ef data/minecraft/tags/item/leg_armor.json
 ac3b0aabf9b8adec09de1c74629f87b3895e8efc data/minecraft/tags/item/logs.json
 42e1aabe4851c398e4c95256018ca2ed5e551daf data/minecraft/tags/item/pickaxes.json

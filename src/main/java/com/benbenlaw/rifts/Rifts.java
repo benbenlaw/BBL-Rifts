@@ -1,6 +1,7 @@
 package com.benbenlaw.rifts;
 
 import com.benbenlaw.rifts.block.RiftsBlockEntities;
+import com.benbenlaw.rifts.entity.RiftsAttachments;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import com.benbenlaw.rifts.block.entity.renderer.RiftGeneratorBlockEntityRenderer;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
@@ -46,6 +47,7 @@ public class Rifts {
         RiftsBlockEntities.BLOCK_ENTITIES.register(eventBus);
         RiftsItems.ITEMS.register(eventBus);
         RiftsDataComponents.COMPONENTS.register(eventBus);
+        RiftsAttachments.ATTACHMENTS.register(eventBus);
         EpochopolisCreativeTab.CREATIVE_MODE_TABS.register(eventBus);
         EpochopolisEntities.ENTITY_TYPES.register(eventBus);
         EpochopolisMenuTypes.MENUS.register(eventBus);

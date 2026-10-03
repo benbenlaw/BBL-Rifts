@@ -13,6 +13,8 @@ import com.benbenlaw.rifts.block.custom.RiftStorageBlock;
 import com.benbenlaw.rifts.block.custom.RiftTickAcceleratorBlock;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
 import com.benbenlaw.rifts.item.RiftsItems;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
@@ -80,6 +82,13 @@ public class RiftsBlocks {
 
     public static final DeferredBlock<Block> RIFT_STEEL_BLOCK = registerBlock("rift_steel_block",
             properties -> new Block(properties.sound(SoundType.METAL).strength(5.0f)));
+
+    public static final DeferredBlock<Block> RIFT_STONE =registerBlock("rift_stone",
+            properties -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.END_STONE).setId(ResourceKey.create(Registries.BLOCK, Rifts.identifier("rift_stone")))));
+
+    public static final DeferredBlock<Block> RIFT_LEAVES = registerBlock("rift_leaves",
+            properties -> new UntintedParticleLeavesBlock(0.01F, ColorParticleOption.create(ParticleTypes.TINTED_LEAVES, 0xFF8A4DDB),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.AZALEA_LEAVES).setId(ResourceKey.create(Registries.BLOCK, Rifts.identifier("rift_leaves")))));
 
     public static final DeferredBlock<Block> RIFT_LOG = registerBlock("rift_log",
             properties -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).setId(ResourceKey.create(Registries.BLOCK, Rifts.identifier("rift_log")))));

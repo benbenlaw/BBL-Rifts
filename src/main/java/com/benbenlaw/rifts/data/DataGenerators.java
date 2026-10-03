@@ -1,6 +1,7 @@
 package com.benbenlaw.rifts.data;
 
 import com.benbenlaw.rifts.Rifts;
+import com.benbenlaw.rifts.data.worldgen.RiftsWorldGen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -22,6 +23,7 @@ public class DataGenerators {
 
         generator.addProvider(true, new RiftsDataMapProvider(packOutput, lookupProvider));
         generator.addProvider(true, new RiftsLangProvider(packOutput));
+        event.createDatapackRegistryObjects(RiftsWorldGen.BUILDER);
         generator.addProvider(true, new RiftsModelProvider(packOutput));
         generator.addProvider(true, new RiftsEquipmentAssetProvider(packOutput));
         generator.addProvider(true, new RiftsEntityLootTableProvider(packOutput, lookupProvider));

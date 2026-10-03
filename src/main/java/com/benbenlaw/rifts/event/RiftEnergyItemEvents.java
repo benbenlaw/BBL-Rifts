@@ -10,7 +10,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 @EventBusSubscriber(modid = Rifts.MOD_ID)
 public class RiftEnergyItemEvents {
 
-    // With no energy, tools lose their damage and speed bonuses and armor loses all protection
     @SubscribeEvent
     public static void onAttributeModifiers(ItemAttributeModifierEvent event) {
         if (RiftEnergyItem.isEmpty(event.getItemStack())) {
