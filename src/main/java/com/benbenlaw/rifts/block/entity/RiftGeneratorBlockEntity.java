@@ -46,6 +46,7 @@ public class RiftGeneratorBlockEntity extends SyncableBlockEntity implements Men
 
     private static final int CHARGE_ITEM_SLOT = 0;
     private static final double STAND_DETECT_HEIGHT = 0.6;
+    private static final double PORTAL_CENTRE_HEIGHT = 2.3;
 
     private final ContainerData data;
     private int maxProgress = 200;
@@ -402,8 +403,7 @@ public class RiftGeneratorBlockEntity extends SyncableBlockEntity implements Men
         if (level.getGameTime() % 3 != 0) return;
 
         double cx = worldPosition.getX() + 0.5;
-        double lowerY = worldPosition.getY() + 1.2;
-        double upperY = worldPosition.getY() + 3.5;
+        double portalY = worldPosition.getY() + PORTAL_CENTRE_HEIGHT;
         double cz = worldPosition.getZ() + 0.5;
 
         if (state == RiftState.CHARGING) {
@@ -411,12 +411,7 @@ public class RiftGeneratorBlockEntity extends SyncableBlockEntity implements Men
             return;
         }
 
-        RiftParticleEffects.absorb(serverLevel, cx, lowerY, cz, 4, 1.0, 2.0, 0.8);
-        serverLevel.sendParticles(ParticleTypes.END_ROD, cx, upperY, cz, 2, 0.35, 0.15, 0.35, 0.015);
-
-        if (state == RiftState.CLOSING) {
-            RiftParticleEffects.absorb(serverLevel, cx, lowerY, cz, 8, 1.0, 2.2, 1.0);
-        }
+        RiftParticleEffects.absorb(serverLevel, cx, portalY, cz, state == RiftState.CLOSING ? 10 : 5, 1.0, 2.2, 1.0);
     }
 
     private void setChunkForced(boolean forced) {

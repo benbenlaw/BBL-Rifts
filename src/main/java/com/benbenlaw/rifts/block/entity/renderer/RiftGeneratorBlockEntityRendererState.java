@@ -9,9 +9,5 @@ public class RiftGeneratorBlockEntityRendererState extends BlockEntityRenderStat
     public BlockPos blockPos;
 
     public float[] activeBase;
-    public float[] activeBright;
-    public float[] activeBoltCore;
     public float[] closingBase;
-    public float[] closingBright;
-    public float[] closingBoltCore;
 }
