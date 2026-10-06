@@ -1,6 +1,7 @@
 package com.benbenlaw.rifts.integration.jei;
 
 import com.benbenlaw.rifts.Rifts;
+import com.benbenlaw.rifts.recipe.CrusherRecipe;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import com.benbenlaw.rifts.datamaps.DisplacerConversions;
 import com.benbenlaw.rifts.datamaps.RiftsDataMaps;
@@ -53,6 +54,7 @@ public class JeiRiftsPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         registration.addRecipes(CrusherCategory.RECIPE_TYPE, ClientRecipeCache.getCrusherRecipes().entrySet().stream()
+                .filter(entry -> !CrusherRecipe.resolve(entry.getValue().output()).isEmpty())
                 .map(entry -> new CrusherJeiRecipe(entry.getKey(), entry.getValue()))
                 .toList());
 

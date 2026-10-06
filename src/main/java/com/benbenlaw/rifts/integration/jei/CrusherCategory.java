@@ -74,11 +74,11 @@ public class CrusherCategory implements IRecipeCategory<CrusherJeiRecipe> {
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 70, 4)
                 .setStandardSlotBackground()
-                .add(recipe.output().create());
+                .add(CrusherRecipe.resolve(recipe.output()));
 
         recipe.bonus().ifPresent(bonus -> builder.addSlot(RecipeIngredientRole.OUTPUT, 70, 24)
                 .setStandardSlotBackground()
-                .add(bonus.item().create())
+                .add(CrusherRecipe.resolve(bonus.item()))
                 .addRichTooltipCallback((slotView, tooltip) ->
                         tooltip.add(Component.translatable("jei.rifts.crusher.bonus_chance", Math.round(bonus.chance() * 100)))));
     }

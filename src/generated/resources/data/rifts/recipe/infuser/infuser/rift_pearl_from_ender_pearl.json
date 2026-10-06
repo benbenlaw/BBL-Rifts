@@ -1,0 +1,13 @@
+{
+  "type": "rifts:infuser",
+  "ingredients": [
+    {
+      "count": 1,
+      "ingredient": "minecraft:ender_pearl"
+    }
+  ],
+  "output": {
+    "id": "rifts:rift_pearl"
+  },
+  "rift_energy_per_tick": 25
+}

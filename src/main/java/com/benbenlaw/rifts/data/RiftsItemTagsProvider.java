@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ItemTagsProvider;
 
 import java.util.concurrent.CompletableFuture;
@@ -29,6 +30,14 @@ public class RiftsItemTagsProvider extends ItemTagsProvider {
 
         tag(EpochopolisTags.Items.RIFT_STEEL_TOOL_MATERIALS).add(RiftsItems.RIFT_STEEL_INGOT.get());
         tag(EpochopolisTags.Items.REPAIRS_RIFT_STEEL_ARMOR).add(RiftsItems.RIFT_STEEL_INGOT.get());
+
+        tag(Tags.Items.TOOLS_WRENCH).add(RiftsItems.RIFT_WRENCH.get());
+
+        tag(EpochopolisTags.Items.RIFT_PROTECTIVE_ARMOR).add(
+                RiftsItems.RIFT_STEEL_HELMET.get(),
+                RiftsItems.RIFT_STEEL_CHESTPLATE.get(),
+                RiftsItems.RIFT_STEEL_LEGGINGS.get(),
+                RiftsItems.RIFT_STEEL_BOOTS.get());
 
         tag(ItemTags.SWORDS).add(RiftsItems.RIFT_STEEL_SWORD.get());
         tag(ItemTags.PICKAXES).add(RiftsItems.RIFT_STEEL_PICKAXE.get());

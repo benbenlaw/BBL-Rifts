@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ores/gold"
+      }
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:dusts/gold"
+      }
+    }
+  ],
+  "type": "rifts:crusher",
+  "bonus": {
+    "chance": 0.25,
+    "item": {
+      "count": 1,
+      "ingredient": "#c:dusts/gold"
+    }
+  },
+  "ingredient": {
+    "count": 1,
+    "ingredient": "#c:ores/gold"
+  },
+  "output": {
+    "count": 2,
+    "ingredient": "#c:dusts/gold"
+  },
+  "processing_time": 100,
+  "rift_energy_per_tick": 80
+}

@@ -52,6 +52,7 @@ public class RiftsLangProvider extends LanguageProvider {
         addItem(RiftsItems.DISPLACER, "Displacer");
         addItem(RiftsItems.RIFT_SCANNER, "Rift Scanner");
         addItem(RiftsItems.RIFT_WRENCH, "Rift Wrench");
+        addItem(RiftsItems.RIFT_PEARL, "Rift Pearl");
         addItem(RiftsItems.RIFT_STEEL_INGOT, "Rift Steel Ingot");
         addItem(RiftsItems.RIFT_STEEL_SWORD, "Rift Steel Sword");
         addItem(RiftsItems.RIFT_STEEL_PICKAXE, "Rift Steel Pickaxe");
@@ -67,6 +68,7 @@ public class RiftsLangProvider extends LanguageProvider {
         addEntityType(EpochopolisEntities.DISPLACER, "Displacer");
         addEntityType(EpochopolisEntities.RIFT_ELEMENTAL, "Rift Elemental");
         addEntityType(EpochopolisEntities.NATURAL_RIFT, "Rift");
+        add("message.rifts.rift_needs_armor", "The rift rejects you. You need a full set of rift steel armor");
 
         add("tooltip.rifts.stored_energy", "Stored Rift Energy: %1$s");
         add("tooltip.rifts.item_energy", "Rift Energy: %1$s / %2$s");

@@ -3,7 +3,8 @@
   "bonus": {
     "chance": 0.2,
     "item": {
-      "id": "minecraft:flint"
+      "count": 1,
+      "ingredient": "minecraft:flint"
     }
   },
   "ingredient": {
@@ -11,7 +12,8 @@
     "ingredient": "minecraft:gravel"
   },
   "output": {
-    "id": "minecraft:sand"
+    "count": 1,
+    "ingredient": "minecraft:sand"
   },
   "processing_time": 100,
   "rift_energy_per_tick": 80

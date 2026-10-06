@@ -1,7 +1,8 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "minecraft:block/orientable",
   "textures": {
-    "end": "rifts:block/basic_tick_accelerator_top",
-    "side": "rifts:block/basic_tick_accelerator_side"
+    "front": "rifts:block/basic_tick_accelerator_front",
+    "side": "rifts:block/basic_tick_accelerator_side",
+    "top": "rifts:block/basic_tick_accelerator_side"
   }
 }

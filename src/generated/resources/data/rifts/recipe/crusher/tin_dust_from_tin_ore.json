@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ores/tin"
+      }
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:dusts/tin"
+      }
+    }
+  ],
+  "type": "rifts:crusher",
+  "bonus": {
+    "chance": 0.5,
+    "item": {
+      "count": 1,
+      "ingredient": "#c:dusts/tin"
+    }
+  },
+  "ingredient": {
+    "count": 1,
+    "ingredient": "#c:ores/tin"
+  },
+  "output": {
+    "count": 2,
+    "ingredient": "#c:dusts/tin"
+  },
+  "processing_time": 100,
+  "rift_energy_per_tick": 80
+}

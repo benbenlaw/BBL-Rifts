@@ -1,4 +1,5 @@
-// 26.1.2	2026-10-03T10:19:10.8841862	Tags for minecraft:item mod id rifts
+// 26.1.2	2026-10-06T10:16:31.7298449	Tags for minecraft:item mod id rifts
+665568c0f3711742f1fb99de9e6bd42916495e2a data/c/tags/item/tools/wrench.json
 c9063c25bad0fa7dadb4a2f2fdb1bc4cf713864d data/minecraft/tags/item/axes.json
 e84ffdd029a62f963448a11ff8b4e4194d987bb9 data/minecraft/tags/item/chest_armor.json
 13cf11dd7588532190a87e84c982089a3642d586 data/minecraft/tags/item/foot_armor.json
@@ -16,4 +17,5 @@ ca954e1caa1a0290d9cbef12b0a960267b6238ce data/minecraft/tags/item/spears.json
 d4d0ca1f2132f9b38ce58880f3d360b7e2666413 data/minecraft/tags/item/wooden_stairs.json
 c651f8c0485f3f117e7bae3606cd6dcc2f71e82e data/rifts/tags/item/pylons.json
 83e39341d8bbc2edc7ccd3a2679646fca37200fc data/rifts/tags/item/repairs_rift_steel_armor.json
+79576ce49bcd75b1cd72e7bb5b8f6247aadf77dd data/rifts/tags/item/rift_protective_armor.json
 83e39341d8bbc2edc7ccd3a2679646fca37200fc data/rifts/tags/item/rift_steel_tool_materials.json

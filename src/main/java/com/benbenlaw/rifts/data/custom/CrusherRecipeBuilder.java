@@ -29,22 +29,22 @@ public class CrusherRecipeBuilder implements RecipeBuilder {
 
     protected String group;
     protected final SizedIngredient ingredient;
-    protected final ItemStackTemplate output;
+    protected final SizedIngredient output;
     protected Optional<CrusherRecipe.BonusOutput> bonus = Optional.empty();
     protected int processingTime = DEFAULT_PROCESSING_TIME;
     protected int riftEnergyPerTick = DEFAULT_ENERGY_PER_TICK;
     protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-    public CrusherRecipeBuilder(SizedIngredient ingredient, ItemStackTemplate output) {
+    public CrusherRecipeBuilder(SizedIngredient ingredient, SizedIngredient output) {
         this.ingredient = ingredient;
         this.output = output;
     }
 
-    public static CrusherRecipeBuilder crusherRecipe(SizedIngredient ingredient, ItemStackTemplate output) {
+    public static CrusherRecipeBuilder crusherRecipe(SizedIngredient ingredient, SizedIngredient output) {
         return new CrusherRecipeBuilder(ingredient, output);
     }
 
-    public CrusherRecipeBuilder bonus(ItemStackTemplate item, float chance) {
+    public CrusherRecipeBuilder bonus(SizedIngredient item, float chance) {
         this.bonus = Optional.of(new CrusherRecipe.BonusOutput(item, chance));
         return this;
     }
@@ -73,9 +73,12 @@ public class CrusherRecipeBuilder implements RecipeBuilder {
 
     @Override
     public ResourceKey<Recipe<?>> defaultId() {
+        ItemStackTemplate first = output.ingredient().items().findFirst()
+                .map(holder -> new ItemStackTemplate(holder.value(), output.count()))
+                .orElseThrow(() -> new IllegalStateException("Crusher recipes with a tag output need an explicit id"));
         return ResourceKey.create(
                 Registries.RECIPE,
-                Rifts.identifier("crusher/" + Objects.requireNonNull(output.item().getKey()).identifier().getPath())
+                Rifts.identifier("crusher/" + Objects.requireNonNull(first.item().getKey()).identifier().getPath())
         );
     }
 

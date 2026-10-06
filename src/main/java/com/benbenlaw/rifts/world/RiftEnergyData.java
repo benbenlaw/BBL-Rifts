@@ -105,6 +105,7 @@ public class RiftEnergyData extends SavedData {
     }
 
     private double rawCapacity(ServerLevel level, ChunkPos pos) {
+        if (RiftsStartupConfig.RIFT_ENERGY_DISABLED_DIMENSIONS.get().contains(level.dimension().identifier().toString())) return 0;
         return RiftsStartupConfig.CHUNK_BASE_RIFT_ENERGY.get() * (double) noiseFactor(level, pos) * biomeMultiplier(level, pos);
     }
 

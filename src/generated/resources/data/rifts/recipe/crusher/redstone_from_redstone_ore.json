@@ -3,7 +3,8 @@
   "bonus": {
     "chance": 0.5,
     "item": {
-      "id": "minecraft:redstone"
+      "count": 1,
+      "ingredient": "minecraft:redstone"
     }
   },
   "ingredient": {
@@ -12,7 +13,7 @@
   },
   "output": {
     "count": 8,
-    "id": "minecraft:redstone"
+    "ingredient": "minecraft:redstone"
   },
   "processing_time": 100,
   "rift_energy_per_tick": 80

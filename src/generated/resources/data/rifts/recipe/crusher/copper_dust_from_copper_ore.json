@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ores/copper"
+      }
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:dusts/copper"
+      }
+    }
+  ],
+  "type": "rifts:crusher",
+  "bonus": {
+    "chance": 0.5,
+    "item": {
+      "count": 1,
+      "ingredient": "#c:dusts/copper"
+    }
+  },
+  "ingredient": {
+    "count": 1,
+    "ingredient": "#c:ores/copper"
+  },
+  "output": {
+    "count": 4,
+    "ingredient": "#c:dusts/copper"
+  },
+  "processing_time": 100,
+  "rift_energy_per_tick": 80
+}

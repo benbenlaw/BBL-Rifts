@@ -3,7 +3,8 @@
   "bonus": {
     "chance": 0.5,
     "item": {
-      "id": "minecraft:lapis_lazuli"
+      "count": 1,
+      "ingredient": "minecraft:lapis_lazuli"
     }
   },
   "ingredient": {
@@ -12,7 +13,7 @@
   },
   "output": {
     "count": 10,
-    "id": "minecraft:lapis_lazuli"
+    "ingredient": "minecraft:lapis_lazuli"
   },
   "processing_time": 100,
   "rift_energy_per_tick": 80

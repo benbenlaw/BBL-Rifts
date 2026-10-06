@@ -29,7 +29,6 @@ public class EpochopolisEntities {
             ENTITY_TYPES.register("natural_rift", () -> EntityType.Builder.<NaturalRift>of(NaturalRift::new, MobCategory.MISC)
                     .sized(1.2F, 2.5F)
                     .fireImmune()
-                    .noSummon()
                     .clientTrackingRange(12)
                     .build(NATURAL_RIFT_KEY));
 

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "rifts:rift_steel_ingot",
+    "B": "rifts:rift_steel_nugget"
+  },
+  "pattern": [
+    " A ",
+    " BA",
+    "A  "
+  ],
+  "result": {
+    "id": "rifts:rift_wrench"
+  }
+}

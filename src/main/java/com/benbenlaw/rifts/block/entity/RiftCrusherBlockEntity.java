@@ -157,8 +157,11 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
             simulated[i] = ItemUtil.getStack(inventory, FIRST_OUTPUT_SLOT + i).copy();
         }
 
-        if (!simulatePlace(simulated, recipe.output().create())) return false;
-        return recipe.bonus().map(bonus -> simulatePlace(simulated, bonus.item().create())).orElse(true);
+        if (!simulatePlace(simulated, CrusherRecipe.resolve(recipe.output()))) return false;
+        return recipe.bonus().map(bonus -> {
+            ItemStack bonusStack = CrusherRecipe.resolve(bonus.item());
+            return bonusStack.isEmpty() || simulatePlace(simulated, bonusStack);
+        }).orElse(true);
     }
 
     // Outputs merge into a matching stack first, then take the first empty slot
@@ -211,10 +214,10 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
     }
 
     private void craft(ServerLevel serverLevel, CrusherRecipe recipe) {
-        ItemStack output = recipe.output().create();
+        ItemStack output = CrusherRecipe.resolve(recipe.output());
         ItemStack bonusStack = recipe.bonus()
                 .filter(bonus -> serverLevel.getRandom().nextFloat() < bonus.chance())
-                .map(bonus -> bonus.item().create())
+                .map(bonus -> CrusherRecipe.resolve(bonus.item()))
                 .orElse(ItemStack.EMPTY);
 
         inventory.runInternal(() -> {

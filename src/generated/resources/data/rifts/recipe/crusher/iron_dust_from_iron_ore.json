@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ores/iron"
+      }
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:dusts/iron"
+      }
+    }
+  ],
+  "type": "rifts:crusher",
+  "bonus": {
+    "chance": 0.5,
+    "item": {
+      "count": 1,
+      "ingredient": "#c:dusts/iron"
+    }
+  },
+  "ingredient": {
+    "count": 1,
+    "ingredient": "#c:ores/iron"
+  },
+  "output": {
+    "count": 2,
+    "ingredient": "#c:dusts/iron"
+  },
+  "processing_time": 100,
+  "rift_energy_per_tick": 80
+}

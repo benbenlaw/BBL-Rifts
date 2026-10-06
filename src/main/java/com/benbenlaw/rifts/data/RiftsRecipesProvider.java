@@ -1,5 +1,6 @@
 package com.benbenlaw.rifts.data;
 
+import com.benbenlaw.core.util.CoreTags;
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import com.benbenlaw.rifts.data.custom.CrusherRecipeBuilder;
@@ -10,8 +11,14 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
+import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.common.conditions.NotCondition;
+import net.neoforged.neoforge.common.conditions.TagEmptyCondition;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
@@ -41,15 +48,50 @@ public class RiftsRecipesProvider extends RecipeProvider {
         }
     }
 
-    private void ore(net.minecraft.tags.TagKey<net.minecraft.world.item.Item> ore, net.minecraft.world.item.Item result, int count, float bonusChance, String name) {
-        CrusherRecipeBuilder.crusherRecipe(new SizedIngredient(tag(ore), 1), new ItemStackTemplate(result, count))
-                .bonus(new ItemStackTemplate(result), bonusChance)
+    private void ore(TagKey<Item> ore, Item result, int count, float bonusChance, String name) {
+        ore(ore, SizedIngredient.of(result, count), SizedIngredient.of(result, 1), bonusChance, name);
+    }
+
+    private void ore(TagKey<Item> ore, TagKey<Item> result, int count, float bonusChance, String name) {
+        ore(ore, new SizedIngredient(tag(result), count), new SizedIngredient(tag(result), 1), bonusChance, name,
+                new NotCondition(new TagEmptyCondition<>(ore)), new NotCondition(new TagEmptyCondition<>(result)));
+    }
+
+    private void ore(TagKey<Item> ore, SizedIngredient result, SizedIngredient bonus, float bonusChance, String name, ICondition... conditions) {
+        CrusherRecipeBuilder.crusherRecipe(new SizedIngredient(tag(ore), 1), result)
+                .bonus(bonus, bonusChance)
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
-                .save(output, name);
+                .save(output.withConditions(conditions), name);
     }
 
     @Override
     protected void buildRecipes() {
+
+        //Scanner
+        shaped(RecipeCategory.MISC, RiftsItems.RIFT_SCANNER)
+                .pattern("AAA")
+                .pattern("ABA")
+                .pattern("AAA")
+                .define('A', RiftsItems.RIFT_STEEL_NUGGET)
+                .define('B', RiftsItems.RIFT_PEARL)
+                .unlockedBy("has_rift_pearl", has(RiftsItems.RIFT_PEARL))
+                .save(output);
+
+        //Rift Pearl
+        InfuserRecipeBuilder.infuserRecipe(new ItemStackTemplate(RiftsItems.RIFT_PEARL.get()), 25, SizedIngredient.of(Items.ENDER_PEARL, 1))
+                .unlockedBy("has_ender_pearl", has(Items.ENDER_PEARL))
+                .save(output, "infuser/rift_pearl_from_ender_pearl");
+
+
+        //Wrench
+        shaped(RecipeCategory.MISC, RiftsItems.RIFT_WRENCH)
+                .pattern(" A ")
+                .pattern(" BA")
+                .pattern("A  ")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('B', RiftsItems.RIFT_STEEL_NUGGET)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
 
         //Displacer
         shaped(RecipeCategory.MISC, RiftsItems.DISPLACER)
@@ -220,22 +262,24 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .save(output);
 
         //Crushing
-        ore(Tags.Items.ORES_IRON, Items.RAW_IRON, 2, 0.5F, "raw_iron_from_iron_ore");
-        ore(Tags.Items.ORES_GOLD, Items.RAW_GOLD, 2, 0.25F, "raw_gold_from_gold_ore");
-        ore(Tags.Items.ORES_COPPER, Items.RAW_COPPER, 6, 0.5F, "raw_copper_from_copper_ore");
-        ore(Tags.Items.ORES_COAL, Items.COAL, 3, 0.25F, "coal_from_coal_ore");
+        ore(Tags.Items.ORES_IRON, CoreTags.Items.commonTag("dusts/iron"), 2, 0.5F, "iron_dust_from_iron_ore");
+        ore(Tags.Items.ORES_GOLD, CoreTags.Items.commonTag("dusts/gold"), 2, 0.25F, "gold_dust_from_gold_ore");
+        ore(Tags.Items.ORES_COPPER, CoreTags.Items.commonTag("dusts/copper"), 4, 0.5F, "copper_dust_from_copper_ore");
+        ore(Tags.Items.ORES_COAL, Items.COAL, 2, 0.25F, "coal_from_coal_ore");
         ore(Tags.Items.ORES_REDSTONE, Items.REDSTONE, 8, 0.5F, "redstone_from_redstone_ore");
         ore(Tags.Items.ORES_LAPIS, Items.LAPIS_LAZULI, 10, 0.5F, "lapis_from_lapis_ore");
 
-        CrusherRecipeBuilder.crusherRecipe(SizedIngredient.of(Items.STONE, 1), new ItemStackTemplate(Items.COBBLESTONE))
+        ore(CoreTags.Items.commonTag("ores/tin"), CoreTags.Items.commonTag("dusts/tin"), 2, 0.5F, "tin_dust_from_tin_ore");
+
+        CrusherRecipeBuilder.crusherRecipe(SizedIngredient.of(Items.STONE, 1), SizedIngredient.of(Items.COBBLESTONE, 1))
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
                 .save(output, "cobblestone_from_stone");
-        CrusherRecipeBuilder.crusherRecipe(SizedIngredient.of(Items.COBBLESTONE, 1), new ItemStackTemplate(Items.GRAVEL))
-                .bonus(new ItemStackTemplate(Items.FLINT), 0.1F)
+        CrusherRecipeBuilder.crusherRecipe(SizedIngredient.of(Items.COBBLESTONE, 1), SizedIngredient.of(Items.GRAVEL, 1))
+                .bonus(SizedIngredient.of(Items.FLINT, 1), 0.1F)
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
                 .save(output, "gravel_from_cobblestone");
-        CrusherRecipeBuilder.crusherRecipe(SizedIngredient.of(Items.GRAVEL, 1), new ItemStackTemplate(Items.SAND))
-                .bonus(new ItemStackTemplate(Items.FLINT), 0.2F)
+        CrusherRecipeBuilder.crusherRecipe(SizedIngredient.of(Items.GRAVEL, 1), SizedIngredient.of(Items.SAND, 1))
+                .bonus(SizedIngredient.of(Items.FLINT, 1), 0.2F)
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
                 .save(output, "sand_from_gravel");
 
@@ -303,20 +347,27 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .save(output);
 
         //Rift Steel
-        this.nineBlockStorageRecipesRecipesWithCustomUnpacking(RecipeCategory.MISC, RiftsItems.RIFT_STEEL_INGOT, RecipeCategory.MISC, RiftsBlocks.RIFT_STEEL_BLOCK, "rift_steel_ingot_from_rift_steel_block_block", "misc");
-        this.nineBlockStorageRecipesRecipesWithCustomUnpacking(RecipeCategory.MISC, RiftsItems.RIFT_STEEL_NUGGET, RecipeCategory.MISC, RiftsItems.RIFT_STEEL_INGOT, "rift_steel_nugget_from_rift_steel_block_block", "misc");
+        this.nineBlockStorageRecipes(RecipeCategory.MISC, RiftsItems.RIFT_STEEL_INGOT, RecipeCategory.MISC, RiftsBlocks.RIFT_STEEL_BLOCK,
+                Rifts.MOD_ID + ":rift_steel_block", null, Rifts.MOD_ID + ":rift_steel_ingot_from_rift_steel_block", "misc");
+        this.nineBlockStorageRecipes(RecipeCategory.MISC, RiftsItems.RIFT_STEEL_NUGGET, RecipeCategory.MISC, RiftsItems.RIFT_STEEL_INGOT,
+                Rifts.MOD_ID + ":rift_steel_ingot", null, Rifts.MOD_ID + ":rift_steel_nugget_from_rift_steel_ingot", "misc");
 
         InfuserRecipeBuilder.infuserRecipe(new ItemStackTemplate(RiftsItems.RIFT_STEEL_NUGGET.get()), 10, SizedIngredient.of(Items.IRON_NUGGET, 1))
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_NUGGET))
-                .save(output, "rift_steel_nugget_from_rift_steel_block_block");
+                .save(output, "infuser/rift_steel_nugger");
 
         InfuserRecipeBuilder.infuserRecipe(new ItemStackTemplate(RiftsItems.RIFT_STEEL_INGOT.get()), 90, SizedIngredient.of(Items.IRON_INGOT, 1))
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
-                .save(output, "rift_steel_ingot_from_rift_steel_block_block");
+                .save(output, "infuser/rift_steel_ingot");
 
         InfuserRecipeBuilder.infuserRecipe(new ItemStackTemplate(RiftsBlocks.RIFT_STEEL_BLOCK.get().asItem()), 810, SizedIngredient.of(Items.IRON_BLOCK, 1))
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
-                .save(output,  "rift_steel_block_from_rift_steel_block_block");
+                .save(output,  "infuser/rift_steel_block");
+
+        //Rift Pearl
+        InfuserRecipeBuilder.infuserRecipe(new ItemStackTemplate(RiftsItems.RIFT_PEARL.get().asItem()), 1000, SizedIngredient.of(Items.ENDER_PEARL, 1))
+                .unlockedBy("has_rift_steel", has(Items.ENDER_PEARL))
+                .save(output,  "infuser/rift_pearl");
 
         //Rift
         shapeless(RecipeCategory.MISC, RiftsBlocks.RIFT_PLANKS, 4).requires(RiftsBlocks.RIFT_LOG).unlockedBy("has_rift_log", has(RiftsBlocks.RIFT_LOG)).save(output);

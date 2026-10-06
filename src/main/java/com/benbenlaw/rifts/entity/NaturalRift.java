@@ -3,7 +3,10 @@ package com.benbenlaw.rifts.entity;
 import com.benbenlaw.rifts.data.worldgen.RiftsWorldGen;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import com.benbenlaw.rifts.particle.RiftParticleEffects;
+import com.benbenlaw.rifts.util.EpochopolisTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -80,6 +83,11 @@ public class NaturalRift extends Entity {
                 continue;
             }
             BLOCKED_UNTIL.remove(player.getUUID());
+            if (!serverLevel.dimension().equals(RiftsWorldGen.RIFT_LEVEL) && !wearsFullRiftArmor(player)) {
+                player.sendOverlayMessage(Component.translatable("message.rifts.rift_needs_armor"));
+                BLOCKED_UNTIL.put(player.getUUID(), now + CLEAR_DELAY);
+                continue;
+            }
             travel(serverLevel, player);
             BLOCKED_UNTIL.put(player.getUUID(), now + TRAVEL_COOLDOWN);
             break;
@@ -88,6 +96,13 @@ public class NaturalRift extends Entity {
         if (tickCount % 4 == 0) {
             RiftParticleEffects.absorb(serverLevel, getX(), getY() + 1.2, getZ(), 2, 0.6, 1.4, 0.8);
         }
+    }
+
+    public static boolean wearsFullRiftArmor(ServerPlayer player) {
+        for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+            if (!player.getItemBySlot(slot).is(EpochopolisTags.Items.RIFT_PROTECTIVE_ARMOR)) return false;
+        }
+        return true;
     }
 
     public static void blockTravel(ServerPlayer player, net.minecraft.server.MinecraftServer server) {

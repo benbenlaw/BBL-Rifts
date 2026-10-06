@@ -5,7 +5,8 @@
     "ingredient": "minecraft:stone"
   },
   "output": {
-    "id": "minecraft:cobblestone"
+    "count": 1,
+    "ingredient": "minecraft:cobblestone"
   },
   "processing_time": 100,
   "rift_energy_per_tick": 80

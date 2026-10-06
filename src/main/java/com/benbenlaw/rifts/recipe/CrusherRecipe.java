@@ -21,27 +21,27 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.Optional;
 
-public record CrusherRecipe(SizedIngredient ingredient, ItemStackTemplate output, Optional<BonusOutput> bonus,
+public record CrusherRecipe(SizedIngredient ingredient, SizedIngredient output, Optional<BonusOutput> bonus,
                             int processingTime, int riftEnergyPerTick) implements Recipe<SingleRecipeInput> {
 
-    public record BonusOutput(ItemStackTemplate item, float chance) {
+    public record BonusOutput(SizedIngredient item, float chance) {
         public static final Codec<BonusOutput> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ItemStackTemplate.CODEC.fieldOf("item").forGetter(BonusOutput::item),
+                SizedIngredient.NESTED_CODEC.fieldOf("item").forGetter(BonusOutput::item),
                 Codec.floatRange(0F, 1F).fieldOf("chance").forGetter(BonusOutput::chance)
         ).apply(instance, BonusOutput::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, BonusOutput> STREAM_CODEC = StreamCodec.of(
                 (buffer, bonus) -> {
-                    ItemStackTemplate.STREAM_CODEC.encode(buffer, bonus.item());
+                    SizedIngredient.STREAM_CODEC.encode(buffer, bonus.item());
                     buffer.writeFloat(bonus.chance());
                 },
-                buffer -> new BonusOutput(ItemStackTemplate.STREAM_CODEC.decode(buffer), buffer.readFloat())
+                buffer -> new BonusOutput(SizedIngredient.STREAM_CODEC.decode(buffer), buffer.readFloat())
         );
     }
 
     public static final MapCodec<CrusherRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             SizedIngredient.NESTED_CODEC.fieldOf("ingredient").forGetter(CrusherRecipe::ingredient),
-            ItemStackTemplate.CODEC.fieldOf("output").forGetter(CrusherRecipe::output),
+            SizedIngredient.NESTED_CODEC.fieldOf("output").forGetter(CrusherRecipe::output),
             BonusOutput.CODEC.optionalFieldOf("bonus").forGetter(CrusherRecipe::bonus),
             Codec.INT.fieldOf("processing_time").forGetter(CrusherRecipe::processingTime),
             Codec.INT.fieldOf("rift_energy_per_tick").forGetter(CrusherRecipe::riftEnergyPerTick)
@@ -56,7 +56,7 @@ public record CrusherRecipe(SizedIngredient ingredient, ItemStackTemplate output
 
     private static CrusherRecipe read(RegistryFriendlyByteBuf buffer) {
         SizedIngredient ingredient = SizedIngredient.STREAM_CODEC.decode(buffer);
-        ItemStackTemplate output = ItemStackTemplate.STREAM_CODEC.decode(buffer);
+        SizedIngredient output = SizedIngredient.STREAM_CODEC.decode(buffer);
         Optional<BonusOutput> bonus = buffer.readBoolean() ? Optional.of(BonusOutput.STREAM_CODEC.decode(buffer)) : Optional.empty();
         int processingTime = buffer.readInt();
         int riftEnergyPerTick = buffer.readInt();
@@ -65,11 +65,18 @@ public record CrusherRecipe(SizedIngredient ingredient, ItemStackTemplate output
 
     private static void write(RegistryFriendlyByteBuf buffer, CrusherRecipe recipe) {
         SizedIngredient.STREAM_CODEC.encode(buffer, recipe.ingredient);
-        ItemStackTemplate.STREAM_CODEC.encode(buffer, recipe.output);
+        SizedIngredient.STREAM_CODEC.encode(buffer, recipe.output);
         buffer.writeBoolean(recipe.bonus.isPresent());
         recipe.bonus.ifPresent(bonus -> BonusOutput.STREAM_CODEC.encode(buffer, bonus));
         buffer.writeInt(recipe.processingTime);
         buffer.writeInt(recipe.riftEnergyPerTick);
+    }
+
+    // Tag outputs resolve to the first item in the tag; empty when the tag has no items (e.g. the other mod is missing)
+    public static ItemStack resolve(SizedIngredient sized) {
+        return sized.ingredient().items().findFirst()
+                .map(holder -> new ItemStackTemplate(holder.value(), sized.count()).create())
+                .orElse(ItemStack.EMPTY);
     }
 
     @Override
@@ -79,7 +86,7 @@ public record CrusherRecipe(SizedIngredient ingredient, ItemStackTemplate output
 
     @Override
     public @NonNull ItemStack assemble(SingleRecipeInput input) {
-        return output.create();
+        return resolve(output);
     }
 
     @Override

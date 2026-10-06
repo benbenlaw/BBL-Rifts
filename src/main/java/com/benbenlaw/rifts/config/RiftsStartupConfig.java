@@ -2,13 +2,12 @@ package com.benbenlaw.rifts.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
+import java.util.List;
+
 public class RiftsStartupConfig {
 
     public static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     public static final ModConfigSpec SPEC;
-
-
-
 
     public static final ModConfigSpec.ConfigValue<Integer> PYLON_BASE_CAPACITY;
     public static final ModConfigSpec.ConfigValue<Integer> PYLON_CAPACITY_MULTIPLIER;
@@ -39,17 +38,17 @@ public class RiftsStartupConfig {
     public static final ModConfigSpec.ConfigValue<Integer> ACCELERATOR_MAX_EXTRA_TICKS;
     public static final ModConfigSpec.ConfigValue<Double> ACCELERATOR_RANDOM_TICKS_PER_EXTRA_TICK;
     public static final ModConfigSpec.ConfigValue<Double> ELEMENTAL_DEPLETION_THRESHOLD;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> RIFT_ENERGY_DISABLED_DIMENSIONS;
     public static final ModConfigSpec.ConfigValue<Boolean> NATURAL_RIFTS_ENABLED;
     public static final ModConfigSpec.ConfigValue<Integer> NATURAL_RIFT_CHECK_INTERVAL_TICKS;
     public static final ModConfigSpec.ConfigValue<Double> NATURAL_RIFT_SPAWN_CHANCE;
     public static final ModConfigSpec.ConfigValue<Integer> NATURAL_RIFT_LIFETIME_TICKS;
     public static final ModConfigSpec.ConfigValue<Integer> NATURAL_RIFT_MAX_NEARBY;
-    public static final ModConfigSpec.ConfigValue<java.util.List<? extends String>> NATURAL_RIFT_DIMENSIONS;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> NATURAL_RIFT_DIMENSIONS;
 
     static {
 
         BUILDER.comment("Rifts Startup").push("Pylons");
-
 
         PYLON_BASE_CAPACITY = BUILDER.comment("Rift energy a simple pylon can store")
                 .defineInRange("pylon_base_capacity", 50000, 1, Integer.MAX_VALUE);
@@ -125,6 +124,8 @@ public class RiftsStartupConfig {
                 .defineInRange("chunk_neighbour_blend", 0.5, 0.0, 1.0);
         CHUNK_DIFFUSION_RATE = BUILDER.comment("Fraction of the fullness difference between neighbouring chunks that flows every 5 seconds (0 = no diffusion)")
                 .defineInRange("chunk_diffusion_rate", 0.005, 0.0, 0.5);
+        RIFT_ENERGY_DISABLED_DIMENSIONS = BUILDER.comment("Dimensions with no ambient rift energy at all, whatever their biomes say")
+                .defineListAllowEmpty("rift_energy_disabled_dimensions", List.of("rifts:rift"), () -> "rifts:rift", o -> o instanceof String);
         ELEMENTAL_ON_DEPLETION = BUILDER.comment("Summon a Rift Elemental when a pylon drains a chunk to 0%")
                 .define("elemental_on_depletion", true);
         ELEMENTAL_DEPLETION_THRESHOLD = BUILDER.comment("A Rift Elemental is summoned when a draw leaves a chunk below this fraction of its capacity (0.05 = 5%). It can summon again after the chunk refills to twice this.")
@@ -137,7 +138,7 @@ public class RiftsStartupConfig {
         NATURAL_RIFTS_ENABLED = BUILDER.comment("Let rifts to the rift dimension open on their own in the overworld")
                 .define("natural_rifts_enabled", true);
         NATURAL_RIFT_DIMENSIONS = BUILDER.comment("Dimensions where natural rifts can open. Dimensions with a ceiling (like the nether) are skipped")
-                .defineListAllowEmpty("natural_rift_dimensions", java.util.List.of("minecraft:overworld"), () -> "minecraft:overworld", o -> o instanceof String);
+                .defineListAllowEmpty("natural_rift_dimensions", List.of("minecraft:overworld"), () -> "minecraft:overworld", o -> o instanceof String);
         NATURAL_RIFT_CHECK_INTERVAL_TICKS = BUILDER.comment("Ticks between spawn attempts near each player")
                 .defineInRange("natural_rift_check_interval_ticks", 1200, 20, Integer.MAX_VALUE);
         NATURAL_RIFT_SPAWN_CHANCE = BUILDER.comment("Chance each attempt opens a rift")

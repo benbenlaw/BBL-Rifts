@@ -1,7 +1,27 @@
 {
   "variants": {
-    "": {
+    "facing=down": {
+      "model": "rifts:block/elite_tick_accelerator",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "rifts:block/elite_tick_accelerator",
+      "y": 90
+    },
+    "facing=north": {
       "model": "rifts:block/elite_tick_accelerator"
+    },
+    "facing=south": {
+      "model": "rifts:block/elite_tick_accelerator",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "rifts:block/elite_tick_accelerator",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "rifts:block/elite_tick_accelerator",
+      "y": 270
     }
   }
 }

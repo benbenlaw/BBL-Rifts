@@ -31,7 +31,7 @@ public class NaturalRiftSpawner {
         if (level.getServer().getLevel(RiftsWorldGen.RIFT_LEVEL) == null) return;
 
         for (ServerPlayer player : level.players()) {
-            if (player.isSpectator() || level.getRandom().nextDouble() >= RiftsStartupConfig.NATURAL_RIFT_SPAWN_CHANCE.get()) continue;
+            if (player.isSpectator() || !NaturalRift.wearsFullRiftArmor(player) || level.getRandom().nextDouble() >= RiftsStartupConfig.NATURAL_RIFT_SPAWN_CHANCE.get()) continue;
             trySpawnNear(level, player);
         }
     }

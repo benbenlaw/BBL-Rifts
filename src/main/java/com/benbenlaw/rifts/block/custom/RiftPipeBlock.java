@@ -1,7 +1,16 @@
 package com.benbenlaw.rifts.block.custom;
 
 import com.benbenlaw.rifts.block.entity.RiftPipeBlockEntity;
+import com.benbenlaw.rifts.block.pipe.PipeMode;
 import com.benbenlaw.rifts.block.pipe.RiftPipeNetworks;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.Tags;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -77,6 +86,45 @@ public class RiftPipeBlock extends BaseEntityBlock {
             }
         }
         return shape;
+    }
+
+    @Override
+    protected @NotNull InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+        if (!stack.is(Tags.Items.TOOLS_WRENCH)) return InteractionResult.TRY_WITH_EMPTY_HAND;
+        if (level.isClientSide()) return InteractionResult.SUCCESS;
+
+        if (level.getBlockEntity(pos) instanceof RiftPipeBlockEntity pipe) {
+            Direction side = sideFromHit(hitResult.getLocation(), pos, hitResult.getDirection());
+            PipeMode mode = pipe.getMode(side);
+
+            if (mode == null) {
+                player.sendOverlayMessage(Component.translatable("message.rifts.pipe_no_connection"));
+                return InteractionResult.SUCCESS;
+            }
+
+            PipeMode next = mode.next();
+            pipe.setMode(side, next);
+            RiftPipeNetworks.markDirty(level);
+            player.sendOverlayMessage(Component.translatable("message.rifts.pipe_side",
+                    Component.translatable("direction.rifts." + side.getName()),
+                    Component.translatable(next.getTranslationKey())));
+        }
+        return InteractionResult.SUCCESS;
+    }
+
+    private static Direction sideFromHit(Vec3 hit, BlockPos pos, Direction clickedFace) {
+        double dx = hit.x - (pos.getX() + 0.5);
+        double dy = hit.y - (pos.getY() + 0.5);
+        double dz = hit.z - (pos.getZ() + 0.5);
+        double ax = Math.abs(dx);
+        double ay = Math.abs(dy);
+        double az = Math.abs(dz);
+
+        double max = Math.max(ax, Math.max(ay, az));
+        if (max < 0.25) return clickedFace;
+        if (max == ax) return dx > 0 ? Direction.EAST : Direction.WEST;
+        if (max == ay) return dy > 0 ? Direction.UP : Direction.DOWN;
+        return dz > 0 ? Direction.SOUTH : Direction.NORTH;
     }
 
     @Override

@@ -29,6 +29,7 @@ public class EpochopolisTags {
 
         public static final TagKey<Item> PYLONS = ItemTags.create(Rifts.identifier("pylons"));
         public static final TagKey<Item> RIFT_STEEL_TOOL_MATERIALS = ItemTags.create(Rifts.identifier("rift_steel_tool_materials"));
+        public static final TagKey<Item> RIFT_PROTECTIVE_ARMOR = ItemTags.create(Rifts.identifier("rift_protective_armor"));
         public static final TagKey<Item> REPAIRS_RIFT_STEEL_ARMOR = ItemTags.create(Rifts.identifier("repairs_rift_steel_armor"));
     }
 

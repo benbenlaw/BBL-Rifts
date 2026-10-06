@@ -1,26 +1,31 @@
 ---
 navigation:
     title: Getting Started
-    position: 0
+    position: 1
     icon: 'rifts:rift_steel_ingot'
 
 ---
 
 # Getting Started
 
-## Rift Steel
-To start getting into the world of Rifts and Rift Energy, first you need to get Rift Steel. Your first Rift Steel comes by killing a Rift Elemental, this can be summoned by throwing a Displacer at an Iron Golem.
+## First Steps
+To get started, you first need to get some Rift Steel Ingots. Initially these can be obtained from killing Rift Elementals which spawn when you throw a Displacer at an Iron Golem.
 
-## Displayers
-These are items that can be thrown to displace the terrain and entities around you into something else.
+## Displacer
+A Displacer is an item that can be thrown to displace some blocks and entities in the area it lands in. For example, Logs become Rift Logs and Iron Golems become Rift Elementals.
+<RecipeFor id="rifts:displacer" />
 
-## Rift Energy
-Rift Energy is an invisible energy all around the world, it can be collected by Rift Pylons. Using a Rift Scanner you can see how much Rift Energy is in the chunk you are in. If this energy gets too low you may finds that Rift Elementals will begin to spawn in the area.
+## Rift Elemental
+A strong mob that spawns when you throw a Displacer at an Iron Golem. It is very strong and can be hard to kill, but it drops Rift Steel Ingots when killed.
+<GameScene zoom={4} interactive={true}>
+  <Entity id="rifts:rift_elemental" />
+</GameScene>
 
-## Pylons
-Rift Pylons are used to collect Rift Energy from the world, they come in four different types. Basic, Advanced, Elite and Ultimate with each one storing more and collecting more Rift Energy than the last. 
-
-## Storage
-Rift Energy can be stored inside a Rift Storage block and transported using Rift Pipes. Using a Wrench on a Rift Pipe you can connect / disconnect the pipe from a Rift Energy accepting block. You can also set the Rift Pipes to Extract or Insert 
-
-![Logo](assets/rifts.png)## Getting Started
+## Rift Steel Armor
+Rift Steel Armor will protect you when you enter the Rift Dimension. It does not need to be powered to protect you inside the Rift Dimension but will not offer any actual protection until the armor is charged.
+<Row>
+    <RecipeFor id="rifts:rift_steel_helmet" />
+    <RecipeFor id="rifts:rift_steel_chestplate" />
+    <RecipeFor id="rifts:rift_steel_leggings" />
+    <RecipeFor id="rifts:rift_steel_boots" />
+</Row>

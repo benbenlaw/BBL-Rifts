@@ -7,6 +7,7 @@ import com.benbenlaw.rifts.item.RiftsItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.ConditionBuilder;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.model.ModelTemplate;
@@ -21,6 +22,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static net.minecraft.client.data.models.BlockModelGenerators.*;
@@ -28,6 +31,7 @@ import static net.minecraft.client.data.models.BlockModelGenerators.*;
 public class RiftsModelProvider extends net.minecraft.client.data.models.ModelProvider {
 
     private static final ModelTemplate PIPE_CORE = pipeTemplate("template_rift_pipe_core", "_core");
+    private static final ModelTemplate PIPE_CORE_T = pipeTemplate("template_rift_pipe_core_t", "_core_t");
     private static final ModelTemplate PIPE_ARM = pipeTemplate("template_rift_pipe_arm", "_arm");
     private static final ModelTemplate PIPE_INVENTORY = pipeTemplate("template_rift_pipe_inventory", "_inventory");
 
@@ -67,16 +71,17 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
         pylon(blockModels, RiftsBlocks.ELITE_RIFT_PYLON.get());
         pylon(blockModels, RiftsBlocks.ULTIMATE_RIFT_PYLON.get());
 
-        pylon(blockModels, RiftsBlocks.BASIC_TICK_ACCELERATOR.get());
-        pylon(blockModels, RiftsBlocks.ADVANCED_TICK_ACCELERATOR.get());
-        pylon(blockModels, RiftsBlocks.ELITE_TICK_ACCELERATOR.get());
-        pylon(blockModels, RiftsBlocks.ULTIMATE_TICK_ACCELERATOR.get());
+        accelerator(blockModels, RiftsBlocks.BASIC_TICK_ACCELERATOR.get());
+        accelerator(blockModels, RiftsBlocks.ADVANCED_TICK_ACCELERATOR.get());
+        accelerator(blockModels, RiftsBlocks.ELITE_TICK_ACCELERATOR.get());
+        accelerator(blockModels, RiftsBlocks.ULTIMATE_TICK_ACCELERATOR.get());
 
         pipe(blockModels, RiftsBlocks.RIFT_PIPE.get());
 
         itemModels.generateFlatItem(RiftsItems.DISPLACER.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_SCANNER.get(), ModelTemplates.FLAT_ITEM);
-        itemModels.generateFlatItem(RiftsItems.RIFT_WRENCH.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(RiftsItems.RIFT_WRENCH.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateFlatItem(RiftsItems.RIFT_PEARL.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_INGOT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_NUGGET.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -109,6 +114,14 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
                 .with(ROTATION_FACING));
     }
 
+    private static void accelerator(BlockModelGenerators blockModels, Block block) {
+        Material side = TextureMapping.getBlockTexture(block, "_side");
+        MultiVariant model = plainVariant(TexturedModel.ORIENTABLE_ONLY_TOP.get(block)
+                .updateTextures(textures -> textures.put(TextureSlot.TOP, side))
+                .create(block, blockModels.modelOutput));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, model).with(ROTATION_FACING));
+    }
+
     private static void pylon(BlockModelGenerators blockModels, Block block) {
         blockModels.createTrivialBlock(block, TexturedModel.COLUMN);
     }
@@ -116,18 +129,37 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
     private static void pipe(BlockModelGenerators blockModels, Block block) {
         TextureMapping texture = TextureMapping.defaultTexture(block);
         MultiVariant core = plainVariant(PIPE_CORE.create(block, texture, blockModels.modelOutput));
+        MultiVariant coreT = plainVariant(PIPE_CORE_T.create(block, TextureMapping.defaultTexture(TextureMapping.getBlockTexture(block, "_t")), blockModels.modelOutput));
         MultiVariant arm = plainVariant(PIPE_ARM.create(block, texture, blockModels.modelOutput));
         Identifier inventory = PIPE_INVENTORY.create(block, texture, blockModels.modelOutput);
 
+        // The larger junction core is added everywhere except on a plain straight run
+        Direction[] directions = {Direction.UP, Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
+        List<ConditionBuilder> junctions = new ArrayList<>();
+        for (int mask = 0; mask < 64; mask++) {
+            if (isStraightRun(mask)) continue;
+            ConditionBuilder when = condition();
+            for (int i = 0; i < directions.length; i++) {
+                when = when.term(RiftPipeBlock.PROPERTY_BY_DIRECTION.get(directions[i]), (mask & (1 << i)) != 0);
+            }
+            junctions.add(when);
+        }
+
         blockModels.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
-                .with(core)
                 .with(condition(RiftPipeBlock.PROPERTY_BY_DIRECTION.get(Direction.NORTH), true), arm)
                 .with(condition(RiftPipeBlock.PROPERTY_BY_DIRECTION.get(Direction.EAST), true), arm.with(Y_ROT_90))
                 .with(condition(RiftPipeBlock.PROPERTY_BY_DIRECTION.get(Direction.SOUTH), true), arm.with(Y_ROT_180))
                 .with(condition(RiftPipeBlock.PROPERTY_BY_DIRECTION.get(Direction.WEST), true), arm.with(Y_ROT_270))
                 .with(condition(RiftPipeBlock.PROPERTY_BY_DIRECTION.get(Direction.UP), true), arm.with(X_ROT_270))
-                .with(condition(RiftPipeBlock.PROPERTY_BY_DIRECTION.get(Direction.DOWN), true), arm.with(X_ROT_90)));
+                .with(condition(RiftPipeBlock.PROPERTY_BY_DIRECTION.get(Direction.DOWN), true), arm.with(X_ROT_90))
+                .with(core)
+                .with(or(junctions.toArray(ConditionBuilder[]::new)), coreT));
 
         blockModels.registerSimpleItemModel(block, inventory);
+    }
+
+    // Bits are up, down, north, south, west, east; a straight run is exactly one opposite pair
+    private static boolean isStraightRun(int mask) {
+        return mask == 0b000011 || mask == 0b001100 || mask == 0b110000;
     }
 }

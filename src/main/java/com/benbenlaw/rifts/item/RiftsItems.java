@@ -21,6 +21,7 @@ public class RiftsItems {
 
     public static final DeferredItem<Item> RIFT_STEEL_INGOT = ITEMS.registerItem("rift_steel_ingot", Item::new);
     public static final DeferredItem<Item> RIFT_STEEL_NUGGET = ITEMS.registerItem("rift_steel_nugget", Item::new);
+    public static final DeferredItem<Item> RIFT_PEARL = ITEMS.registerItem("rift_pearl", Item::new);
 
     public static final DeferredItem<Item> RIFT_ELEMENTAL_SPAWN_EGG = ITEMS.registerItem("rift_elemental_spawn_egg",
             properties -> new SpawnEggItem(properties.spawnEgg(EpochopolisEntities.RIFT_ELEMENTAL.get())));
@@ -56,7 +57,7 @@ public class RiftsItems {
             properties -> new RiftArmorItem(properties.humanoidArmor(RiftsMaterials.RIFT_STEEL_ARMOR, ArmorType.BOOTS)));
 
     public static final DeferredItem<Item> RIFT_WRENCH = ITEMS.registerItem("rift_wrench",
-            properties -> new RiftWrenchItem(properties.stacksTo(1)));
+            properties -> new Item(properties.stacksTo(1)));
 
     public static final DeferredItem<Item> RIFT_SCANNER = ITEMS.registerItem("rift_scanner",
             properties -> new RiftScannerItem(properties.stacksTo(1)));

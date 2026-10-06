@@ -3,7 +3,8 @@
   "bonus": {
     "chance": 0.25,
     "item": {
-      "id": "minecraft:coal"
+      "count": 1,
+      "ingredient": "minecraft:coal"
     }
   },
   "ingredient": {
@@ -11,8 +12,8 @@
     "ingredient": "#c:ores/coal"
   },
   "output": {
-    "count": 3,
-    "id": "minecraft:coal"
+    "count": 2,
+    "ingredient": "minecraft:coal"
   },
   "processing_time": 100,
   "rift_energy_per_tick": 80
