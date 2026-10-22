@@ -27,6 +27,12 @@ public class RiftsRecipeTypes {
     public static final Supplier<RecipeType<CrusherRecipe>> CRUSHER_TYPE =
             TYPES.register("crusher", () -> CrusherRecipe.TYPE);
 
+    //Quarry
+    public static final Supplier<RecipeSerializer<QuarryRecipe>> QUARRY_SERIALIZER =
+            SERIALIZER.register("quarry", () -> QuarryRecipe.SERIALIZER);
+    public static final Supplier<RecipeType<QuarryRecipe>> QUARRY_TYPE =
+            TYPES.register("quarry", () -> QuarryRecipe.TYPE);
+
     //Infuser
     public static final Supplier<RecipeSerializer<InfuserRecipe>> INFUSER_SERIALIZER =
             SERIALIZER.register("infuser", () -> InfuserRecipe.SERIALIZER);

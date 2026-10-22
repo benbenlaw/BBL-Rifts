@@ -56,6 +56,18 @@ public class RiftsItems {
     public static final DeferredItem<Item> RIFT_STEEL_BOOTS = ITEMS.registerItem("rift_steel_boots",
             properties -> new RiftArmorItem(properties.humanoidArmor(RiftsMaterials.RIFT_STEEL_ARMOR, ArmorType.BOOTS)));
 
+    public static final DeferredItem<Item> BASIC_RIFT_FOCUS = ITEMS.registerItem("basic_rift_focus",
+            properties -> new Item(properties.stacksTo(1)));
+
+    public static final DeferredItem<Item> ADVANCED_RIFT_FOCUS = ITEMS.registerItem("advanced_rift_focus",
+            properties -> new Item(properties.stacksTo(1)));
+
+    public static final DeferredItem<Item> ELITE_RIFT_FOCUS = ITEMS.registerItem("elite_rift_focus",
+            properties -> new Item(properties.stacksTo(1)));
+
+    public static final DeferredItem<Item> ULTIMATE_RIFT_FOCUS = ITEMS.registerItem("ultimate_rift_focus",
+            properties -> new Item(properties.stacksTo(1)));
+
     public static final DeferredItem<Item> RIFT_WRENCH = ITEMS.registerItem("rift_wrench",
             properties -> new Item(properties.stacksTo(1)));
 

@@ -49,6 +49,7 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
         machine(blockModels, RiftsBlocks.RIFT_INFUSER.get());
         litMachine(blockModels, RiftsBlocks.RIFT_FURNACE.get());
         litMachine(blockModels, RiftsBlocks.RIFT_CRUSHER.get());
+        litMachine(blockModels, RiftsBlocks.RIFT_QUARRY.get());
         machine(blockModels, RiftsBlocks.RIFT_CHARGER.get());
 
         blockModels.createTrivialCube(RiftsBlocks.RIFT_STORAGE.get());
@@ -82,6 +83,10 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
         itemModels.generateFlatItem(RiftsItems.RIFT_SCANNER.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_WRENCH.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_PEARL.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(RiftsItems.BASIC_RIFT_FOCUS.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(RiftsItems.ADVANCED_RIFT_FOCUS.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(RiftsItems.ELITE_RIFT_FOCUS.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(RiftsItems.ULTIMATE_RIFT_FOCUS.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_INGOT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_NUGGET.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_STEEL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);

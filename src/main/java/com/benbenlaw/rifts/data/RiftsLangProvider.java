@@ -29,6 +29,7 @@ public class RiftsLangProvider extends LanguageProvider {
         addBlock(RiftsBlocks.RIFT_INFUSER, "Rift Infuser");
         addBlock(RiftsBlocks.RIFT_CHARGER, "Rift Charger");
         addBlock(RiftsBlocks.RIFT_CRUSHER, "Rift Crusher");
+        addBlock(RiftsBlocks.RIFT_QUARRY, "Rift Quarry");
         addBlock(RiftsBlocks.RIFT_FURNACE, "Rift Furnace");
         addBlock(RiftsBlocks.BASIC_TICK_ACCELERATOR, "Basic Tick Accelerator");
         addBlock(RiftsBlocks.ADVANCED_TICK_ACCELERATOR, "Advanced Tick Accelerator");
@@ -53,6 +54,10 @@ public class RiftsLangProvider extends LanguageProvider {
         addItem(RiftsItems.RIFT_SCANNER, "Rift Scanner");
         addItem(RiftsItems.RIFT_WRENCH, "Rift Wrench");
         addItem(RiftsItems.RIFT_PEARL, "Rift Pearl");
+        addItem(RiftsItems.BASIC_RIFT_FOCUS, "Basic Rift Focus");
+        addItem(RiftsItems.ADVANCED_RIFT_FOCUS, "Advanced Rift Focus");
+        addItem(RiftsItems.ELITE_RIFT_FOCUS, "Elite Rift Focus");
+        addItem(RiftsItems.ULTIMATE_RIFT_FOCUS, "Ultimate Rift Focus");
         addItem(RiftsItems.RIFT_STEEL_INGOT, "Rift Steel Ingot");
         addItem(RiftsItems.RIFT_STEEL_SWORD, "Rift Steel Sword");
         addItem(RiftsItems.RIFT_STEEL_PICKAXE, "Rift Steel Pickaxe");
@@ -72,10 +77,15 @@ public class RiftsLangProvider extends LanguageProvider {
 
         add("tooltip.rifts.stored_energy", "Stored Rift Energy: %1$s");
         add("tooltip.rifts.item_energy", "Rift Energy: %1$s / %2$s");
+        add("gui.rifts.energy", "Rift Energy: %1$s / %2$s");
 
         add("jei.rifts.displacer_conversions", "Displacer Conversions");
         add("jei.rifts.crusher", "Crushing");
-        add("jei.rifts.crusher.bonus_chance", "Bonus output: %1$s%% chance");
+        add("jei.rifts.infuser", "Infusing");
+        add("jei.rifts.quarry", "Quarrying");
+        add("jei.rifts.quarry.energy", "%1$s RE/tick, %2$s ticks");
+        add("jei.rifts.infuser.energy", "%1$s RE/tick");
+        add("jei.rifts.chance", "Chance: %1$s%%");
 
         add("tooltip.rifts.basic_tick_accelerator", ACCELERATOR_TOOLTIP);
         add("tooltip.rifts.advanced_tick_accelerator", ACCELERATOR_TOOLTIP);

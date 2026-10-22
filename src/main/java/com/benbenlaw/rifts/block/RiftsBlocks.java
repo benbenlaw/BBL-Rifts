@@ -8,6 +8,7 @@ import com.benbenlaw.rifts.block.custom.RiftFurnaceBlock;
 import com.benbenlaw.rifts.block.custom.RiftGeneratorBlock;
 import com.benbenlaw.rifts.block.custom.RiftInfuserBlock;
 import com.benbenlaw.rifts.block.custom.RiftPipeBlock;
+import com.benbenlaw.rifts.block.custom.RiftQuarryBlock;
 import com.benbenlaw.rifts.block.custom.RiftPylonBlock;
 import com.benbenlaw.rifts.block.custom.RiftStorageBlock;
 import com.benbenlaw.rifts.block.custom.RiftTickAcceleratorBlock;
@@ -67,6 +68,9 @@ public class RiftsBlocks {
 
     public static final DeferredBlock<Block> RIFT_CRUSHER = registerBlock("rift_crusher",
             properties -> new RiftCrusherBlock(machineProperties(properties).lightLevel(litBlockEmission())));
+
+    public static final DeferredBlock<Block> RIFT_QUARRY = registerBlock("rift_quarry",
+            properties -> new RiftQuarryBlock(machineProperties(properties).lightLevel(litBlockEmission())));
 
     public static final DeferredBlock<Block> RIFT_FURNACE = registerBlock("rift_furnace",
             properties -> new RiftFurnaceBlock(machineProperties(properties).lightLevel(litBlockEmission())));

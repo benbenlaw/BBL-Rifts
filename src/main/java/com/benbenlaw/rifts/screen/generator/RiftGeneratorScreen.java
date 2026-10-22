@@ -69,7 +69,7 @@ public class RiftGeneratorScreen extends AbstractContainerScreen<RiftGeneratorMe
             int currentEnergy = menu.data.get(4);
             int maxEnergy = menu.data.get(5);
 
-            Component text = Component.literal("Rift Energy: " + currentEnergy + " / " + maxEnergy);
+            Component text = Component.translatable("gui.rifts.energy", currentEnergy, maxEnergy);
             List<ClientTooltipComponent> components = List.of(ClientTooltipComponent.create(text.getVisualOrderText()));
             graphics.tooltip(this.font, components, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null);
 

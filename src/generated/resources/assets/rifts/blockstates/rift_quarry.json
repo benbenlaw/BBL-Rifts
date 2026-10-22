@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,lit=false": {
+      "model": "rifts:block/rift_quarry",
+      "x": 90
+    },
+    "facing=down,lit=true": {
+      "model": "rifts:block/rift_quarry_on",
+      "x": 90
+    },
+    "facing=east,lit=false": {
+      "model": "rifts:block/rift_quarry",
+      "y": 90
+    },
+    "facing=east,lit=true": {
+      "model": "rifts:block/rift_quarry_on",
+      "y": 90
+    },
+    "facing=north,lit=false": {
+      "model": "rifts:block/rift_quarry"
+    },
+    "facing=north,lit=true": {
+      "model": "rifts:block/rift_quarry_on"
+    },
+    "facing=south,lit=false": {
+      "model": "rifts:block/rift_quarry",
+      "y": 180
+    },
+    "facing=south,lit=true": {
+      "model": "rifts:block/rift_quarry_on",
+      "y": 180
+    },
+    "facing=up,lit=false": {
+      "model": "rifts:block/rift_quarry",
+      "x": 270
+    },
+    "facing=up,lit=true": {
+      "model": "rifts:block/rift_quarry_on",
+      "x": 270
+    },
+    "facing=west,lit=false": {
+      "model": "rifts:block/rift_quarry",
+      "y": 270
+    },
+    "facing=west,lit=true": {
+      "model": "rifts:block/rift_quarry_on",
+      "y": 270
+    }
+  }
+}

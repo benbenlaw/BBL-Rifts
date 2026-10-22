@@ -19,6 +19,8 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -38,6 +40,10 @@ public class NaturalRift extends Entity {
 
     private static final int PLATFORM_Y = 64;
     private static final int PLATFORM_RADIUS = 3;
+    private static final int ISLAND_SEARCH_RADIUS = 192;
+    private static final int ISLAND_SEARCH_STEP = 6;
+    private static final int ISLAND_EDGE_MARGIN = 3;
+    private static final int ISLAND_MIN_CLEARANCE = 8;
 
     private int lifetime = PERMANENT;
     private @Nullable GlobalPos destination;
@@ -142,6 +148,42 @@ public class NaturalRift extends Entity {
         RiftParticleEffects.burst(target, arrival.x, arrival.y + 1.0, arrival.z, 30, 0.4);
     }
 
+    // Reads the terrain noise directly so searching does not generate the chunks it rejects
+    private static BlockPos findIslandSpot(ServerLevel level, int x, int z) {
+        ChunkGenerator generator = level.getChunkSource().getGenerator();
+        RandomState randomState = level.getChunkSource().randomState();
+
+        for (int radius = 0; radius <= ISLAND_SEARCH_RADIUS; radius += ISLAND_SEARCH_STEP) {
+            for (int dx = -radius; dx <= radius; dx += ISLAND_SEARCH_STEP) {
+                for (int dz = -radius; dz <= radius; dz += ISLAND_SEARCH_STEP) {
+                    if (Math.max(Math.abs(dx), Math.abs(dz)) != radius) continue;
+
+                    int px = x + dx;
+                    int pz = z + dz;
+                    int height = islandHeight(generator, randomState, level, px, pz);
+                    if (height < 0) continue;
+
+                    BlockPos feet = new BlockPos(px, height, pz);
+                    level.getChunk(px >> 4, pz >> 4);
+                    if (level.getBlockState(feet.below()).blocksMotion()) return feet;
+                }
+            }
+        }
+        return null;
+    }
+
+    // Only counts spots with island under all four sides, so the rift is not put on a crumbling edge
+    private static int islandHeight(ChunkGenerator generator, RandomState randomState, ServerLevel level, int x, int z) {
+        int centre = generator.getBaseHeight(x, z, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, level, randomState);
+        if (centre <= level.getMinY() + ISLAND_MIN_CLEARANCE) return -1;
+
+        for (int[] offset : new int[][]{{ISLAND_EDGE_MARGIN, 0}, {-ISLAND_EDGE_MARGIN, 0}, {0, ISLAND_EDGE_MARGIN}, {0, -ISLAND_EDGE_MARGIN}}) {
+            int side = generator.getBaseHeight(x + offset[0], z + offset[1], Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, level, randomState);
+            if (side <= level.getMinY() + ISLAND_MIN_CLEARANCE || Math.abs(side - centre) > 3) return -1;
+        }
+        return centre;
+    }
+
     public static Vec3 surfaceAt(ServerLevel level, int x, int z) {
         return new Vec3(x + 0.5, level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z), z + 0.5);
     }
@@ -167,16 +209,14 @@ public class NaturalRift extends Entity {
                 && !level.getBlockState(feet.below()).getCollisionShape(level, feet.below()).isEmpty();
     }
 
-    // Uses the island surface at the same x/z when there is one, otherwise raises a small rift stone platform
+    // Opens on the nearest piece of island to the matching x/z, and only raises a small platform if there is none nearby
     private static BlockPos createArrival(ServerLevel level, ServerLevel origin, BlockPos originPos) {
         int x = originPos.getX();
         int z = originPos.getZ();
-        level.getChunk(x >> 4, z >> 4);
 
-        BlockPos feet = BlockPos.containing(surfaceAt(level, x, z));
-        boolean onGround = feet.getY() > level.getMinY() + 1 && level.getBlockState(feet.below()).blocksMotion();
-
-        if (!onGround) {
+        BlockPos feet = findIslandSpot(level, x, z);
+        if (feet == null) {
+            level.getChunk(x >> 4, z >> 4);
             feet = new BlockPos(x, PLATFORM_Y + 1, z);
             for (int dx = -PLATFORM_RADIUS; dx <= PLATFORM_RADIUS; dx++) {
                 for (int dz = -PLATFORM_RADIUS; dz <= PLATFORM_RADIUS; dz++) {

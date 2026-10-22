@@ -12,6 +12,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.types.IRecipeType;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -80,7 +81,7 @@ public class CrusherCategory implements IRecipeCategory<CrusherJeiRecipe> {
                 .setStandardSlotBackground()
                 .add(CrusherRecipe.resolve(bonus.item()))
                 .addRichTooltipCallback((slotView, tooltip) ->
-                        tooltip.add(Component.translatable("jei.rifts.crusher.bonus_chance", Math.round(bonus.chance() * 100)))));
+                        tooltip.add(Component.translatable("jei.rifts.chance", (int) (bonus.chance() * 100)).withStyle(ChatFormatting.GOLD))));
     }
 
     @Override

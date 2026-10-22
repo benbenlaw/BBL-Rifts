@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "rifts:rift_steel_ingot",
+    "B": "minecraft:iron_pickaxe",
+    "C": "rifts:rift_pearl"
+  },
+  "pattern": [
+    "ABA",
+    "BCB",
+    "AAA"
+  ],
+  "result": {
+    "id": "rifts:rift_quarry"
+  }
+}

@@ -38,6 +38,7 @@ public class RiftsBlockLootProvider extends BlockLootSubProvider {
         dropWithRiftEnergy(RiftsBlocks.RIFT_INFUSER.get());
         dropWithRiftEnergy(RiftsBlocks.RIFT_CHARGER.get());
         dropWithRiftEnergy(RiftsBlocks.RIFT_CRUSHER.get());
+        dropWithRiftEnergy(RiftsBlocks.RIFT_QUARRY.get());
         dropWithRiftEnergy(RiftsBlocks.RIFT_FURNACE.get());
         dropWithRiftEnergy(RiftsBlocks.BASIC_TICK_ACCELERATOR.get());
         dropWithRiftEnergy(RiftsBlocks.ADVANCED_TICK_ACCELERATOR.get());

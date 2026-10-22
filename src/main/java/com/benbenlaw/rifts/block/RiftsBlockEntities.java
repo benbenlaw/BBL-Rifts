@@ -8,6 +8,7 @@ import com.benbenlaw.rifts.block.entity.RiftGeneratorBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftInfuserBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftPipeBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftPylonBlockEntity;
+import com.benbenlaw.rifts.block.entity.RiftQuarryBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftStorageBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftTickAcceleratorBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -36,6 +37,10 @@ public class RiftsBlockEntities {
     public static final Supplier<BlockEntityType<RiftCrusherBlockEntity>> RIFT_CRUSHER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("rift_crusher_block_entity", () ->
                     new BlockEntityType<>(RiftCrusherBlockEntity::new, RiftsBlocks.RIFT_CRUSHER.get()));
+
+    public static final Supplier<BlockEntityType<RiftQuarryBlockEntity>> RIFT_QUARRY_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("rift_quarry_block_entity", () ->
+                    new BlockEntityType<>(RiftQuarryBlockEntity::new, RiftsBlocks.RIFT_QUARRY.get()));
 
     public static final Supplier<BlockEntityType<RiftFurnaceBlockEntity>> RIFT_FURNACE_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("rift_furnace_block_entity", () ->

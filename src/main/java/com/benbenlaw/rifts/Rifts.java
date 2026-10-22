@@ -15,6 +15,7 @@ import com.benbenlaw.rifts.recipe.RiftsRecipeTypes;
 import com.benbenlaw.rifts.screen.EpochopolisMenuTypes;
 import com.benbenlaw.rifts.screen.charger.RiftChargerScreen;
 import com.benbenlaw.rifts.screen.crusher.RiftCrusherScreen;
+import com.benbenlaw.rifts.screen.quarry.RiftQuarryScreen;
 import com.benbenlaw.rifts.screen.furnace.RiftFurnaceScreen;
 import com.benbenlaw.rifts.screen.generator.RiftGeneratorScreen;
 import com.benbenlaw.rifts.screen.infuser.RIftInfuserScreen;
@@ -82,6 +83,7 @@ public class Rifts {
             event.register(EpochopolisMenuTypes.RIFT_PYLON_MENU.get(), RiftPylonScreen::new);
             event.register(EpochopolisMenuTypes.RIFT_FURNACE_MENU.get(), RiftFurnaceScreen::new);
             event.register(EpochopolisMenuTypes.RIFT_CRUSHER_MENU.get(), RiftCrusherScreen::new);
+            event.register(EpochopolisMenuTypes.RIFT_QUARRY_MENU.get(), RiftQuarryScreen::new);
             event.register(EpochopolisMenuTypes.RIFT_CHARGER_MENU.get(), RiftChargerScreen::new);
         }
     }

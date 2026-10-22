@@ -32,9 +32,9 @@ public class RiftsBlockTagsProvider extends BlockTagsProvider {
                         RiftsBlocks.RIFT_STORAGE.get(),
                         RiftsBlocks.RIFT_PIPE.get());
 
-        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(RiftsBlocks.RIFT_CRUSHER.get(), RiftsBlocks.RIFT_CHARGER.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(RiftsBlocks.RIFT_CRUSHER.get(), RiftsBlocks.RIFT_CHARGER.get(), RiftsBlocks.RIFT_QUARRY.get());
 
-        tag(BlockTags.NEEDS_STONE_TOOL).add(RiftsBlocks.RIFT_CRUSHER.get(), RiftsBlocks.RIFT_CHARGER.get());
+        tag(BlockTags.NEEDS_STONE_TOOL).add(RiftsBlocks.RIFT_CRUSHER.get(), RiftsBlocks.RIFT_CHARGER.get(), RiftsBlocks.RIFT_QUARRY.get());
 
         tag(BlockTags.MINEABLE_WITH_AXE)
                 .add(

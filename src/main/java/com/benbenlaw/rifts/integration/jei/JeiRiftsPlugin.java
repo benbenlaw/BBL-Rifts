@@ -42,6 +42,8 @@ public class JeiRiftsPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new DisplacerConversionCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new CrusherCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new InfuserCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new QuarryCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -49,6 +51,8 @@ public class JeiRiftsPlugin implements IModPlugin {
         registration.addCraftingStation(DisplacerConversionCategory.RECIPE_TYPE, new ItemStack(RiftsItems.DISPLACER.get()));
         registration.addCraftingStation(RecipeTypes.SMELTING, new ItemStack(RiftsBlocks.RIFT_FURNACE.get()));
         registration.addCraftingStation(CrusherCategory.RECIPE_TYPE, new ItemStack(RiftsBlocks.RIFT_CRUSHER.get()));
+        registration.addCraftingStation(InfuserCategory.RECIPE_TYPE, new ItemStack(RiftsBlocks.RIFT_INFUSER.get()));
+        registration.addCraftingStation(QuarryCategory.RECIPE_TYPE, new ItemStack(RiftsBlocks.RIFT_QUARRY.get()));
     }
 
     @Override
@@ -56,6 +60,15 @@ public class JeiRiftsPlugin implements IModPlugin {
         registration.addRecipes(CrusherCategory.RECIPE_TYPE, ClientRecipeCache.getCrusherRecipes().entrySet().stream()
                 .filter(entry -> !CrusherRecipe.resolve(entry.getValue().output()).isEmpty())
                 .map(entry -> new CrusherJeiRecipe(entry.getKey(), entry.getValue()))
+                .toList());
+
+        registration.addRecipes(QuarryCategory.RECIPE_TYPE, ClientRecipeCache.getQuarryRecipes().entrySet().stream()
+                .filter(entry -> !entry.getValue().validResults().isEmpty())
+                .map(entry -> new QuarryJeiRecipe(entry.getKey(), entry.getValue()))
+                .toList());
+
+        registration.addRecipes(InfuserCategory.RECIPE_TYPE, ClientRecipeCache.getInfuserRecipes().entrySet().stream()
+                .map(entry -> new InfuserJeiRecipe(entry.getKey(), entry.getValue()))
                 .toList());
 
         DisplacerConversions config = RiftsItems.DISPLACER.get().builtInRegistryHolder().getData(RiftsDataMaps.DISPLACER_HIT_RESULTS);

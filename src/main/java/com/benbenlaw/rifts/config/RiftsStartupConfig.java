@@ -14,6 +14,7 @@ public class RiftsStartupConfig {
     public static final ModConfigSpec.ConfigValue<Integer> PYLON_BASE_DRAW_PER_SECOND;
     public static final ModConfigSpec.ConfigValue<Integer> PYLON_DRAW_MULTIPLIER;
     public static final ModConfigSpec.ConfigValue<Integer> CRUSHER_ENERGY_CAPACITY;
+    public static final ModConfigSpec.ConfigValue<Integer> QUARRY_ENERGY_CAPACITY;
     public static final ModConfigSpec.ConfigValue<Integer> FURNACE_ENERGY_CAPACITY;
     public static final ModConfigSpec.ConfigValue<Integer> FURNACE_ENERGY_PER_TICK;
     public static final ModConfigSpec.ConfigValue<Integer> FURNACE_SPEED;
@@ -65,6 +66,8 @@ public class RiftsStartupConfig {
 
         CRUSHER_ENERGY_CAPACITY = BUILDER.comment("Rift energy a rift crusher can hold")
                 .defineInRange("crusher_energy_capacity", 50000, 1, Integer.MAX_VALUE);
+        QUARRY_ENERGY_CAPACITY = BUILDER.comment("Rift energy a rift quarry can hold")
+                .defineInRange("quarry_energy_capacity", 100000, 1, Integer.MAX_VALUE);
         FURNACE_ENERGY_CAPACITY = BUILDER.comment("Rift energy a rift furnace can hold")
                 .defineInRange("furnace_energy_capacity", 50000, 1, Integer.MAX_VALUE);
         FURNACE_ENERGY_PER_TICK = BUILDER.comment("Rift energy a rift furnace uses every tick for each of its 6 lines that is smelting")

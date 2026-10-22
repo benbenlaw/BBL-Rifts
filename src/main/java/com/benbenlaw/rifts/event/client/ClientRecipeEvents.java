@@ -2,6 +2,8 @@ package com.benbenlaw.rifts.event.client;
 
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.recipe.CrusherRecipe;
+import com.benbenlaw.rifts.recipe.InfuserRecipe;
+import com.benbenlaw.rifts.recipe.QuarryRecipe;
 import com.benbenlaw.rifts.recipe.RiftsRecipeTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -23,5 +25,17 @@ public class ClientRecipeEvents {
             crusherRecipes.put(holder.id().identifier(), holder.value());
         }
         ClientRecipeCache.setCrusherRecipes(crusherRecipes);
+
+        Map<Identifier, InfuserRecipe> infuserRecipes = new HashMap<>();
+        for (RecipeHolder<InfuserRecipe> holder : event.getRecipeMap().byType(RiftsRecipeTypes.INFUSER_TYPE.get())) {
+            infuserRecipes.put(holder.id().identifier(), holder.value());
+        }
+        ClientRecipeCache.setInfuserRecipes(infuserRecipes);
+
+        Map<Identifier, QuarryRecipe> quarryRecipes = new HashMap<>();
+        for (RecipeHolder<QuarryRecipe> holder : event.getRecipeMap().byType(RiftsRecipeTypes.QUARRY_TYPE.get())) {
+            quarryRecipes.put(holder.id().identifier(), holder.value());
+        }
+        ClientRecipeCache.setQuarryRecipes(quarryRecipes);
     }
 }

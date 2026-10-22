@@ -38,7 +38,7 @@ public record InfuserRecipe(NonNullList<SizedIngredient> ingredients, ItemStackT
             new RecipeSerializer<>(CODEC, STREAM_CODEC);
 
     private static InfuserRecipe read(RegistryFriendlyByteBuf buffer) {
-        int size = buffer.readInt();
+        int size = buffer.readVarInt();
         NonNullList<SizedIngredient> sizedIngredients = NonNullList.create();
         for (int i = 0; i < size; i++) {
             sizedIngredients.add(SizedIngredient.STREAM_CODEC.decode(buffer));

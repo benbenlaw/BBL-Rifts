@@ -23,6 +23,8 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onDatapackSync(OnDatapackSyncEvent event) {
         event.sendRecipes(RiftsRecipeTypes.CRUSHER_TYPE.get());
+        event.sendRecipes(RiftsRecipeTypes.INFUSER_TYPE.get());
+        event.sendRecipes(RiftsRecipeTypes.QUARRY_TYPE.get());
     }
 
     @SubscribeEvent

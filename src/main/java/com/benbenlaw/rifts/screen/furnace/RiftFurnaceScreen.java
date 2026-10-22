@@ -57,7 +57,7 @@ public class RiftFurnaceScreen extends AbstractContainerScreen<RiftFurnaceMenu> 
         int barY = y + 16;
 
         if (mouseX >= barX && mouseX <= barX + 16 && mouseY >= barY && mouseY <= barY + 52) {
-            Component text = Component.literal("Rift Energy: " + menu.getEnergy() + " / " + menu.getCapacity());
+            Component text = Component.translatable("gui.rifts.energy", menu.getEnergy(), menu.getCapacity());
             List<ClientTooltipComponent> components = List.of(ClientTooltipComponent.create(text.getVisualOrderText()));
             graphics.tooltip(this.font, components, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null);
         }

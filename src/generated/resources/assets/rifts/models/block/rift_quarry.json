@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "rifts:block/rift_quarry_front",
+    "side": "rifts:block/rift_quarry_side",
+    "top": "rifts:block/rift_quarry_top"
+  }
+}

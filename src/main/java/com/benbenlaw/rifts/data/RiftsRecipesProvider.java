@@ -4,6 +4,7 @@ import com.benbenlaw.core.util.CoreTags;
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import com.benbenlaw.rifts.data.custom.CrusherRecipeBuilder;
+import com.benbenlaw.rifts.data.custom.QuarryRecipeBuilder;
 import com.benbenlaw.rifts.data.custom.InfuserRecipeBuilder;
 import com.benbenlaw.rifts.item.RiftsItems;
 import net.minecraft.core.HolderLookup;
@@ -64,6 +65,26 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .save(output.withConditions(conditions), name);
     }
 
+    private void focusUpgrade(net.neoforged.neoforge.registries.DeferredItem<net.minecraft.world.item.Item> result,
+                              net.neoforged.neoforge.registries.DeferredItem<net.minecraft.world.item.Item> previous,
+                              net.minecraft.tags.TagKey<net.minecraft.world.item.Item> material) {
+        shaped(RecipeCategory.MISC, result)
+                .pattern(" A ")
+                .pattern("ABA")
+                .pattern(" A ")
+                .define('A', material)
+                .define('B', previous)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+    }
+
+    private QuarryRecipeBuilder quarry(net.minecraft.world.item.Item focus, int processingTime, int energyPerTick) {
+        return QuarryRecipeBuilder.quarryRecipe(SizedIngredient.of(focus, 1))
+                .processingTime(processingTime)
+                .riftEnergyPerTick(energyPerTick)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT));
+    }
+
     @Override
     protected void buildRecipes() {
 
@@ -76,12 +97,6 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .define('B', RiftsItems.RIFT_PEARL)
                 .unlockedBy("has_rift_pearl", has(RiftsItems.RIFT_PEARL))
                 .save(output);
-
-        //Rift Pearl
-        InfuserRecipeBuilder.infuserRecipe(new ItemStackTemplate(RiftsItems.RIFT_PEARL.get()), 25, SizedIngredient.of(Items.ENDER_PEARL, 1))
-                .unlockedBy("has_ender_pearl", has(Items.ENDER_PEARL))
-                .save(output, "infuser/rift_pearl_from_ender_pearl");
-
 
         //Wrench
         shaped(RecipeCategory.MISC, RiftsItems.RIFT_WRENCH)
@@ -283,6 +298,67 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
                 .save(output, "sand_from_gravel");
 
+        //Rift Quarry
+        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_QUARRY)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("AAA")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('B', Items.IRON_PICKAXE)
+                .define('C', RiftsItems.RIFT_PEARL)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        //Rift Focus
+        shaped(RecipeCategory.MISC, RiftsItems.BASIC_RIFT_FOCUS)
+                .pattern(" A ")
+                .pattern("ABA")
+                .pattern(" A ")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('B', RiftsItems.RIFT_PEARL)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+        focusUpgrade(RiftsItems.ADVANCED_RIFT_FOCUS, RiftsItems.BASIC_RIFT_FOCUS, Tags.Items.GEMS_DIAMOND);
+        focusUpgrade(RiftsItems.ELITE_RIFT_FOCUS, RiftsItems.ADVANCED_RIFT_FOCUS, Tags.Items.INGOTS_NETHERITE);
+        focusUpgrade(RiftsItems.ULTIMATE_RIFT_FOCUS, RiftsItems.ELITE_RIFT_FOCUS, Tags.Items.NETHER_STARS);
+
+        //Quarrying: each result is picked with chance / total chance of the recipe, so only the ratios matter
+        quarry(RiftsItems.BASIC_RIFT_FOCUS.get(), 200, 100)
+                .result(SizedIngredient.of(Items.COBBLESTONE, 4), 40)
+                .result(SizedIngredient.of(Items.GRAVEL, 2), 20)
+                .result(SizedIngredient.of(Items.SAND, 2), 20)
+                .result(SizedIngredient.of(Items.FLINT, 1), 8)
+                .result(SizedIngredient.of(Items.COAL, 2), 8)
+                .result(SizedIngredient.of(Items.RAW_IRON, 1), 4)
+                .save(output, "basic_focus");
+
+        quarry(RiftsItems.ADVANCED_RIFT_FOCUS.get(), 160, 200)
+                .result(SizedIngredient.of(Items.RAW_IRON, 2), 30)
+                .result(SizedIngredient.of(Items.RAW_COPPER, 3), 25)
+                .result(new SizedIngredient(tag(CoreTags.Items.commonTag("raw_materials/tin")), 2), 15)
+                .result(SizedIngredient.of(Items.COAL, 3), 20)
+                .result(SizedIngredient.of(Items.REDSTONE, 4), 12)
+                .result(SizedIngredient.of(Items.LAPIS_LAZULI, 4), 8)
+                .result(SizedIngredient.of(Items.RAW_GOLD, 1), 5)
+                .save(output, "advanced_focus");
+
+        quarry(RiftsItems.ELITE_RIFT_FOCUS.get(), 120, 400)
+                .result(SizedIngredient.of(Items.RAW_IRON, 3), 25)
+                .result(SizedIngredient.of(Items.RAW_GOLD, 2), 25)
+                .result(SizedIngredient.of(Items.REDSTONE, 6), 20)
+                .result(SizedIngredient.of(Items.LAPIS_LAZULI, 6), 15)
+                .result(SizedIngredient.of(Items.DIAMOND, 1), 10)
+                .result(SizedIngredient.of(Items.EMERALD, 1), 5)
+                .save(output, "elite_focus");
+
+        quarry(RiftsItems.ULTIMATE_RIFT_FOCUS.get(), 80, 800)
+                .result(SizedIngredient.of(Items.DIAMOND, 2), 25)
+                .result(SizedIngredient.of(Items.EMERALD, 2), 20)
+                .result(SizedIngredient.of(Items.RAW_GOLD, 3), 25)
+                .result(SizedIngredient.of(Items.QUARTZ, 4), 15)
+                .result(SizedIngredient.of(Items.NETHERITE_SCRAP, 1), 5)
+                .save(output, "ultimate_focus");
+
         //Rift Furnace
         shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_FURNACE)
                 .pattern("AAA")
@@ -354,7 +430,7 @@ public class RiftsRecipesProvider extends RecipeProvider {
 
         InfuserRecipeBuilder.infuserRecipe(new ItemStackTemplate(RiftsItems.RIFT_STEEL_NUGGET.get()), 10, SizedIngredient.of(Items.IRON_NUGGET, 1))
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_NUGGET))
-                .save(output, "infuser/rift_steel_nugger");
+                .save(output, "infuser/rift_steel_nugget");
 
         InfuserRecipeBuilder.infuserRecipe(new ItemStackTemplate(RiftsItems.RIFT_STEEL_INGOT.get()), 90, SizedIngredient.of(Items.IRON_INGOT, 1))
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))

@@ -32,20 +32,20 @@ public class RiftsDataMapProvider extends DataMapProvider {
                                 Blocks.STONE, Blocks.DIAMOND_ORE,
                                 Blocks.DEEPSLATE, Blocks.DEEPSLATE_DIAMOND_ORE
                         ), Map.of(
-                                BlockTags.LOGS, RiftsBlocks.RIFT_LOG.get()
+                                BlockTags.LOGS, RiftsBlocks.RIFT_LOG.get(),
+                                BlockTags.LEAVES, RiftsBlocks.RIFT_LEAVES.get()
                         ), Map.of(
                                 EntityType.IRON_GOLEM, EpochopolisEntities.RIFT_ELEMENTAL.get()
                         )),
                         false);
 
-        // Rift energy richness per biome. The rift dimension is far richer than anywhere else
         builder(RiftsDataMaps.BIOME_RIFT_ENERGY)
-                .add(RiftsWorldGen.RIFT_BIOME, new RiftEnergyModifier(4.0F), false)
-                .add(Biomes.DEEP_DARK, new RiftEnergyModifier(2.0F), false)
-                .add(Biomes.SOUL_SAND_VALLEY, new RiftEnergyModifier(1.5F), false)
-                .add(Biomes.THE_END, new RiftEnergyModifier(1.5F), false)
-                .add(Biomes.MUSHROOM_FIELDS, new RiftEnergyModifier(1.25F), false)
-                .add(Biomes.DESERT, new RiftEnergyModifier(0.75F), false)
-                .add(Biomes.PLAINS, new RiftEnergyModifier(0.9F), false);
+                .add(RiftsWorldGen.RIFT_BIOME, new RiftEnergyModifier(4.0F), false);
+                //.add(Biomes.DEEP_DARK, new RiftEnergyModifier(2.0F), false)
+                //.add(Biomes.SOUL_SAND_VALLEY, new RiftEnergyModifier(1.5F), false)
+                //.add(Biomes.THE_END, new RiftEnergyModifier(1.5F), false)
+                //.add(Biomes.MUSHROOM_FIELDS, new RiftEnergyModifier(1.25F), false)
+                //.add(Biomes.DESERT, new RiftEnergyModifier(0.75F), false)
+                //.add(Biomes.PLAINS, new RiftEnergyModifier(0.9F), false);
     }
 }

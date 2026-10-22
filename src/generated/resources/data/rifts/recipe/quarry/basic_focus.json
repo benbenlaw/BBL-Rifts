@@ -1,0 +1,53 @@
+{
+  "type": "rifts:quarry",
+  "focus": {
+    "count": 1,
+    "ingredient": "rifts:basic_rift_focus"
+  },
+  "processing_time": 200,
+  "results": [
+    {
+      "chance": 40,
+      "item": {
+        "count": 4,
+        "ingredient": "minecraft:cobblestone"
+      }
+    },
+    {
+      "chance": 20,
+      "item": {
+        "count": 2,
+        "ingredient": "minecraft:gravel"
+      }
+    },
+    {
+      "chance": 20,
+      "item": {
+        "count": 2,
+        "ingredient": "minecraft:sand"
+      }
+    },
+    {
+      "chance": 8,
+      "item": {
+        "count": 1,
+        "ingredient": "minecraft:flint"
+      }
+    },
+    {
+      "chance": 8,
+      "item": {
+        "count": 2,
+        "ingredient": "minecraft:coal"
+      }
+    },
+    {
+      "chance": 4,
+      "item": {
+        "count": 1,
+        "ingredient": "minecraft:raw_iron"
+      }
+    }
+  ],
+  "rift_energy_per_tick": 100
+}

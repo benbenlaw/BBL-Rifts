@@ -69,7 +69,7 @@ public class RIftInfuserScreen extends AbstractContainerScreen<RiftInfuserMenu> 
             int currentEnergy = menu.data.get(2);
             int maxEnergy = menu.data.get(3);
 
-            Component text = Component.literal("Rift Energy: " + currentEnergy + " / " + maxEnergy);
+            Component text = Component.translatable("gui.rifts.energy", currentEnergy, maxEnergy);
             List<ClientTooltipComponent> components = List.of(ClientTooltipComponent.create(text.getVisualOrderText()));
             graphics.tooltip(this.font, components, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null);
 

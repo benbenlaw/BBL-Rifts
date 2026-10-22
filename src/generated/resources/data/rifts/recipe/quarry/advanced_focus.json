@@ -1,0 +1,60 @@
+{
+  "type": "rifts:quarry",
+  "focus": {
+    "count": 1,
+    "ingredient": "rifts:advanced_rift_focus"
+  },
+  "processing_time": 160,
+  "results": [
+    {
+      "chance": 30,
+      "item": {
+        "count": 2,
+        "ingredient": "minecraft:raw_iron"
+      }
+    },
+    {
+      "chance": 25,
+      "item": {
+        "count": 3,
+        "ingredient": "minecraft:raw_copper"
+      }
+    },
+    {
+      "chance": 15,
+      "item": {
+        "count": 2,
+        "ingredient": "#c:raw_materials/tin"
+      }
+    },
+    {
+      "chance": 20,
+      "item": {
+        "count": 3,
+        "ingredient": "minecraft:coal"
+      }
+    },
+    {
+      "chance": 12,
+      "item": {
+        "count": 4,
+        "ingredient": "minecraft:redstone"
+      }
+    },
+    {
+      "chance": 8,
+      "item": {
+        "count": 4,
+        "ingredient": "minecraft:lapis_lazuli"
+      }
+    },
+    {
+      "chance": 5,
+      "item": {
+        "count": 1,
+        "ingredient": "minecraft:raw_gold"
+      }
+    }
+  ],
+  "rift_energy_per_tick": 200
+}

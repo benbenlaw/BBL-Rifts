@@ -7,6 +7,7 @@ import com.benbenlaw.rifts.screen.furnace.RiftFurnaceMenu;
 import com.benbenlaw.rifts.screen.generator.RiftGeneratorMenu;
 import com.benbenlaw.rifts.screen.infuser.RiftInfuserMenu;
 import com.benbenlaw.rifts.screen.pylon.RiftPylonMenu;
+import com.benbenlaw.rifts.screen.quarry.RiftQuarryMenu;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
@@ -28,6 +29,9 @@ public class EpochopolisMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<RiftCrusherMenu>> RIFT_CRUSHER_MENU = MENUS.register("rift_crusher_menu",
             () -> IMenuTypeExtension.create(RiftCrusherMenu::new));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<RiftQuarryMenu>> RIFT_QUARRY_MENU = MENUS.register("rift_quarry_menu",
+            () -> IMenuTypeExtension.create(RiftQuarryMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<RiftFurnaceMenu>> RIFT_FURNACE_MENU = MENUS.register("rift_furnace_menu",
             () -> IMenuTypeExtension.create(RiftFurnaceMenu::new));
