@@ -10,6 +10,7 @@ import com.benbenlaw.rifts.block.custom.RiftFurnaceBlock;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
 import com.benbenlaw.rifts.item.RiftsDataComponents;
 import com.benbenlaw.rifts.particle.RiftParticleEffects;
+import com.benbenlaw.rifts.screen.MachineLayouts;
 import com.benbenlaw.rifts.screen.furnace.RiftFurnaceMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentGetter;
@@ -38,34 +39,41 @@ import org.jetbrains.annotations.Nullable;
 
 public class RiftFurnaceBlockEntity extends SyncableBlockEntity implements MenuProvider {
 
-    public static final int LINES = 6;
-
-    private final int[] progress = new int[LINES];
-    private final int[] maxProgress = new int[LINES];
-    private final RecipeHolder<SmeltingRecipe>[] cachedRecipes = new RecipeHolder[LINES];
+    private final int lines;
+    private final int[] progress;
+    private final int[] maxProgress;
+    private final RecipeHolder<SmeltingRecipe>[] cachedRecipes;
     private boolean recipeDirty = true;
 
-    private final SyncableItemHandler inventory = new SyncableItemHandler(this, LINES * 2, (slot, stack) -> slot < LINES, slot -> slot >= LINES) {
-        @Override
-        protected void onContentsChanged(int index, ItemStack previousContents) {
-            super.onContentsChanged(index, previousContents);
-            if (index < LINES && !ItemStack.isSameItemSameComponents(previousContents, ItemUtil.getStack(this, index))) {
-                progress[index] = 0;
-            }
-            recipeDirty = true;
-        }
-    };
-
+    private final SyncableItemHandler inventory;
     private final SimpleRiftEnergyHandler riftEnergyHandler;
     private final ContainerData energyData;
     private final ContainerData data;
 
+    @SuppressWarnings("unchecked")
     public RiftFurnaceBlockEntity(BlockPos pos, BlockState state) {
         super(RiftsBlockEntities.RIFT_FURNACE_BLOCK_ENTITY.get(), pos, state);
-        for (int line = 0; line < LINES; line++) {
+        this.lines = ((RiftFurnaceBlock) state.getBlock()).getLines();
+        this.progress = new int[lines];
+        this.maxProgress = new int[lines];
+        this.cachedRecipes = new RecipeHolder[lines];
+        for (int line = 0; line < lines; line++) {
             maxProgress[line] = 200;
         }
-        this.riftEnergyHandler = new SimpleRiftEnergyHandler(RiftsStartupConfig.FURNACE_ENERGY_CAPACITY.get()) {
+
+        this.inventory = new SyncableItemHandler(this, lines * 2, (slot, stack) -> slot < lines, slot -> slot >= lines) {
+            @Override
+            protected void onContentsChanged(int index, ItemStack previousContents) {
+                super.onContentsChanged(index, previousContents);
+                if (index < lines && !ItemStack.isSameItemSameComponents(previousContents, ItemUtil.getStack(this, index))) {
+                    progress[index] = 0;
+                }
+                recipeDirty = true;
+            }
+        };
+
+        long capacity = (long) RiftsStartupConfig.FURNACE_ENERGY_CAPACITY.get() * lines;
+        this.riftEnergyHandler = new SimpleRiftEnergyHandler((int) Math.min(Integer.MAX_VALUE, capacity)) {
             @Override
             protected void onEnergyChanged(int previousAmount) {
                 setChanged();
@@ -75,25 +83,29 @@ public class RiftFurnaceBlockEntity extends SyncableBlockEntity implements MenuP
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
-                if (index < LINES) return progress[index];
-                if (index < LINES * 2) return maxProgress[index - LINES];
-                return energyData.get(index - LINES * 2);
+                if (index < lines) return progress[index];
+                if (index < lines * 2) return maxProgress[index - lines];
+                return energyData.get(index - lines * 2);
             }
 
             @Override
             public void set(int index, int value) {
-                if (index < LINES) {
+                if (index < lines) {
                     progress[index] = value;
-                } else if (index < LINES * 2) {
-                    maxProgress[index - LINES] = value;
+                } else if (index < lines * 2) {
+                    maxProgress[index - lines] = value;
                 }
             }
 
             @Override
             public int getCount() {
-                return LINES * 2 + 4;
+                return lines * 2 + 4;
             }
         };
+    }
+
+    public int getLines() {
+        return lines;
     }
 
     public SyncableItemHandler getItemHandler() {
@@ -115,7 +127,7 @@ public class RiftFurnaceBlockEntity extends SyncableBlockEntity implements MenuP
         int energyPerTick = RiftsStartupConfig.FURNACE_ENERGY_PER_TICK.get();
         boolean anyCooking = false;
 
-        for (int line = 0; line < LINES; line++) {
+        for (int line = 0; line < lines; line++) {
             RecipeHolder<SmeltingRecipe> recipe = cachedRecipes[line];
             if (recipe == null) {
                 progress[line] = 0;
@@ -150,7 +162,7 @@ public class RiftFurnaceBlockEntity extends SyncableBlockEntity implements MenuP
 
     private void updateCachedRecipes(ServerLevel serverLevel) {
         recipeDirty = false;
-        for (int line = 0; line < LINES; line++) {
+        for (int line = 0; line < lines; line++) {
             ItemStack input = ItemUtil.getStack(inventory, line);
             cachedRecipes[line] = input.isEmpty() ? null : serverLevel.getServer().getRecipeManager()
                     .getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(input), serverLevel)
@@ -160,7 +172,7 @@ public class RiftFurnaceBlockEntity extends SyncableBlockEntity implements MenuP
 
     private boolean canInsertOutput(int line, ItemStack result) {
         if (result.isEmpty()) return false;
-        ItemStack outputSlot = ItemUtil.getStack(inventory, LINES + line);
+        ItemStack outputSlot = ItemUtil.getStack(inventory, lines + line);
         if (outputSlot.isEmpty()) return true;
         if (!ItemStack.isSameItemSameComponents(outputSlot, result)) return false;
         return outputSlot.getCount() + result.getCount() <= result.getMaxStackSize();
@@ -177,7 +189,7 @@ public class RiftFurnaceBlockEntity extends SyncableBlockEntity implements MenuP
         inventory.runInternal(() -> {
             try (Transaction tx = Transaction.openRoot()) {
                 inventory.extract(line, inventory.getResource(line), 1, tx);
-                inventory.insert(LINES + line, ItemResource.of(result), result.getCount(), tx);
+                inventory.insert(lines + line, ItemResource.of(result), result.getCount(), tx);
                 tx.commit();
             }
         });
@@ -185,7 +197,7 @@ public class RiftFurnaceBlockEntity extends SyncableBlockEntity implements MenuP
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int container, Inventory inventory, Player player) {
-        return new RiftFurnaceMenu(container, inventory, this.worldPosition, data);
+        return new RiftFurnaceMenu(MachineLayouts.tierOf(lines), container, inventory, this.worldPosition, data);
     }
 
     @Override
@@ -196,7 +208,7 @@ public class RiftFurnaceBlockEntity extends SyncableBlockEntity implements MenuP
     @Override
     protected void saveAdditional(@NotNull ValueOutput output) {
         inventory.serialize(output.child("inventory"));
-        for (int line = 0; line < LINES; line++) {
+        for (int line = 0; line < lines; line++) {
             output.putInt("progress" + line, progress[line]);
             output.putInt("maxProgress" + line, maxProgress[line]);
         }
@@ -207,7 +219,7 @@ public class RiftFurnaceBlockEntity extends SyncableBlockEntity implements MenuP
     @Override
     protected void loadAdditional(@NotNull ValueInput input) {
         inventory.deserialize(input.childOrEmpty("inventory"));
-        for (int line = 0; line < LINES; line++) {
+        for (int line = 0; line < lines; line++) {
             progress[line] = input.getIntOr("progress" + line, 0);
             maxProgress[line] = input.getIntOr("maxProgress" + line, 200);
         }

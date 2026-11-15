@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "rifts:rift_stone_bricks",
+  "result": {
+    "id": "rifts:rift_stone_brick_wall"
+  }
+}

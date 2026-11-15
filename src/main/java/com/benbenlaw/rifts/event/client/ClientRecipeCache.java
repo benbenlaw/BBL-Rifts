@@ -1,5 +1,6 @@
 package com.benbenlaw.rifts.event.client;
 
+import com.benbenlaw.rifts.recipe.ConverterRecipe;
 import com.benbenlaw.rifts.recipe.CrusherRecipe;
 import com.benbenlaw.rifts.recipe.InfuserRecipe;
 import com.benbenlaw.rifts.recipe.QuarryRecipe;
@@ -30,6 +31,16 @@ public class ClientRecipeCache {
 
     public static Map<Identifier, QuarryRecipe> getQuarryRecipes() {
         return quarryRecipes;
+    }
+
+    private static Map<Identifier, ConverterRecipe> converterRecipes = new HashMap<>();
+
+    public static void setConverterRecipes(Map<Identifier, ConverterRecipe> recipes) {
+        converterRecipes = recipes;
+    }
+
+    public static Map<Identifier, ConverterRecipe> getConverterRecipes() {
+        return converterRecipes;
     }
 
     public static void setCrusherRecipes(Map<Identifier, CrusherRecipe> recipes) {

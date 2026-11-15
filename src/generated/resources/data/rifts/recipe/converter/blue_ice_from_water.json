@@ -1,0 +1,19 @@
+{
+  "type": "rifts:converter",
+  "from_dimension": "minecraft:overworld",
+  "ignore_block_state": false,
+  "input": {
+    "Name": "minecraft:water",
+    "Properties": {
+      "level": "0"
+    }
+  },
+  "output": {
+    "block_state": {
+      "Name": "minecraft:blue_ice"
+    }
+  },
+  "processing_time": 200,
+  "rift_energy_per_tick": 200,
+  "to_dimension": "rifts:rift"
+}

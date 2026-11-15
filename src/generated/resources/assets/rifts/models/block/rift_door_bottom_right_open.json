@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_right_open",
+  "textures": {
+    "bottom": "rifts:block/rift_door_bottom",
+    "top": "rifts:block/rift_door_top"
+  }
+}

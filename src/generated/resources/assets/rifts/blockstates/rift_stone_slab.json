@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "rifts:block/rift_stone_slab"
+    },
+    "type=double": {
+      "model": "rifts:block/rift_stone"
+    },
+    "type=top": {
+      "model": "rifts:block/rift_stone_slab_top"
+    }
+  }
+}

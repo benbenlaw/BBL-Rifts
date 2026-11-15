@@ -1,28 +1,51 @@
 package com.benbenlaw.rifts.data;
 
+import java.util.Map;
+import com.benbenlaw.rifts.recipe.PortalGunRecipe;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import com.benbenlaw.core.util.CoreTags;
+import com.benbenlaw.rifts.recipe.util.BlockTarget;
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.block.RiftsBlocks;
+import com.benbenlaw.rifts.data.custom.ConverterRecipeBuilder;
+import com.benbenlaw.rifts.data.worldgen.RiftsWorldGen;
 import com.benbenlaw.rifts.data.custom.CrusherRecipeBuilder;
 import com.benbenlaw.rifts.data.custom.QuarryRecipeBuilder;
 import com.benbenlaw.rifts.data.custom.InfuserRecipeBuilder;
 import com.benbenlaw.rifts.item.RiftsItems;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
 import net.neoforged.neoforge.common.conditions.TagEmptyCondition;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -65,9 +88,28 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .save(output.withConditions(conditions), name);
     }
 
-    private void focusUpgrade(net.neoforged.neoforge.registries.DeferredItem<net.minecraft.world.item.Item> result,
-                              net.neoforged.neoforge.registries.DeferredItem<net.minecraft.world.item.Item> previous,
-                              net.minecraft.tags.TagKey<net.minecraft.world.item.Item> material) {
+    private void portalGun() {
+        ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, Rifts.identifier("rift_portal_gun"));
+        ShapedRecipePattern pattern = ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(RiftsItems.RIFT_STEEL_INGOT.get()),
+                'B', Ingredient.of(RiftsItems.RIFT_PEARL.get()),
+                'C', Ingredient.of(RiftsBlocks.RIFT_STORAGE.asItem()),
+                'D', tag(ItemTags.DYES)),
+                "DBD", "ACA", " A ");
+
+        PortalGunRecipe recipe = new PortalGunRecipe(new Recipe.CommonInfo(true),
+                new CraftingRecipe.CraftingBookInfo(CraftingBookCategory.MISC, ""), pattern,
+                new ItemStackTemplate(RiftsItems.RIFT_PORTAL_GUN.get()));
+
+        Advancement.Builder advancement = output.advancement()
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(key))
+                .addCriterion("has_rift_pearl", has(RiftsItems.RIFT_PEARL))
+                .rewards(AdvancementRewards.Builder.recipe(key))
+                .requirements(AdvancementRequirements.Strategy.OR);
+        output.accept(key, recipe, advancement.build(key.identifier().withPrefix("recipes/misc/")));
+    }
+
+    private void focusUpgrade(DeferredItem<Item> result, DeferredItem<Item> previous, TagKey<Item> material) {
         shaped(RecipeCategory.MISC, result)
                 .pattern(" A ")
                 .pattern("ABA")
@@ -78,11 +120,24 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .save(output);
     }
 
-    private QuarryRecipeBuilder quarry(net.minecraft.world.item.Item focus, int processingTime, int energyPerTick) {
+    private QuarryRecipeBuilder quarry(Item focus, int processingTime, int energyPerTick) {
         return QuarryRecipeBuilder.quarryRecipe(SizedIngredient.of(focus, 1))
                 .processingTime(processingTime)
                 .riftEnergyPerTick(energyPerTick)
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT));
+    }
+
+    private void planksFrom(DeferredBlock<Block> log, String name) {
+        shapeless(RecipeCategory.MISC, RiftsBlocks.RIFT_PLANKS, 4).requires(log)
+                .unlockedBy("has_" + name, has(log))
+                .save(output, ResourceKey.create(Registries.RECIPE, Rifts.identifier(name)));
+    }
+
+    private void stonecutting(DeferredBlock<Block> result, DeferredBlock<Block> base, int count) {
+        String name = getItemName(result.get()) + "_from_" + getItemName(base.get()) + "_stonecutting";
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(base.get()), RecipeCategory.BUILDING_BLOCKS, result.get(), count)
+                .unlockedBy("has_" + getItemName(base.get()), has(base.get()))
+                .save(output, ResourceKey.create(Registries.RECIPE, Rifts.identifier(name)));
     }
 
     @Override
@@ -108,8 +163,11 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
                 .save(output);
 
+        //Rift Portal Gun
+        portalGun();
+
         //Displacer
-        shaped(RecipeCategory.MISC, RiftsItems.DISPLACER)
+        shaped(RecipeCategory.MISC, RiftsItems.DISPLACER, 5)
                 .pattern(" A ")
                 .pattern("BCB")
                 .pattern(" A ")
@@ -266,7 +324,7 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .save(output);
 
         //Rift Crusher
-        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_CRUSHER)
+        shaped(RecipeCategory.MISC, RiftsBlocks.BASIC_RIFT_CRUSHER)
                 .pattern("ABA")
                 .pattern("BCB")
                 .pattern("AAA")
@@ -298,6 +356,51 @@ public class RiftsRecipesProvider extends RecipeProvider {
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
                 .save(output, "sand_from_gravel");
 
+        //Rift Converter
+        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_CONVERTER)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', RiftsItems.RIFT_STEEL_INGOT)
+                .define('B', RiftsItems.RIFT_PEARL)
+                .define('C', Items.ENDER_EYE)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        //Converting
+        ConverterRecipeBuilder.converterRecipe(new BlockTarget.Single(Blocks.DIAMOND_BLOCK.defaultBlockState()), Blocks.EMERALD_BLOCK.defaultBlockState())
+                .fromDimension(Level.OVERWORLD).toDimension(RiftsWorldGen.RIFT_LEVEL)
+                .processingTime(400).riftEnergyPerTick(400)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output, "emerald_block_from_diamond_block");
+        ConverterRecipeBuilder.converterRecipe(new BlockTarget.Single(Blocks.EMERALD_BLOCK.defaultBlockState()), Blocks.DIAMOND_BLOCK.defaultBlockState())
+                .fromDimension(RiftsWorldGen.RIFT_LEVEL).toDimension(Level.OVERWORLD)
+                .processingTime(400).riftEnergyPerTick(800)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output, "diamond_block_from_emerald_block");
+        ConverterRecipeBuilder.converterRecipe(new BlockTarget.Single(Blocks.IRON_BLOCK.defaultBlockState()), Blocks.GOLD_BLOCK.defaultBlockState())
+                .fromDimension(Level.OVERWORLD).toDimension(Level.NETHER)
+                .processingTime(300).riftEnergyPerTick(300)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output, "gold_block_from_iron_block");
+        ConverterRecipeBuilder.converterRecipe(new BlockTarget.Single(Blocks.WATER.defaultBlockState()), Blocks.BLUE_ICE.defaultBlockState())
+                .ignoreBlockState(false)
+                .fromDimension(Level.OVERWORLD).toDimension(RiftsWorldGen.RIFT_LEVEL)
+                .processingTime(200).riftEnergyPerTick(200)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output, "blue_ice_from_water");
+
+        //Rift Surge Core
+        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_SURGE_CORE)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', RiftsBlocks.RIFT_STEEL_BLOCK)
+                .define('B', RiftsItems.RIFT_PEARL)
+                .define('C', Items.TNT)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
         //Rift Quarry
         shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_QUARRY)
                 .pattern("ABA")
@@ -322,51 +425,109 @@ public class RiftsRecipesProvider extends RecipeProvider {
         focusUpgrade(RiftsItems.ELITE_RIFT_FOCUS, RiftsItems.ADVANCED_RIFT_FOCUS, Tags.Items.INGOTS_NETHERITE);
         focusUpgrade(RiftsItems.ULTIMATE_RIFT_FOCUS, RiftsItems.ELITE_RIFT_FOCUS, Tags.Items.NETHER_STARS);
 
-        //Quarrying: each result is picked with chance / total chance of the recipe, so only the ratios matter
         quarry(RiftsItems.BASIC_RIFT_FOCUS.get(), 200, 100)
-                .result(SizedIngredient.of(Items.COBBLESTONE, 4), 40)
-                .result(SizedIngredient.of(Items.GRAVEL, 2), 20)
-                .result(SizedIngredient.of(Items.SAND, 2), 20)
-                .result(SizedIngredient.of(Items.FLINT, 1), 8)
-                .result(SizedIngredient.of(Items.COAL, 2), 8)
-                .result(SizedIngredient.of(Items.RAW_IRON, 1), 4)
+                .result(new ItemStackTemplate(Items.COBBLESTONE, 4), 40F)
+                .result(new ItemStackTemplate(Items.GRAVEL, 2), 20F)
+                .result(new ItemStackTemplate(Items.SAND, 2), 20F)
+                .result(new ItemStackTemplate(Items.FLINT, 1), 8F)
+                .result(new ItemStackTemplate(Items.COAL, 2), 8F)
+                .result(new ItemStackTemplate(Items.RAW_IRON, 1), 4F)
                 .save(output, "basic_focus");
 
         quarry(RiftsItems.ADVANCED_RIFT_FOCUS.get(), 160, 200)
-                .result(SizedIngredient.of(Items.RAW_IRON, 2), 30)
-                .result(SizedIngredient.of(Items.RAW_COPPER, 3), 25)
-                .result(new SizedIngredient(tag(CoreTags.Items.commonTag("raw_materials/tin")), 2), 15)
-                .result(SizedIngredient.of(Items.COAL, 3), 20)
-                .result(SizedIngredient.of(Items.REDSTONE, 4), 12)
-                .result(SizedIngredient.of(Items.LAPIS_LAZULI, 4), 8)
-                .result(SizedIngredient.of(Items.RAW_GOLD, 1), 5)
+                .result(new ItemStackTemplate(Items.RAW_IRON, 2), 30F)
+                .result(new ItemStackTemplate(Items.RAW_COPPER, 3), 25F)
+                .result(new ItemStackTemplate(Items.COAL, 3), 20F)
+                .result(new ItemStackTemplate(Items.REDSTONE, 4), 12F)
+                .result(new ItemStackTemplate(Items.LAPIS_LAZULI, 4), 8F)
+                .result(new ItemStackTemplate(Items.RAW_GOLD, 1), 5F)
                 .save(output, "advanced_focus");
 
         quarry(RiftsItems.ELITE_RIFT_FOCUS.get(), 120, 400)
-                .result(SizedIngredient.of(Items.RAW_IRON, 3), 25)
-                .result(SizedIngredient.of(Items.RAW_GOLD, 2), 25)
-                .result(SizedIngredient.of(Items.REDSTONE, 6), 20)
-                .result(SizedIngredient.of(Items.LAPIS_LAZULI, 6), 15)
-                .result(SizedIngredient.of(Items.DIAMOND, 1), 10)
-                .result(SizedIngredient.of(Items.EMERALD, 1), 5)
+                .result(new ItemStackTemplate(Items.RAW_IRON, 3), 25F)
+                .result(new ItemStackTemplate(Items.RAW_GOLD, 2), 25F)
+                .result(new ItemStackTemplate(Items.REDSTONE, 6), 20F)
+                .result(new ItemStackTemplate(Items.LAPIS_LAZULI, 6), 15F)
+                .result(new ItemStackTemplate(Items.DIAMOND, 1), 10F)
+                .result(new ItemStackTemplate(Items.EMERALD, 1), 5F)
                 .save(output, "elite_focus");
 
         quarry(RiftsItems.ULTIMATE_RIFT_FOCUS.get(), 80, 800)
-                .result(SizedIngredient.of(Items.DIAMOND, 2), 25)
-                .result(SizedIngredient.of(Items.EMERALD, 2), 20)
-                .result(SizedIngredient.of(Items.RAW_GOLD, 3), 25)
-                .result(SizedIngredient.of(Items.QUARTZ, 4), 15)
-                .result(SizedIngredient.of(Items.NETHERITE_SCRAP, 1), 5)
+                .result(new ItemStackTemplate(Items.DIAMOND, 2), 25F)
+                .result(new ItemStackTemplate(Items.EMERALD, 2), 20F)
+                .result(new ItemStackTemplate(Items.RAW_GOLD, 3), 25F)
+                .result(new ItemStackTemplate(Items.QUARTZ, 4), 15F)
+                .result(new ItemStackTemplate(Items.NETHERITE_SCRAP, 1), 5F)
                 .save(output, "ultimate_focus");
 
         //Rift Furnace
-        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_FURNACE)
+        shaped(RecipeCategory.MISC, RiftsBlocks.BASIC_RIFT_FURNACE)
                 .pattern("AAA")
                 .pattern("ABA")
                 .pattern("CCC")
                 .define('A', RiftsItems.RIFT_STEEL_INGOT)
                 .define('B', Items.FURNACE)
                 .define('C', Tags.Items.INGOTS_COPPER)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.MISC, RiftsBlocks.ADVANCED_RIFT_CRUSHER)
+                .pattern("BBB")
+                .pattern("BAB")
+                .pattern("CCC")
+                .define('A', RiftsBlocks.BASIC_RIFT_CRUSHER)
+                .define('B', RiftsItems.RIFT_STEEL_INGOT)
+                .define('C', Tags.Items.INGOTS_IRON)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.MISC, RiftsBlocks.ELITE_RIFT_CRUSHER)
+                .pattern("BBB")
+                .pattern("BAB")
+                .pattern("CCC")
+                .define('A', RiftsBlocks.ADVANCED_RIFT_CRUSHER)
+                .define('B', RiftsItems.RIFT_STEEL_INGOT)
+                .define('C', Tags.Items.INGOTS_GOLD)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.MISC, RiftsBlocks.ULTIMATE_RIFT_CRUSHER)
+                .pattern("BBB")
+                .pattern("BAB")
+                .pattern("CCC")
+                .define('A', RiftsBlocks.ELITE_RIFT_CRUSHER)
+                .define('B', RiftsItems.RIFT_STEEL_INGOT)
+                .define('C', Tags.Items.INGOTS_NETHERITE)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.MISC, RiftsBlocks.ADVANCED_RIFT_FURNACE)
+                .pattern("BBB")
+                .pattern("BAB")
+                .pattern("CCC")
+                .define('A', RiftsBlocks.BASIC_RIFT_FURNACE)
+                .define('B', RiftsItems.RIFT_STEEL_INGOT)
+                .define('C', Tags.Items.INGOTS_IRON)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.MISC, RiftsBlocks.ELITE_RIFT_FURNACE)
+                .pattern("BBB")
+                .pattern("BAB")
+                .pattern("CCC")
+                .define('A', RiftsBlocks.ADVANCED_RIFT_FURNACE)
+                .define('B', RiftsItems.RIFT_STEEL_INGOT)
+                .define('C', Tags.Items.INGOTS_GOLD)
+                .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
+                .save(output);
+
+        shaped(RecipeCategory.MISC, RiftsBlocks.ULTIMATE_RIFT_FURNACE)
+                .pattern("BBB")
+                .pattern("BAB")
+                .pattern("CCC")
+                .define('A', RiftsBlocks.ELITE_RIFT_FURNACE)
+                .define('B', RiftsItems.RIFT_STEEL_INGOT)
+                .define('C', Tags.Items.INGOTS_NETHERITE)
                 .unlockedBy("has_rift_steel", has(RiftsItems.RIFT_STEEL_INGOT))
                 .save(output);
 
@@ -448,18 +609,48 @@ public class RiftsRecipesProvider extends RecipeProvider {
         //Rift
         shapeless(RecipeCategory.MISC, RiftsBlocks.RIFT_PLANKS, 4).requires(RiftsBlocks.RIFT_LOG).unlockedBy("has_rift_log", has(RiftsBlocks.RIFT_LOG)).save(output);
 
-        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_PLANK_STAIRS, 4)
-                .pattern("A  ")
-                .pattern("AA ")
-                .pattern("AAA")
-                .define('A', RiftsBlocks.RIFT_PLANKS)
-                .unlockedBy("has_rift_planks", has(RiftsBlocks.RIFT_PLANKS))
+        planksFrom(RiftsBlocks.RIFT_WOOD, "rift_planks_from_rift_wood");
+        planksFrom(RiftsBlocks.STRIPPED_RIFT_LOG, "rift_planks_from_stripped_rift_log");
+        planksFrom(RiftsBlocks.STRIPPED_RIFT_WOOD, "rift_planks_from_stripped_rift_wood");
+        woodFromLogs(RiftsBlocks.RIFT_WOOD, RiftsBlocks.RIFT_LOG);
+        woodFromLogs(RiftsBlocks.STRIPPED_RIFT_WOOD, RiftsBlocks.STRIPPED_RIFT_LOG);
+
+        for (var family : RiftsBlockFamilies.ALL) {
+            generateRecipes(family, FeatureFlags.REGISTRY.allFlags());
+        }
+
+        hangingSign(RiftsBlocks.RIFT_HANGING_SIGN_ITEM.get(), RiftsBlocks.STRIPPED_RIFT_LOG.get());
+
+        shaped(RecipeCategory.BUILDING_BLOCKS, RiftsBlocks.POLISHED_RIFT_STONE, 4)
+                .pattern("AA").pattern("AA")
+                .define('A', RiftsBlocks.RIFT_STONE)
+                .unlockedBy("has_rift_stone", has(RiftsBlocks.RIFT_STONE))
+                .save(output);
+        shaped(RecipeCategory.BUILDING_BLOCKS, RiftsBlocks.RIFT_STONE_BRICKS, 4)
+                .pattern("AA").pattern("AA")
+                .define('A', RiftsBlocks.POLISHED_RIFT_STONE)
+                .unlockedBy("has_polished_rift_stone", has(RiftsBlocks.POLISHED_RIFT_STONE))
                 .save(output);
 
-        shaped(RecipeCategory.MISC, RiftsBlocks.RIFT_PLANK_SLAB, 6)
-                .pattern("AAA")
-                .define('A', RiftsBlocks.RIFT_PLANKS)
-                .unlockedBy("has_rift_planks", has(RiftsBlocks.RIFT_PLANKS))
-                .save(output);
+        stonecutting(RiftsBlocks.RIFT_STONE_STAIRS, RiftsBlocks.RIFT_STONE, 1);
+        stonecutting(RiftsBlocks.RIFT_STONE_SLAB, RiftsBlocks.RIFT_STONE, 2);
+        stonecutting(RiftsBlocks.RIFT_STONE_WALL, RiftsBlocks.RIFT_STONE, 1);
+        stonecutting(RiftsBlocks.POLISHED_RIFT_STONE, RiftsBlocks.RIFT_STONE, 1);
+        stonecutting(RiftsBlocks.POLISHED_RIFT_STONE_STAIRS, RiftsBlocks.RIFT_STONE, 1);
+        stonecutting(RiftsBlocks.POLISHED_RIFT_STONE_SLAB, RiftsBlocks.RIFT_STONE, 2);
+        stonecutting(RiftsBlocks.POLISHED_RIFT_STONE_WALL, RiftsBlocks.RIFT_STONE, 1);
+        stonecutting(RiftsBlocks.POLISHED_RIFT_STONE_STAIRS, RiftsBlocks.POLISHED_RIFT_STONE, 1);
+        stonecutting(RiftsBlocks.POLISHED_RIFT_STONE_SLAB, RiftsBlocks.POLISHED_RIFT_STONE, 2);
+        stonecutting(RiftsBlocks.POLISHED_RIFT_STONE_WALL, RiftsBlocks.POLISHED_RIFT_STONE, 1);
+        stonecutting(RiftsBlocks.RIFT_STONE_BRICKS, RiftsBlocks.RIFT_STONE, 1);
+        stonecutting(RiftsBlocks.RIFT_STONE_BRICKS, RiftsBlocks.POLISHED_RIFT_STONE, 1);
+        stonecutting(RiftsBlocks.RIFT_STONE_BRICK_STAIRS, RiftsBlocks.RIFT_STONE, 1);
+        stonecutting(RiftsBlocks.RIFT_STONE_BRICK_SLAB, RiftsBlocks.RIFT_STONE, 2);
+        stonecutting(RiftsBlocks.RIFT_STONE_BRICK_WALL, RiftsBlocks.RIFT_STONE, 1);
+        stonecutting(RiftsBlocks.RIFT_STONE_BRICK_STAIRS, RiftsBlocks.RIFT_STONE_BRICKS, 1);
+        stonecutting(RiftsBlocks.RIFT_STONE_BRICK_SLAB, RiftsBlocks.RIFT_STONE_BRICKS, 2);
+        stonecutting(RiftsBlocks.RIFT_STONE_BRICK_WALL, RiftsBlocks.RIFT_STONE_BRICKS, 1);
+        stonecutting(RiftsBlocks.CHISELED_RIFT_STONE_BRICKS, RiftsBlocks.RIFT_STONE_BRICKS, 1);
+        stonecutting(RiftsBlocks.CHISELED_RIFT_STONE_BRICKS, RiftsBlocks.RIFT_STONE, 1);
     }
 }

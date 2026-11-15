@@ -1,0 +1,17 @@
+{
+  "values": {
+    "rifts:rift": {
+      "chance": 0.75,
+      "entity_conversions": {
+        "minecraft:iron_golem": "rifts:rift_elemental"
+      },
+      "radius": 3,
+      "tag_conversions": {
+        "#minecraft:base_stone_overworld": "rifts:rift_stone",
+        "#minecraft:leaves": "rifts:rift_leaves",
+        "#minecraft:logs": "rifts:rift_log",
+        "#minecraft:planks": "rifts:rift_planks"
+      }
+    }
+  }
+}

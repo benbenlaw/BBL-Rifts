@@ -3,6 +3,19 @@
     "rifts:rift_log",
     "rifts:rift_planks",
     "rifts:rift_plank_slab",
-    "rifts:rift_plank_stairs"
+    "rifts:rift_plank_stairs",
+    "rifts:rift_wood",
+    "rifts:stripped_rift_log",
+    "rifts:stripped_rift_wood",
+    "rifts:rift_fence",
+    "rifts:rift_fence_gate",
+    "rifts:rift_trapdoor",
+    "rifts:rift_pressure_plate",
+    "rifts:rift_door",
+    "rifts:rift_button",
+    "rifts:rift_sign",
+    "rifts:rift_wall_sign",
+    "rifts:rift_hanging_sign",
+    "rifts:rift_wall_hanging_sign"
   ]
 }

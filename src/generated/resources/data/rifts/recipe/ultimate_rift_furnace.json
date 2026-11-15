@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "rifts:elite_rift_furnace",
+    "B": "rifts:rift_steel_ingot",
+    "C": "#c:ingots/netherite"
+  },
+  "pattern": [
+    "BBB",
+    "BAB",
+    "CCC"
+  ],
+  "result": {
+    "id": "rifts:ultimate_rift_furnace"
+  }
+}

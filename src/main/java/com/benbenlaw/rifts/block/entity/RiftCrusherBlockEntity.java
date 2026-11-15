@@ -12,6 +12,7 @@ import com.benbenlaw.rifts.item.RiftsDataComponents;
 import com.benbenlaw.rifts.particle.RiftParticleEffects;
 import com.benbenlaw.rifts.recipe.CrusherRecipe;
 import com.benbenlaw.rifts.recipe.RiftsRecipeTypes;
+import com.benbenlaw.rifts.screen.MachineLayouts;
 import com.benbenlaw.rifts.screen.crusher.RiftCrusherMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentGetter;
@@ -38,33 +39,43 @@ import org.jetbrains.annotations.Nullable;
 
 public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuProvider {
 
-    private static final int INPUT_SLOT = 0;
-    public static final int OUTPUT_SLOTS = 4;
-    private static final int FIRST_OUTPUT_SLOT = 1;
-
-    private int progress = 0;
-    private int maxProgress = 100;
+    private final int lines;
+    private final int outputSlots;
+    private final int[] progress;
+    private final int[] maxProgress;
+    private final RecipeHolder<CrusherRecipe>[] cachedRecipes;
     private boolean recipeDirty = true;
-    private RecipeHolder<CrusherRecipe> cachedRecipe;
 
-    private final SyncableItemHandler inventory = new SyncableItemHandler(this, 1 + OUTPUT_SLOTS, (slot, stack) -> slot == INPUT_SLOT, slot -> slot != INPUT_SLOT) {
-        @Override
-        protected void onContentsChanged(int index, ItemStack previousContents) {
-            super.onContentsChanged(index, previousContents);
-            if (index == INPUT_SLOT && !ItemStack.isSameItemSameComponents(previousContents, ItemUtil.getStack(this, INPUT_SLOT))) {
-                progress = 0;
-            }
-            recipeDirty = true;
-        }
-    };
-
+    private final SyncableItemHandler inventory;
     private final SimpleRiftEnergyHandler riftEnergyHandler;
     private final ContainerData energyData;
     private final ContainerData data;
 
+    @SuppressWarnings("unchecked")
     public RiftCrusherBlockEntity(BlockPos pos, BlockState state) {
         super(RiftsBlockEntities.RIFT_CRUSHER_BLOCK_ENTITY.get(), pos, state);
-        this.riftEnergyHandler = new SimpleRiftEnergyHandler(RiftsStartupConfig.CRUSHER_ENERGY_CAPACITY.get()) {
+        this.lines = ((RiftCrusherBlock) state.getBlock()).getLines();
+        this.outputSlots = MachineLayouts.crusherOutputs(lines);
+        this.progress = new int[lines];
+        this.maxProgress = new int[lines];
+        this.cachedRecipes = new RecipeHolder[lines];
+        for (int line = 0; line < lines; line++) {
+            maxProgress[line] = 100;
+        }
+
+        this.inventory = new SyncableItemHandler(this, lines + outputSlots, (slot, stack) -> slot < lines, slot -> slot >= lines) {
+            @Override
+            protected void onContentsChanged(int index, ItemStack previousContents) {
+                super.onContentsChanged(index, previousContents);
+                if (index < lines && !ItemStack.isSameItemSameComponents(previousContents, ItemUtil.getStack(this, index))) {
+                    progress[index] = 0;
+                }
+                recipeDirty = true;
+            }
+        };
+
+        long capacity = (long) RiftsStartupConfig.CRUSHER_ENERGY_CAPACITY.get() * lines;
+        this.riftEnergyHandler = new SimpleRiftEnergyHandler((int) Math.min(Integer.MAX_VALUE, capacity)) {
             @Override
             protected void onEnergyChanged(int previousAmount) {
                 setChanged();
@@ -74,26 +85,29 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
-                return switch (index) {
-                    case 0 -> progress;
-                    case 1 -> maxProgress;
-                    default -> energyData.get(index - 2);
-                };
+                if (index < lines) return progress[index];
+                if (index < lines * 2) return maxProgress[index - lines];
+                return energyData.get(index - lines * 2);
             }
 
             @Override
             public void set(int index, int value) {
-                switch (index) {
-                    case 0 -> progress = value;
-                    case 1 -> maxProgress = value;
+                if (index < lines) {
+                    progress[index] = value;
+                } else if (index < lines * 2) {
+                    maxProgress[index - lines] = value;
                 }
             }
 
             @Override
             public int getCount() {
-                return 6;
+                return lines * 2 + 4;
             }
         };
+    }
+
+    public int getLines() {
+        return lines;
     }
 
     public SyncableItemHandler getItemHandler() {
@@ -108,32 +122,35 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
         if (!(level instanceof ServerLevel serverLevel)) return;
 
         if (recipeDirty) {
-            updateCachedRecipe(serverLevel);
+            updateCachedRecipes(serverLevel);
         }
 
         boolean powered = getBlockState().getValue(SyncableBlock.RUNNING);
         boolean crushing = false;
 
-        if (cachedRecipe == null) {
-            progress = 0;
-        } else if (powered) {
-            CrusherRecipe recipe = cachedRecipe.value();
+        for (int line = 0; line < lines; line++) {
+            CrusherRecipe recipe = cachedRecipes[line] == null ? null : cachedRecipes[line].value();
+            if (recipe == null) {
+                progress[line] = 0;
+                continue;
+            }
+            if (!powered) continue;
 
             if (canInsertOutputs(recipe) && riftEnergyHandler.getAmountAsInt() >= recipe.riftEnergyPerTick()) {
-                maxProgress = Math.max(1, recipe.processingTime());
+                maxProgress[line] = Math.max(1, recipe.processingTime());
                 consumeEnergy(recipe.riftEnergyPerTick());
-                progress++;
+                progress[line]++;
                 crushing = true;
 
-                if (level.getGameTime() % 4 == 0) {
-                    RiftParticleEffects.absorb(serverLevel, worldPosition.getX() + 0.5, worldPosition.getY() + 1.0, worldPosition.getZ() + 0.5, 1, 0.6, 1.1, 0.4);
-                }
-
-                if (progress >= maxProgress) {
-                    craft(serverLevel, recipe);
-                    progress = 0;
+                if (progress[line] >= maxProgress[line]) {
+                    craft(serverLevel, line, recipe);
+                    progress[line] = 0;
                 }
             }
+        }
+
+        if (crushing && level.getGameTime() % 4 == 0) {
+            RiftParticleEffects.absorb(serverLevel, worldPosition.getX() + 0.5, worldPosition.getY() + 1.0, worldPosition.getZ() + 0.5, 1, 0.6, 1.1, 0.4);
         }
 
         BlockState state = getBlockState();
@@ -143,18 +160,20 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
         setChanged();
     }
 
-    private void updateCachedRecipe(ServerLevel serverLevel) {
+    private void updateCachedRecipes(ServerLevel serverLevel) {
         recipeDirty = false;
-        ItemStack input = ItemUtil.getStack(inventory, INPUT_SLOT);
-        cachedRecipe = input.isEmpty() ? null : serverLevel.getServer().getRecipeManager()
-                .getRecipeFor(RiftsRecipeTypes.CRUSHER_TYPE.get(), new SingleRecipeInput(input), serverLevel)
-                .orElse(null);
+        for (int line = 0; line < lines; line++) {
+            ItemStack input = ItemUtil.getStack(inventory, line);
+            cachedRecipes[line] = input.isEmpty() ? null : serverLevel.getServer().getRecipeManager()
+                    .getRecipeFor(RiftsRecipeTypes.CRUSHER_TYPE.get(), new SingleRecipeInput(input), serverLevel)
+                    .orElse(null);
+        }
     }
 
     private boolean canInsertOutputs(CrusherRecipe recipe) {
-        ItemStack[] simulated = new ItemStack[OUTPUT_SLOTS];
-        for (int i = 0; i < OUTPUT_SLOTS; i++) {
-            simulated[i] = ItemUtil.getStack(inventory, FIRST_OUTPUT_SLOT + i).copy();
+        ItemStack[] simulated = new ItemStack[outputSlots];
+        for (int i = 0; i < outputSlots; i++) {
+            simulated[i] = ItemUtil.getStack(inventory, lines + i).copy();
         }
 
         if (!simulatePlace(simulated, CrusherRecipe.resolve(recipe.output()))) return false;
@@ -164,7 +183,6 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
         }).orElse(true);
     }
 
-    // Outputs merge into a matching stack first, then take the first empty slot
     private static boolean simulatePlace(ItemStack[] slots, ItemStack stack) {
         if (stack.isEmpty()) return false;
         int remaining = stack.getCount();
@@ -192,14 +210,14 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
         ItemResource resource = ItemResource.of(stack);
         int remaining = stack.getCount();
 
-        for (int i = 0; i < OUTPUT_SLOTS && remaining > 0; i++) {
-            int slot = FIRST_OUTPUT_SLOT + i;
+        for (int i = 0; i < outputSlots && remaining > 0; i++) {
+            int slot = lines + i;
             if (!inventory.getResource(slot).isEmpty() && inventory.getResource(slot).equals(resource)) {
                 remaining -= inventory.insert(slot, resource, remaining, tx);
             }
         }
-        for (int i = 0; i < OUTPUT_SLOTS && remaining > 0; i++) {
-            int slot = FIRST_OUTPUT_SLOT + i;
+        for (int i = 0; i < outputSlots && remaining > 0; i++) {
+            int slot = lines + i;
             if (inventory.getResource(slot).isEmpty()) {
                 remaining -= inventory.insert(slot, resource, remaining, tx);
             }
@@ -213,7 +231,7 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
         }
     }
 
-    private void craft(ServerLevel serverLevel, CrusherRecipe recipe) {
+    private void craft(ServerLevel serverLevel, int line, CrusherRecipe recipe) {
         ItemStack output = CrusherRecipe.resolve(recipe.output());
         ItemStack bonusStack = recipe.bonus()
                 .filter(bonus -> serverLevel.getRandom().nextFloat() < bonus.chance())
@@ -222,7 +240,7 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
 
         inventory.runInternal(() -> {
             try (Transaction tx = Transaction.openRoot()) {
-                inventory.extract(INPUT_SLOT, inventory.getResource(INPUT_SLOT), recipe.ingredient().count(), tx);
+                inventory.extract(line, inventory.getResource(line), recipe.ingredient().count(), tx);
                 insertOutput(output, tx);
                 if (!bonusStack.isEmpty()) {
                     insertOutput(bonusStack, tx);
@@ -234,7 +252,7 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int container, Inventory inventory, Player player) {
-        return new RiftCrusherMenu(container, inventory, this.worldPosition, data);
+        return new RiftCrusherMenu(MachineLayouts.tierOf(lines), container, inventory, this.worldPosition, data);
     }
 
     @Override
@@ -245,8 +263,10 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
     @Override
     protected void saveAdditional(@NotNull ValueOutput output) {
         inventory.serialize(output.child("inventory"));
-        output.putInt("progress", progress);
-        output.putInt("maxProgress", maxProgress);
+        for (int line = 0; line < lines; line++) {
+            output.putInt("progress" + line, progress[line]);
+            output.putInt("maxProgress" + line, maxProgress[line]);
+        }
         riftEnergyHandler.serialize(output.child("riftEnergyHandler"));
         super.saveAdditional(output);
     }
@@ -254,8 +274,10 @@ public class RiftCrusherBlockEntity extends SyncableBlockEntity implements MenuP
     @Override
     protected void loadAdditional(@NotNull ValueInput input) {
         inventory.deserialize(input.childOrEmpty("inventory"));
-        progress = input.getIntOr("progress", 0);
-        maxProgress = input.getIntOr("maxProgress", 100);
+        for (int line = 0; line < lines; line++) {
+            progress[line] = input.getIntOr("progress" + line, 0);
+            maxProgress[line] = input.getIntOr("maxProgress" + line, 100);
+        }
         riftEnergyHandler.deserialize(input.childOrEmpty("riftEnergyHandler"));
         recipeDirty = true;
         super.loadAdditional(input);

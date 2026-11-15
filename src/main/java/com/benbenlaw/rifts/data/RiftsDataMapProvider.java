@@ -4,10 +4,9 @@ import com.benbenlaw.rifts.data.worldgen.RiftsWorldGen;
 import com.benbenlaw.rifts.datamaps.DisplacerConversions;
 import com.benbenlaw.rifts.datamaps.RiftEnergyModifier;
 import com.benbenlaw.rifts.datamaps.RiftsDataMaps;
-import com.benbenlaw.rifts.item.RiftsItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import com.benbenlaw.rifts.entity.EpochopolisEntities;
+import com.benbenlaw.rifts.entity.RiftsEntities;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
@@ -27,15 +26,14 @@ public class RiftsDataMapProvider extends DataMapProvider {
     @Override
     protected void gather(HolderLookup.Provider provider) {
         builder(RiftsDataMaps.DISPLACER_HIT_RESULTS)
-                .add(RiftsItems.DISPLACER.getKey(),
-                        new DisplacerConversions(3, 0.75F, Map.of(
-                                Blocks.STONE, Blocks.DIAMOND_ORE,
-                                Blocks.DEEPSLATE, Blocks.DEEPSLATE_DIAMOND_ORE
-                        ), Map.of(
+                .add(RiftsWorldGen.RIFT_STEM,
+                        new DisplacerConversions(3, 0.75F, Map.of(), Map.of(
+                                BlockTags.BASE_STONE_OVERWORLD, RiftsBlocks.RIFT_STONE.get(),
                                 BlockTags.LOGS, RiftsBlocks.RIFT_LOG.get(),
+                                BlockTags.PLANKS, RiftsBlocks.RIFT_PLANKS.get(),
                                 BlockTags.LEAVES, RiftsBlocks.RIFT_LEAVES.get()
                         ), Map.of(
-                                EntityType.IRON_GOLEM, EpochopolisEntities.RIFT_ELEMENTAL.get()
+                                EntityType.IRON_GOLEM, RiftsEntities.RIFT_ELEMENTAL.get()
                         )),
                         false);
 

@@ -1,7 +1,7 @@
 package com.benbenlaw.rifts.screen.pylon;
 
 import com.benbenlaw.core.screen.SimpleAbstractContainerMenu;
-import com.benbenlaw.rifts.screen.EpochopolisMenuTypes;
+import com.benbenlaw.rifts.screen.RiftsMenuTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,7 +18,7 @@ public class RiftPylonMenu extends SimpleAbstractContainerMenu {
     }
 
     public RiftPylonMenu(int containerID, Inventory inventory, BlockPos pos, ContainerData data) {
-        super(EpochopolisMenuTypes.RIFT_PYLON_MENU.get(), containerID, inventory, pos, 0);
+        super(RiftsMenuTypes.RIFT_PYLON_MENU.get(), containerID, inventory, pos, 0);
         this.data = data;
         this.blockPos = pos;
         this.addDataSlots(data);

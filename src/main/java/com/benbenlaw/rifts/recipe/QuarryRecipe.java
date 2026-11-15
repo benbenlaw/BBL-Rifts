@@ -1,5 +1,6 @@
 package com.benbenlaw.rifts.recipe;
 
+import com.benbenlaw.core.recipe.ChanceResult;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -21,34 +22,12 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public record QuarryRecipe(SizedIngredient focus, List<Result> results, int processingTime, int riftEnergyPerTick) implements Recipe<SingleRecipeInput> {
-
-    public record Result(Optional<SizedIngredient> item, int chance) {
-        public static final Codec<Result> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                SizedIngredient.NESTED_CODEC.lenientOptionalFieldOf("item").forGetter(Result::item),
-                Codec.intRange(1, Integer.MAX_VALUE).fieldOf("chance").forGetter(Result::chance)
-        ).apply(instance, Result::new));
-
-        public static final StreamCodec<RegistryFriendlyByteBuf, Result> STREAM_CODEC = StreamCodec.of(
-                (buffer, result) -> {
-                    buffer.writeBoolean(result.item().isPresent());
-                    result.item().ifPresent(item -> SizedIngredient.STREAM_CODEC.encode(buffer, item));
-                    buffer.writeVarInt(result.chance());
-                },
-                buffer -> new Result(buffer.readBoolean() ? Optional.of(SizedIngredient.STREAM_CODEC.decode(buffer)) : Optional.empty(), buffer.readVarInt())
-        );
-
-        // Tag results resolve to the first item in the tag; empty when the tag has no items (e.g. the other mod is missing)
-        public ItemStack resolve() {
-            return item.map(CrusherRecipe::resolve).orElse(ItemStack.EMPTY);
-        }
-    }
+public record QuarryRecipe(SizedIngredient focus, List<ChanceResult> results, int processingTime, int riftEnergyPerTick) implements Recipe<SingleRecipeInput> {
 
     public static final MapCodec<QuarryRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             SizedIngredient.NESTED_CODEC.fieldOf("focus").forGetter(QuarryRecipe::focus),
-            Codec.list(Result.CODEC).fieldOf("results").forGetter(QuarryRecipe::results),
+            Codec.list(ChanceResult.CODEC).fieldOf("results").forGetter(QuarryRecipe::results),
             Codec.INT.fieldOf("processing_time").forGetter(QuarryRecipe::processingTime),
             Codec.INT.fieldOf("rift_energy_per_tick").forGetter(QuarryRecipe::riftEnergyPerTick)
     ).apply(instance, QuarryRecipe::new));
@@ -63,9 +42,9 @@ public record QuarryRecipe(SizedIngredient focus, List<Result> results, int proc
     private static QuarryRecipe read(RegistryFriendlyByteBuf buffer) {
         SizedIngredient focus = SizedIngredient.STREAM_CODEC.decode(buffer);
         int size = buffer.readVarInt();
-        List<Result> results = new ArrayList<>(size);
+        List<ChanceResult> results = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            results.add(Result.STREAM_CODEC.decode(buffer));
+            results.add(ChanceResult.read(buffer));
         }
         int processingTime = buffer.readVarInt();
         int riftEnergyPerTick = buffer.readVarInt();
@@ -75,34 +54,31 @@ public record QuarryRecipe(SizedIngredient focus, List<Result> results, int proc
     private static void write(RegistryFriendlyByteBuf buffer, QuarryRecipe recipe) {
         SizedIngredient.STREAM_CODEC.encode(buffer, recipe.focus);
         buffer.writeVarInt(recipe.results.size());
-        for (Result result : recipe.results) {
-            Result.STREAM_CODEC.encode(buffer, result);
+        for (ChanceResult result : recipe.results) {
+            result.write(buffer);
         }
         buffer.writeVarInt(recipe.processingTime);
         buffer.writeVarInt(recipe.riftEnergyPerTick);
     }
 
-    // Results whose tag is empty are left out of the roll and the totals
-    public List<Result> validResults() {
-        return results.stream().filter(result -> !result.resolve().isEmpty()).toList();
+    public float totalChance() {
+        float total = 0;
+        for (ChanceResult result : results) {
+            total += Math.max(0, result.chance());
+        }
+        return total;
     }
 
-    public int totalChance() {
-        return validResults().stream().mapToInt(Result::chance).sum();
-    }
-
-    // Picks one result with probability chance / total chance
     public ItemStack roll(RandomSource random) {
-        List<Result> valid = validResults();
-        int total = valid.stream().mapToInt(Result::chance).sum();
+        float total = totalChance();
         if (total <= 0) return ItemStack.EMPTY;
 
-        int roll = random.nextInt(total);
-        for (Result result : valid) {
-            roll -= result.chance();
-            if (roll < 0) return result.resolve();
+        float roll = random.nextFloat() * total;
+        for (ChanceResult result : results) {
+            roll -= Math.max(0, result.chance());
+            if (roll < 0) return result.template().create();
         }
-        return ItemStack.EMPTY;
+        return results.getLast().template().create();
     }
 
     @Override

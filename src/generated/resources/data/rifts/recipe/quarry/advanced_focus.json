@@ -7,52 +7,44 @@
   "processing_time": 160,
   "results": [
     {
-      "chance": 30,
+      "chance": 30.0,
       "item": {
         "count": 2,
-        "ingredient": "minecraft:raw_iron"
+        "id": "minecraft:raw_iron"
       }
     },
     {
-      "chance": 25,
+      "chance": 25.0,
       "item": {
         "count": 3,
-        "ingredient": "minecraft:raw_copper"
+        "id": "minecraft:raw_copper"
       }
     },
     {
-      "chance": 15,
-      "item": {
-        "count": 2,
-        "ingredient": "#c:raw_materials/tin"
-      }
-    },
-    {
-      "chance": 20,
+      "chance": 20.0,
       "item": {
         "count": 3,
-        "ingredient": "minecraft:coal"
+        "id": "minecraft:coal"
       }
     },
     {
-      "chance": 12,
+      "chance": 12.0,
       "item": {
         "count": 4,
-        "ingredient": "minecraft:redstone"
+        "id": "minecraft:redstone"
       }
     },
     {
-      "chance": 8,
+      "chance": 8.0,
       "item": {
         "count": 4,
-        "ingredient": "minecraft:lapis_lazuli"
+        "id": "minecraft:lapis_lazuli"
       }
     },
     {
-      "chance": 5,
+      "chance": 5.0,
       "item": {
-        "count": 1,
-        "ingredient": "minecraft:raw_gold"
+        "id": "minecraft:raw_gold"
       }
     }
   ],

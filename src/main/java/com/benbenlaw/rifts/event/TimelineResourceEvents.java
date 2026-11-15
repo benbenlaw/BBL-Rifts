@@ -1,7 +1,7 @@
 package com.benbenlaw.rifts.event;
 
 import com.benbenlaw.rifts.Rifts;
-import com.benbenlaw.rifts.util.EpochopolisTags;
+import com.benbenlaw.rifts.util.RiftsTags;
 import com.benbenlaw.rifts.world.DepletedResource;
 import com.benbenlaw.rifts.world.TimelineResourceData;
 import net.minecraft.core.BlockPos;
@@ -24,7 +24,7 @@ public class TimelineResourceEvents {
         if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
 
         BlockState state = event.getState();
-        if (state.is(EpochopolisTags.Blocks.SYNCED_ACROSS_TIMELINES)) {
+        if (state.is(RiftsTags.Blocks.SYNCED_ACROSS_TIMELINES)) {
             BlockPos pos = event.getPos();
             Identifier brokenEra = serverLevel.dimension().identifier();
 

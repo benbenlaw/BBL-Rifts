@@ -1,6 +1,7 @@
 package com.benbenlaw.rifts.event.client;
 
 import com.benbenlaw.rifts.Rifts;
+import com.benbenlaw.rifts.recipe.ConverterRecipe;
 import com.benbenlaw.rifts.recipe.CrusherRecipe;
 import com.benbenlaw.rifts.recipe.InfuserRecipe;
 import com.benbenlaw.rifts.recipe.QuarryRecipe;
@@ -37,5 +38,11 @@ public class ClientRecipeEvents {
             quarryRecipes.put(holder.id().identifier(), holder.value());
         }
         ClientRecipeCache.setQuarryRecipes(quarryRecipes);
+
+        Map<Identifier, ConverterRecipe> converterRecipes = new HashMap<>();
+        for (RecipeHolder<ConverterRecipe> holder : event.getRecipeMap().byType(RiftsRecipeTypes.CONVERTER_TYPE.get())) {
+            converterRecipes.put(holder.id().identifier(), holder.value());
+        }
+        ClientRecipeCache.setConverterRecipes(converterRecipes);
     }
 }

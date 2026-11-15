@@ -1,5 +1,6 @@
 package com.benbenlaw.rifts.event;
 
+import net.minecraft.core.BlockPos;
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.data.worldgen.RiftsWorldGen;
 import com.benbenlaw.rifts.entity.NaturalRift;
@@ -25,7 +26,7 @@ public class RiftFallEvents {
         if (!level.dimension().equals(RiftsWorldGen.RIFT_LEVEL) || player.getY() > level.getMinY() - FALL_MARGIN) return;
 
         ServerLevel target = level.getServer().overworld();
-        net.minecraft.core.BlockPos spot = player.blockPosition();
+        BlockPos spot = player.blockPosition();
 
         if (player.hasData(RiftsAttachments.RIFT_ENTRANCE)) {
             GlobalPos entrance = player.getData(RiftsAttachments.RIFT_ENTRANCE);

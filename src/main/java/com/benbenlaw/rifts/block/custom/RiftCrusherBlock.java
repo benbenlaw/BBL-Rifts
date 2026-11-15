@@ -3,7 +3,9 @@ package com.benbenlaw.rifts.block.custom;
 import com.benbenlaw.core.block.SyncableBlock;
 import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.block.entity.RiftCrusherBlockEntity;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -26,15 +28,25 @@ public class RiftCrusherBlock extends SyncableBlock {
 
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
-    public static final MapCodec<RiftCrusherBlock> CODEC = simpleCodec(RiftCrusherBlock::new);
+    private final int lines;
+
+    public static final MapCodec<RiftCrusherBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            propertiesCodec(),
+            Codec.INT.fieldOf("lines").forGetter(RiftCrusherBlock::getLines)
+    ).apply(instance, RiftCrusherBlock::new));
 
     public @NotNull MapCodec<RiftCrusherBlock> codec() {
         return CODEC;
     }
 
-    public RiftCrusherBlock(Properties properties) {
+    public RiftCrusherBlock(Properties properties, int lines) {
         super(properties);
+        this.lines = lines;
         this.registerDefaultState(this.defaultBlockState().setValue(LIT, false));
+    }
+
+    public int getLines() {
+        return lines;
     }
 
     @Override

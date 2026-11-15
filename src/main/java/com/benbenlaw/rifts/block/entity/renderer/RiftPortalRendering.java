@@ -13,14 +13,12 @@ import net.minecraft.world.phys.Vec3;
 public class RiftPortalRendering {
 
     public static final Identifier PORTAL = Rifts.identifier("textures/entity/natural_rift.png");
-    // Greyscale copy of the portal so a tint colour gives the true hue instead of multiplying the blue texture
     public static final Identifier PORTAL_TINTABLE = Rifts.identifier("textures/entity/rift_portal_tintable.png");
 
     private static final float HALF_WIDTH = 0.8F;
     private static final float HALF_HEIGHT = 1.15F;
     private static final float CENTRE_Y = 1.3F;
 
-    // The texture's disc fills 0.35 of the tile either side of centre, so sampling stays inside the tile however far it is rotated
     private static final float UV_RADIUS = 0.35F;
 
     private static final float[] WHITE = {1.0F, 1.0F, 1.0F};

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "rifts:rift_stone"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "id": "rifts:rift_stone_pressure_plate"
+  }
+}

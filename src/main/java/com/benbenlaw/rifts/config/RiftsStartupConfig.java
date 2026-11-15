@@ -15,6 +15,10 @@ public class RiftsStartupConfig {
     public static final ModConfigSpec.ConfigValue<Integer> PYLON_DRAW_MULTIPLIER;
     public static final ModConfigSpec.ConfigValue<Integer> CRUSHER_ENERGY_CAPACITY;
     public static final ModConfigSpec.ConfigValue<Integer> QUARRY_ENERGY_CAPACITY;
+    public static final ModConfigSpec.ConfigValue<Integer> CONVERTER_ENERGY_CAPACITY;
+    public static final ModConfigSpec.ConfigValue<Integer> SURGE_CORE_ENERGY_CAPACITY;
+    public static final ModConfigSpec.ConfigValue<Integer> SURGE_WAVES;
+    public static final ModConfigSpec.ConfigValue<Double> SURGE_EXPLOSION_POWER;
     public static final ModConfigSpec.ConfigValue<Integer> FURNACE_ENERGY_CAPACITY;
     public static final ModConfigSpec.ConfigValue<Integer> FURNACE_ENERGY_PER_TICK;
     public static final ModConfigSpec.ConfigValue<Integer> FURNACE_SPEED;
@@ -30,6 +34,10 @@ public class RiftsStartupConfig {
     public static final ModConfigSpec.ConfigValue<Integer> RIFT_TOOL_ENERGY_PER_DAMAGE;
     public static final ModConfigSpec.ConfigValue<Integer> RIFT_ARMOR_CAPACITY;
     public static final ModConfigSpec.ConfigValue<Integer> RIFT_ARMOR_ENERGY_PER_DAMAGE;
+    public static final ModConfigSpec.ConfigValue<Integer> RIFT_FLIGHT_ENERGY_PER_TICK;
+    public static final ModConfigSpec.ConfigValue<Integer> PORTAL_GUN_CAPACITY;
+    public static final ModConfigSpec.ConfigValue<Integer> PORTAL_GUN_ENERGY_PER_SHOT;
+    public static final ModConfigSpec.ConfigValue<Integer> PORTAL_GUN_RANGE;
     public static final ModConfigSpec.ConfigValue<Integer> CHARGER_ENERGY_CAPACITY;
     public static final ModConfigSpec.ConfigValue<Integer> CHARGER_RATE_PER_TICK;
     public static final ModConfigSpec.ConfigValue<Integer> ACCELERATOR_BASE_EXTRA_TICKS;
@@ -68,6 +76,14 @@ public class RiftsStartupConfig {
                 .defineInRange("crusher_energy_capacity", 50000, 1, Integer.MAX_VALUE);
         QUARRY_ENERGY_CAPACITY = BUILDER.comment("Rift energy a rift quarry can hold")
                 .defineInRange("quarry_energy_capacity", 100000, 1, Integer.MAX_VALUE);
+        CONVERTER_ENERGY_CAPACITY = BUILDER.comment("Rift energy a rift converter can hold")
+                .defineInRange("converter_energy_capacity", 100000, 1, Integer.MAX_VALUE);
+        SURGE_CORE_ENERGY_CAPACITY = BUILDER.comment("Rift energy a surge core can take before it overloads and starts a rift surge")
+                .defineInRange("surge_core_energy_capacity", 2000000, 4, Integer.MAX_VALUE);
+        SURGE_WAVES = BUILDER.comment("How many waves a rift surge has")
+                .defineInRange("surge_waves", 3, 1, 10);
+        SURGE_EXPLOSION_POWER = BUILDER.comment("Strength of the explosion when a surge core overloads (it hurts what is nearby but breaks no blocks)")
+                .defineInRange("surge_explosion_power", 4.0, 0.0, 20.0);
         FURNACE_ENERGY_CAPACITY = BUILDER.comment("Rift energy a rift furnace can hold")
                 .defineInRange("furnace_energy_capacity", 50000, 1, Integer.MAX_VALUE);
         FURNACE_ENERGY_PER_TICK = BUILDER.comment("Rift energy a rift furnace uses every tick for each of its 6 lines that is smelting")
@@ -91,6 +107,14 @@ public class RiftsStartupConfig {
                 .defineInRange("rift_armor_capacity", 40000, 1, Integer.MAX_VALUE);
         RIFT_ARMOR_ENERGY_PER_DAMAGE = BUILDER.comment("Rift energy a piece of rift steel armor spends for each point of durability damage it would normally take")
                 .defineInRange("rift_armor_energy_per_damage", 40, 0, Integer.MAX_VALUE);
+        RIFT_FLIGHT_ENERGY_PER_TICK = BUILDER.comment("Rift energy each piece of a full powered rift suit spends every tick the wearer is flying in the rift dimension (0 = free flight)")
+                .defineInRange("rift_flight_energy_per_tick", 5, 0, Integer.MAX_VALUE);
+        PORTAL_GUN_CAPACITY = BUILDER.comment("Rift energy a rift portal gun holds")
+                .defineInRange("portal_gun_capacity", 20000, 1, Integer.MAX_VALUE);
+        PORTAL_GUN_ENERGY_PER_SHOT = BUILDER.comment("Rift energy each portal fired by a rift portal gun uses (0 = free)")
+                .defineInRange("portal_gun_energy_per_shot", 250, 0, Integer.MAX_VALUE);
+        PORTAL_GUN_RANGE = BUILDER.comment("How far in blocks a rift portal gun can place a portal")
+                .defineInRange("portal_gun_range", 64, 1, 256);
         CHARGER_ENERGY_CAPACITY = BUILDER.comment("Rift energy a rift charger can hold")
                 .defineInRange("charger_energy_capacity", 100000, 1, Integer.MAX_VALUE);
         CHARGER_RATE_PER_TICK = BUILDER.comment("Most rift energy a rift charger puts into each item every tick")

@@ -1,11 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "category": "building",
+  "group": "wooden_slab",
   "key": {
-    "A": "rifts:rift_planks"
+    "#": "rifts:rift_planks"
   },
   "pattern": [
-    "AAA"
+    "###"
   ],
   "result": {
     "count": 6,

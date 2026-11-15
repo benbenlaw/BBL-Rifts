@@ -5,6 +5,10 @@ navigation:
     icon: 'rifts:tick_accelerator'
 
 item_ids:
+  - 'rifts:basic_rift_crusher'
+  - 'rifts:advanced_rift_crusher'
+  - 'rifts:elite_rift_crusher'
+  - 'rifts:ultimate_rift_crusher'
   - 'rifts:basic_tick_accelerator'
   - 'rifts:advanced_tick_accelerator'
   - 'rifts:elite_tick_accelerator'
@@ -13,13 +17,24 @@ item_ids:
 
 # Rift Machines
 
-## Rift Furnace
-A Rift Energy powered furnace that can smelt up to six different items at the same time. Is faster than a normal furnace. 
-<RecipeFor id="rifts:rift_furnace" /> 
+## Rift Powered Furnaces
+Rift Powered Furnaces come in 4 tiers, each tier smelts more items than the previous one.
+<Row>
+    <RecipeFor id="rifts:basic_rift_furnace" />
+    <RecipeFor id="rifts:advanced_rift_furnace" />
+    <RecipeFor id="rifts:elite_rift_furnace" />
+    <RecipeFor id="rifts:ultimate_rift_furnace" />
+</Row>
 
-## Rift Crusher
-Crushes Ores 
+## Rift Powered Crushers
+Rift Powered Crushers come in 4 tiers, each tier crushes more items than the previous one.
+<Row>
+    <RecipeFor id="rifts:basic_rift_crusher" />
+    <RecipeFor id="rifts:advanced_rift_crusher" />
+    <RecipeFor id="rifts:elite_rift_crusher" />
+    <RecipeFor id="rifts:ultimate_rift_crusher" />
+</Row>
 
 ## Tick Accelerators
-Tick Accelerators can be placed in the world to speed up the ticks rate of adjacent block entities. Each tier provides a stronger effect.
+Tick Accelerators come in 4 tiers and can be placed in the world to speed up the tick rate of adjacent block entities. Each tier provides a stronger effect.
 

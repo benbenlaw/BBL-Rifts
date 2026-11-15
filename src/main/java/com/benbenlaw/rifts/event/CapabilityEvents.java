@@ -8,6 +8,7 @@ import com.benbenlaw.rifts.block.capability.CreativeRiftEnergyHandler;
 import com.benbenlaw.rifts.block.capability.RiftEnergyViews;
 import com.benbenlaw.rifts.block.capability.RiftsCapabilities;
 import com.benbenlaw.rifts.block.pipe.RiftPipeNetworks;
+import com.benbenlaw.rifts.surge.RiftSurgeManager;
 import com.benbenlaw.rifts.world.RiftEnergyData;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -50,6 +51,12 @@ public class CapabilityEvents {
         event.registerBlockEntity(Capabilities.Item.BLOCK, RiftsBlockEntities.RIFT_CRUSHER_BLOCK_ENTITY.get(),
                 (crusher, side) -> crusher.getItemHandler());
 
+        event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, RiftsBlockEntities.RIFT_CONVERTER_BLOCK_ENTITY.get(),
+                (converter, side) -> RiftEnergyViews.insertOnly(converter.getRiftEnergyHandler()));
+
+        event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, RiftsBlockEntities.RIFT_SURGE_CORE_BLOCK_ENTITY.get(),
+                (core, side) -> RiftEnergyViews.insertOnly(core.getRiftEnergyHandler()));
+
         event.registerBlockEntity(RiftsCapabilities.RIFT_ENERGY, RiftsBlockEntities.RIFT_QUARRY_BLOCK_ENTITY.get(),
                 (quarry, side) -> RiftEnergyViews.insertOnly(quarry.getRiftEnergyHandler()));
 
@@ -71,6 +78,7 @@ public class CapabilityEvents {
     public static void onLevelTick(LevelTickEvent.Post event) {
         if (event.getLevel() instanceof ServerLevel serverLevel) {
             RiftPipeNetworks.tick(serverLevel);
+            RiftSurgeManager.tick(serverLevel);
             if (serverLevel.getGameTime() % 100 == 0) {
                 RiftEnergyData.get(serverLevel).tickDiffusion(serverLevel);
             }
@@ -85,6 +93,7 @@ public class CapabilityEvents {
 
     @SubscribeEvent
     public static void onServerStopped(ServerStoppedEvent event) {
+        RiftSurgeManager.clear();
         RiftPipeNetworks.clear();
         TickAcceleration.clear();
     }

@@ -2,6 +2,7 @@ package com.benbenlaw.rifts.screen.crusher;
 
 import com.benbenlaw.core.Core;
 import com.benbenlaw.rifts.Rifts;
+import com.benbenlaw.rifts.screen.MachineLayouts;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -14,12 +15,14 @@ import net.minecraft.world.entity.player.Inventory;
 import java.util.List;
 
 public class RiftCrusherScreen extends AbstractContainerScreen<RiftCrusherMenu> {
-    private static final Identifier TEXTURE = Rifts.identifier("textures/gui/rift_crusher_gui.png");
     private static final Identifier ENERGY_BAR = Rifts.identifier("energy_bar");
     private static final Identifier PROGRESS_ARROW = Core.identifier("progress_arrow");
 
+    private final Identifier texture;
+
     public RiftCrusherScreen(RiftCrusherMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title);
+        super(menu, inventory, title, 176, 166 + menu.getExtraHeight());
+        this.texture = Rifts.identifier("textures/gui/" + MachineLayouts.TIER_NAMES[MachineLayouts.tierOf(menu.getLines())] + "_rift_crusher_gui.png");
     }
 
     @Override
@@ -28,12 +31,16 @@ public class RiftCrusherScreen extends AbstractContainerScreen<RiftCrusherMenu> 
 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
+        int lines = menu.getLines();
 
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
 
-        if (menu.isCrushing()) {
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, PROGRESS_ARROW, 24, 16, 0, 0,
-                    x + RiftCrusherMenu.ARROW_X, y + RiftCrusherMenu.INPUT_Y, menu.getScaledProgress() + 1, 16);
+        for (int line = 0; line < lines; line++) {
+            if (menu.isCrushing(line)) {
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, PROGRESS_ARROW, 24, 16, 0, 0,
+                        x + MachineLayouts.crusherArrowX(line, lines), y + MachineLayouts.crusherInputY(line, lines),
+                        menu.getScaledProgress(line) + 1, 16);
+            }
         }
 
         if (menu.hasEnergy()) {

@@ -1,8 +1,10 @@
 package com.benbenlaw.rifts.entity;
 
 import com.benbenlaw.rifts.datamaps.DisplacerConversions;
-import com.benbenlaw.rifts.datamaps.RiftsDataMaps;
+import com.benbenlaw.rifts.data.worldgen.RiftsWorldGen;
+import com.benbenlaw.rifts.item.RiftsDataComponents;
 import com.benbenlaw.rifts.item.RiftsItems;
+import net.minecraft.resources.ResourceKey;
 import com.benbenlaw.rifts.particle.RiftParticleEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
@@ -34,11 +36,11 @@ public class DisplacerEntity extends ThrowableItemProjectile {
     }
 
     public DisplacerEntity(Level level, double x, double y, double z, ItemStack stack) {
-        super(EpochopolisEntities.DISPLACER.get(), x, y, z, level, stack);
+        super(RiftsEntities.DISPLACER.get(), x, y, z, level, stack);
     }
 
     public DisplacerEntity(ServerLevel serverLevel, LivingEntity livingEntity, ItemStack stack) {
-        super(EpochopolisEntities.DISPLACER.get(), livingEntity, serverLevel, stack);
+        super(RiftsEntities.DISPLACER.get(), livingEntity, serverLevel, stack);
     }
 
     @Override
@@ -49,7 +51,7 @@ public class DisplacerEntity extends ThrowableItemProjectile {
             return;
         }
 
-        DisplacerConversions config = getItem().typeHolder().getData(RiftsDataMaps.DISPLACER_HIT_RESULTS);
+        DisplacerConversions config = config(serverLevel);
         if (config == null || (config.conversions().isEmpty() && config.tagConversions().isEmpty())) {
             this.discard();
             return;
@@ -83,6 +85,11 @@ public class DisplacerEntity extends ThrowableItemProjectile {
         this.discard();
     }
 
+    private DisplacerConversions config(ServerLevel level) {
+        ResourceKey<Level> dimension = getItem().getOrDefault(RiftsDataComponents.DISPLACER_DIMENSION.get(), RiftsWorldGen.RIFT_LEVEL);
+        return DisplacerConversions.find(level.registryAccess(), dimension);
+    }
+
     private static Block findReplacement(DisplacerConversions config, BlockState state) {
         Block exact = config.conversions().get(state.getBlock());
         if (exact != null) {
@@ -114,7 +121,7 @@ public class DisplacerEntity extends ThrowableItemProjectile {
         super.onHitEntity(result);
 
         if (level() instanceof ServerLevel serverLevel && result.getEntity() instanceof Mob target) {
-            DisplacerConversions config = getItem().typeHolder().getData(RiftsDataMaps.DISPLACER_HIT_RESULTS);
+            DisplacerConversions config = config(serverLevel);
             EntityType<?> replacement = config == null ? null : config.entityConversions().get(target.getType());
             if (replacement != null) {
                 convert(serverLevel, target, (EntityType<? extends Mob>) replacement);

@@ -120,7 +120,6 @@ public class RiftsWorldGen {
                 HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
                 HolderGetter<WorldClock> clocks = context.lookup(Registries.WORLD_CLOCK);
 
-                // Based on the End: End skybox and a fixed time, but dark, with a little ambient light and no dragon fight
                 context.register(RIFT_DIMENSION_TYPE, new DimensionType(
                         true,
                         true,
@@ -160,7 +159,6 @@ public class RiftsWorldGen {
             .add(Registries.PLACED_FEATURE, context -> {
                 HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
 
-                // Pick a random point, find the floor below it, and plant a tree only if that floor is rift stone
                 PlacementUtils.register(context, RIFT_TREES, features.getOrThrow(RIFT_TREE),
                         CountPlacement.of(12),
                         InSquarePlacement.spread(),
@@ -198,8 +196,6 @@ public class RiftsWorldGen {
                                 noiseSettings.getOrThrow(RIFT_NOISE_SETTINGS))));
             });
 
-    // Scattered, separate islands: a flat-topped disc with a tapering underside wherever a sparse 2D mask noise is high.
-    // Solid where the result is above zero.
     private static DensityFunction islandDensity(HolderGetter<NormalNoise.NoiseParameters> noises) {
         Holder<NormalNoise.NoiseParameters> maskNoise = noises.getOrThrow(ISLAND_MASK_NOISE);
         Holder<NormalNoise.NoiseParameters> heightNoise = noises.getOrThrow(ISLAND_HEIGHT_NOISE);

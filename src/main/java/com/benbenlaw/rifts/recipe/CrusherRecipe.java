@@ -72,7 +72,6 @@ public record CrusherRecipe(SizedIngredient ingredient, SizedIngredient output, 
         buffer.writeInt(recipe.riftEnergyPerTick);
     }
 
-    // Tag outputs resolve to the first item in the tag; empty when the tag has no items (e.g. the other mod is missing)
     public static ItemStack resolve(SizedIngredient sized) {
         return sized.ingredient().items().findFirst()
                 .map(holder -> new ItemStackTemplate(holder.value(), sized.count()).create())

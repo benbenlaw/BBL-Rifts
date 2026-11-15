@@ -130,7 +130,6 @@ public class RiftQuarryBlockEntity extends SyncableBlockEntity implements MenuPr
                 }
             }
 
-            // A finished cycle waits here while the outputs are full instead of losing the roll
             if (progress >= maxProgress && produce(serverLevel, recipe)) {
                 progress = 0;
             }
@@ -151,7 +150,6 @@ public class RiftQuarryBlockEntity extends SyncableBlockEntity implements MenuPr
                 .orElse(null);
     }
 
-    // Rolls one result from the weighted list and stores it; false when there is no room (or nothing valid to roll)
     private boolean produce(ServerLevel serverLevel, QuarryRecipe recipe) {
         ItemStack result = recipe.roll(serverLevel.getRandom());
         if (result.isEmpty()) return true;

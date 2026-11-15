@@ -1,0 +1,18 @@
+{
+  "type": "rifts:portal_gun",
+  "category": "misc",
+  "key": {
+    "A": "rifts:rift_steel_ingot",
+    "B": "rifts:rift_pearl",
+    "C": "rifts:rift_storage",
+    "D": "#minecraft:dyes"
+  },
+  "pattern": [
+    "DBD",
+    "ACA",
+    " A "
+  ],
+  "result": {
+    "id": "rifts:rift_portal_gun"
+  }
+}

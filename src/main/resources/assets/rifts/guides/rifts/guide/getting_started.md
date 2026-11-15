@@ -3,6 +3,11 @@ navigation:
     title: Getting Started
     position: 1
     icon: 'rifts:rift_steel_ingot'
+item_ids:
+  - 'rifts:rift_steel_nugget'
+  - 'rifts:rift_steel_ingot'
+  - 'rifts:rift_steel_block'
+  - 'rifts:displacer'
 
 ---
 
@@ -12,7 +17,7 @@ navigation:
 To get started, you first need to get some Rift Steel Ingots. Initially these can be obtained from killing Rift Elementals which spawn when you throw a Displacer at an Iron Golem.
 
 ## Displacer
-A Displacer is an item that can be thrown to displace some blocks and entities in the area it lands in. For example, Logs become Rift Logs and Iron Golems become Rift Elementals.
+A Displacer is an item that can be thrown to pull blocks and entities from an alternative dimension to the current one. This will replace the current blocks and entities with these ones. The only craftable displacer you can make is the one for the Rift Dimension that when thrown will create Rift dimension stuff
 <RecipeFor id="rifts:displacer" />
 
 ## Rift Elemental
@@ -22,7 +27,7 @@ A strong mob that spawns when you throw a Displacer at an Iron Golem. It is very
 </GameScene>
 
 ## Rift Steel Armor
-Rift Steel Armor will protect you when you enter the Rift Dimension. It does not need to be powered to protect you inside the Rift Dimension but will not offer any actual protection until the armor is charged.
+Rift Steel Armor will protect you when you enter the Rift Dimension. It does not need to be powered to protect you inside the Rift Dimension but will not offer any actual protection until the armor is charged. When powered will grant flight inside the rift dimension
 <Row>
     <RecipeFor id="rifts:rift_steel_helmet" />
     <RecipeFor id="rifts:rift_steel_chestplate" />

@@ -7,38 +7,37 @@
   "processing_time": 80,
   "results": [
     {
-      "chance": 25,
+      "chance": 25.0,
       "item": {
         "count": 2,
-        "ingredient": "minecraft:diamond"
+        "id": "minecraft:diamond"
       }
     },
     {
-      "chance": 20,
+      "chance": 20.0,
       "item": {
         "count": 2,
-        "ingredient": "minecraft:emerald"
+        "id": "minecraft:emerald"
       }
     },
     {
-      "chance": 25,
+      "chance": 25.0,
       "item": {
         "count": 3,
-        "ingredient": "minecraft:raw_gold"
+        "id": "minecraft:raw_gold"
       }
     },
     {
-      "chance": 15,
+      "chance": 15.0,
       "item": {
         "count": 4,
-        "ingredient": "minecraft:quartz"
+        "id": "minecraft:quartz"
       }
     },
     {
-      "chance": 5,
+      "chance": 5.0,
       "item": {
-        "count": 1,
-        "ingredient": "minecraft:netherite_scrap"
+        "id": "minecraft:netherite_scrap"
       }
     }
   ],

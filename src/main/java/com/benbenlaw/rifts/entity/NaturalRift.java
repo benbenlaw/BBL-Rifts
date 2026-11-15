@@ -1,9 +1,10 @@
 package com.benbenlaw.rifts.entity;
 
+import net.minecraft.server.MinecraftServer;
 import com.benbenlaw.rifts.data.worldgen.RiftsWorldGen;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import com.benbenlaw.rifts.particle.RiftParticleEffects;
-import com.benbenlaw.rifts.util.EpochopolisTags;
+import com.benbenlaw.rifts.util.RiftsTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -46,10 +47,10 @@ public class NaturalRift extends Entity {
     private static final int ISLAND_MIN_CLEARANCE = 8;
 
     private int lifetime = PERMANENT;
+    private boolean decorative;
     private @Nullable GlobalPos destination;
     private @Nullable GlobalPos linkedArrival;
 
-    // Players who just travelled stay ignored by every rift until they have stood clear of all of them for a second
     private static final Map<UUID, Integer> BLOCKED_UNTIL = new HashMap<>();
     private static final int TRAVEL_COOLDOWN = 40;
     private static final int CLEAR_DELAY = 20;
@@ -58,6 +59,10 @@ public class NaturalRift extends Entity {
         super(type, level);
         this.noPhysics = true;
         this.setNoGravity(true);
+    }
+
+    public void setDecorative(boolean decorative) {
+        this.decorative = decorative;
     }
 
     public void setLifetime(int ticks) {
@@ -80,7 +85,7 @@ public class NaturalRift extends Entity {
             return;
         }
 
-        List<ServerPlayer> players = serverLevel.getEntitiesOfClass(ServerPlayer.class, getBoundingBox(), player -> !player.isSpectator());
+        List<ServerPlayer> players = decorative ? List.of() : serverLevel.getEntitiesOfClass(ServerPlayer.class, getBoundingBox(), player -> !player.isSpectator());
         int now = serverLevel.getServer().getTickCount();
         for (ServerPlayer player : players) {
             Integer until = BLOCKED_UNTIL.get(player.getUUID());
@@ -106,12 +111,12 @@ public class NaturalRift extends Entity {
 
     public static boolean wearsFullRiftArmor(ServerPlayer player) {
         for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
-            if (!player.getItemBySlot(slot).is(EpochopolisTags.Items.RIFT_PROTECTIVE_ARMOR)) return false;
+            if (!player.getItemBySlot(slot).is(RiftsTags.Items.RIFT_PROTECTIVE_ARMOR)) return false;
         }
         return true;
     }
 
-    public static void blockTravel(ServerPlayer player, net.minecraft.server.MinecraftServer server) {
+    public static void blockTravel(ServerPlayer player, MinecraftServer server) {
         BLOCKED_UNTIL.put(player.getUUID(), server.getTickCount() + TRAVEL_COOLDOWN);
     }
 
@@ -148,7 +153,6 @@ public class NaturalRift extends Entity {
         RiftParticleEffects.burst(target, arrival.x, arrival.y + 1.0, arrival.z, 30, 0.4);
     }
 
-    // Reads the terrain noise directly so searching does not generate the chunks it rejects
     private static BlockPos findIslandSpot(ServerLevel level, int x, int z) {
         ChunkGenerator generator = level.getChunkSource().getGenerator();
         RandomState randomState = level.getChunkSource().randomState();
@@ -172,7 +176,6 @@ public class NaturalRift extends Entity {
         return null;
     }
 
-    // Only counts spots with island under all four sides, so the rift is not put on a crumbling edge
     private static int islandHeight(ChunkGenerator generator, RandomState randomState, ServerLevel level, int x, int z) {
         int centre = generator.getBaseHeight(x, z, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, level, randomState);
         if (centre <= level.getMinY() + ISLAND_MIN_CLEARANCE) return -1;
@@ -188,7 +191,6 @@ public class NaturalRift extends Entity {
         return new Vec3(x + 0.5, level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z), z + 0.5);
     }
 
-    // Prefers the exact spot the rift stood, nudging up or down a little if that is no longer standable
     public static Vec3 safeNear(ServerLevel level, BlockPos pos) {
         level.getChunk(pos.getX() >> 4, pos.getZ() >> 4);
         for (int offset = 0; offset <= 8; offset++) {
@@ -209,7 +211,6 @@ public class NaturalRift extends Entity {
                 && !level.getBlockState(feet.below()).getCollisionShape(level, feet.below()).isEmpty();
     }
 
-    // Opens on the nearest piece of island to the matching x/z, and only raises a small platform if there is none nearby
     private static BlockPos createArrival(ServerLevel level, ServerLevel origin, BlockPos originPos) {
         int x = originPos.getX();
         int z = originPos.getZ();
@@ -229,7 +230,7 @@ public class NaturalRift extends Entity {
             level.setBlockAndUpdate(feet.above(dy), Blocks.AIR.defaultBlockState());
         }
 
-        NaturalRift back = EpochopolisEntities.NATURAL_RIFT.get().create(level, EntitySpawnReason.EVENT);
+        NaturalRift back = RiftsEntities.NATURAL_RIFT.get().create(level, EntitySpawnReason.EVENT);
         if (back != null) {
             back.setPos(feet.getX() + 0.5, feet.getY(), feet.getZ() + 0.5);
             back.setDestination(GlobalPos.of(origin.dimension(), originPos));
@@ -255,6 +256,7 @@ public class NaturalRift extends Entity {
     @Override
     protected void readAdditionalSaveData(@NotNull ValueInput input) {
         lifetime = input.getIntOr("lifetime", PERMANENT);
+        decorative = input.getBooleanOr("decorative", false);
         destination = input.read("destination", GlobalPos.CODEC).orElse(null);
         linkedArrival = input.read("linkedArrival", GlobalPos.CODEC).orElse(null);
     }
@@ -262,6 +264,7 @@ public class NaturalRift extends Entity {
     @Override
     protected void addAdditionalSaveData(@NotNull ValueOutput output) {
         output.putInt("lifetime", lifetime);
+        output.putBoolean("decorative", decorative);
         output.storeNullable("destination", GlobalPos.CODEC, destination);
         output.storeNullable("linkedArrival", GlobalPos.CODEC, linkedArrival);
     }

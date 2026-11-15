@@ -1,7 +1,7 @@
 package com.benbenlaw.rifts.block.accelerator;
 
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
-import com.benbenlaw.rifts.util.EpochopolisTags;
+import com.benbenlaw.rifts.util.RiftsTags;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -29,7 +29,7 @@ public class TickAcceleration {
         if (!level.isLoaded(pos)) return false;
 
         BlockState state = level.getBlockState(pos);
-        if (state.isAir() || state.is(EpochopolisTags.Blocks.TICK_ACCELERATOR_BLACKLIST)) return false;
+        if (state.isAir() || state.is(RiftsTags.Blocks.TICK_ACCELERATOR_BLACKLIST)) return false;
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity != null && ticker(level, state, blockEntity) != null) return true;
@@ -37,7 +37,6 @@ public class TickAcceleration {
         return state.isRandomlyTicking();
     }
 
-    // Accelerators touching the same block add their extra ticks together, up to a per-tick cap
     public static int reserve(ServerLevel level, BlockPos pos, int requested) {
         ResourceKey<Level> dimension = level.dimension();
         long now = level.getGameTime();

@@ -3,7 +3,7 @@ package com.benbenlaw.rifts.screen.generator;
 import com.benbenlaw.core.screen.SimpleAbstractContainerMenu;
 import com.benbenlaw.core.screen.util.slot.InputSlot;
 import com.benbenlaw.rifts.block.entity.RiftGeneratorBlockEntity;
-import com.benbenlaw.rifts.screen.EpochopolisMenuTypes;
+import com.benbenlaw.rifts.screen.RiftsMenuTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,7 +25,7 @@ public class RiftGeneratorMenu extends SimpleAbstractContainerMenu {
     }
 
     public RiftGeneratorMenu(int containerID, Inventory inventory, BlockPos pos, ContainerData data) {
-        super(EpochopolisMenuTypes.RIFT_GENERATOR_MENU.get(), containerID, inventory, pos, 4);
+        super(RiftsMenuTypes.RIFT_GENERATOR_MENU.get(), containerID, inventory, pos, 4);
         this.player = inventory.player;
         this.level = inventory.player.level();
         this.data = data;

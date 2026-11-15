@@ -1,0 +1,15 @@
+{
+  "type": "rifts:converter",
+  "from_dimension": "minecraft:overworld",
+  "input": {
+    "Name": "minecraft:diamond_block"
+  },
+  "output": {
+    "block_state": {
+      "Name": "minecraft:emerald_block"
+    }
+  },
+  "processing_time": 400,
+  "rift_energy_per_tick": 400,
+  "to_dimension": "rifts:rift"
+}

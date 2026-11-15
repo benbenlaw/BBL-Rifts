@@ -4,10 +4,13 @@ import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.recipe.CrusherRecipe;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import com.benbenlaw.rifts.datamaps.DisplacerConversions;
-import com.benbenlaw.rifts.datamaps.RiftsDataMaps;
+import com.benbenlaw.rifts.datamaps.ClientDisplacerData;
 import com.benbenlaw.rifts.event.client.ClientRecipeCache;
+import com.benbenlaw.rifts.item.RiftsDataComponents;
 import com.benbenlaw.rifts.item.RiftsItems;
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.registration.ISubtypeRegistration;
+import net.minecraft.resources.ResourceKey;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -44,15 +47,18 @@ public class JeiRiftsPlugin implements IModPlugin {
         registration.addRecipeCategories(new CrusherCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new InfuserCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new QuarryCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new ConverterCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addCraftingStation(DisplacerConversionCategory.RECIPE_TYPE, new ItemStack(RiftsItems.DISPLACER.get()));
-        registration.addCraftingStation(RecipeTypes.SMELTING, new ItemStack(RiftsBlocks.RIFT_FURNACE.get()));
-        registration.addCraftingStation(CrusherCategory.RECIPE_TYPE, new ItemStack(RiftsBlocks.RIFT_CRUSHER.get()));
+        ClientDisplacerData.get().keySet().forEach(dimension ->
+                registration.addCraftingStation(DisplacerConversionCategory.RECIPE_TYPE, displacerFor(dimension)));
+        RiftsBlocks.RIFT_FURNACES.forEach(block -> registration.addCraftingStation(RecipeTypes.SMELTING, new ItemStack(block.get())));
+        RiftsBlocks.RIFT_CRUSHERS.forEach(block -> registration.addCraftingStation(CrusherCategory.RECIPE_TYPE, new ItemStack(block.get())));
         registration.addCraftingStation(InfuserCategory.RECIPE_TYPE, new ItemStack(RiftsBlocks.RIFT_INFUSER.get()));
         registration.addCraftingStation(QuarryCategory.RECIPE_TYPE, new ItemStack(RiftsBlocks.RIFT_QUARRY.get()));
+        registration.addCraftingStation(ConverterCategory.RECIPE_TYPE, new ItemStack(RiftsBlocks.RIFT_CONVERTER.get()));
     }
 
     @Override
@@ -62,8 +68,14 @@ public class JeiRiftsPlugin implements IModPlugin {
                 .map(entry -> new CrusherJeiRecipe(entry.getKey(), entry.getValue()))
                 .toList());
 
+        registration.addRecipes(ConverterCategory.RECIPE_TYPE, ClientRecipeCache.getConverterRecipes().entrySet().stream()
+                .filter(entry -> !ConverterCategory.inputStacks(entry.getValue().input()).isEmpty()
+                        && !ConverterCategory.displayStack(entry.getValue().output().state()).isEmpty())
+                .map(entry -> new ConverterJeiRecipe(entry.getKey(), entry.getValue()))
+                .toList());
+
         registration.addRecipes(QuarryCategory.RECIPE_TYPE, ClientRecipeCache.getQuarryRecipes().entrySet().stream()
-                .filter(entry -> !entry.getValue().validResults().isEmpty())
+                .filter(entry -> !entry.getValue().results().isEmpty())
                 .map(entry -> new QuarryJeiRecipe(entry.getKey(), entry.getValue()))
                 .toList());
 
@@ -71,18 +83,37 @@ public class JeiRiftsPlugin implements IModPlugin {
                 .map(entry -> new InfuserJeiRecipe(entry.getKey(), entry.getValue()))
                 .toList());
 
-        DisplacerConversions config = RiftsItems.DISPLACER.get().builtInRegistryHolder().getData(RiftsDataMaps.DISPLACER_HIT_RESULTS);
-        if (config == null) return;
-
         List<DisplacerConversionRecipe> recipes = new ArrayList<>();
+
+        for (Map.Entry<ResourceKey<Level>, DisplacerConversions> dimension : ClientDisplacerData.get().entrySet()) {
+            addDisplacerRecipes(recipes, dimension.getKey(), dimension.getValue());
+        }
+
+        registration.addRecipes(DisplacerConversionCategory.RECIPE_TYPE, recipes);
+    }
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistration registration) {
+        registration.registerFromDataComponentTypes(RiftsItems.DISPLACER.get(), RiftsDataComponents.DISPLACER_DIMENSION.get());
+    }
+
+    private static ItemStack displacerFor(ResourceKey<Level> dimension) {
+        ItemStack stack = new ItemStack(RiftsItems.DISPLACER.get());
+        stack.set(RiftsDataComponents.DISPLACER_DIMENSION.get(), dimension);
+        return stack;
+    }
+
+    private static void addDisplacerRecipes(List<DisplacerConversionRecipe> recipes, ResourceKey<Level> dimension, DisplacerConversions config) {
+        ItemStack displacer = displacerFor(dimension);
+        String prefix = dimension.identifier().toString().replace(':', '/') + "/";
 
         for (Map.Entry<Block, Block> entry : config.conversions().entrySet()) {
             ItemStack input = displayStack(entry.getKey());
             ItemStack output = displayStack(entry.getValue());
             if (input.isEmpty() || output.isEmpty()) continue;
 
-            recipes.add(new DisplacerConversionRecipe("block/" + BuiltInRegistries.BLOCK.getKey(entry.getKey()).toString().replace(':', '/'),
-                    List.of(input), output));
+            recipes.add(new DisplacerConversionRecipe(prefix + "block/" + BuiltInRegistries.BLOCK.getKey(entry.getKey()).toString().replace(':', '/'),
+                    displacer, List.of(input), output));
         }
 
         for (Map.Entry<TagKey<Block>, Block> entry : config.tagConversions().entrySet()) {
@@ -94,8 +125,8 @@ public class JeiRiftsPlugin implements IModPlugin {
             ItemStack output = displayStack(entry.getValue());
             if (inputs.isEmpty() || output.isEmpty()) continue;
 
-            recipes.add(new DisplacerConversionRecipe("tag/" + entry.getKey().location().toString().replace(':', '/'),
-                    inputs, output));
+            recipes.add(new DisplacerConversionRecipe(prefix + "tag/" + entry.getKey().location().toString().replace(':', '/'),
+                    displacer, inputs, output));
         }
 
         for (Map.Entry<EntityType<?>, EntityType<?>> entry : config.entityConversions().entrySet()) {
@@ -103,11 +134,9 @@ public class JeiRiftsPlugin implements IModPlugin {
             ItemStack output = spawnEgg(entry.getValue());
             if (input.isEmpty() || output.isEmpty()) continue;
 
-            recipes.add(new DisplacerConversionRecipe("entity/" + BuiltInRegistries.ENTITY_TYPE.getKey(entry.getKey()).toString().replace(':', '/'),
-                    List.of(input), output));
+            recipes.add(new DisplacerConversionRecipe(prefix + "entity/" + BuiltInRegistries.ENTITY_TYPE.getKey(entry.getKey()).toString().replace(':', '/'),
+                    displacer, List.of(input), output));
         }
-
-        registration.addRecipes(DisplacerConversionCategory.RECIPE_TYPE, recipes);
     }
 
     private static ItemStack displayStack(Block block) {

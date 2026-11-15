@@ -3,7 +3,7 @@ package com.benbenlaw.rifts.screen.charger;
 import com.benbenlaw.core.screen.SimpleAbstractContainerMenu;
 import com.benbenlaw.core.screen.util.slot.InputSlot;
 import com.benbenlaw.rifts.block.entity.RiftChargerBlockEntity;
-import com.benbenlaw.rifts.screen.EpochopolisMenuTypes;
+import com.benbenlaw.rifts.screen.RiftsMenuTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,7 +23,7 @@ public class RiftChargerMenu extends SimpleAbstractContainerMenu {
     }
 
     public RiftChargerMenu(int containerID, Inventory inventory, BlockPos pos, ContainerData data) {
-        super(EpochopolisMenuTypes.RIFT_CHARGER_MENU.get(), containerID, inventory, pos, RiftChargerBlockEntity.SLOTS);
+        super(RiftsMenuTypes.RIFT_CHARGER_MENU.get(), containerID, inventory, pos, RiftChargerBlockEntity.SLOTS);
         this.data = data;
 
         RiftChargerBlockEntity blockEntity = (RiftChargerBlockEntity) inventory.player.level().getBlockEntity(pos);

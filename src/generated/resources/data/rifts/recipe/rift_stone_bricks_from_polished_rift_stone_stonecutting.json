@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "rifts:polished_rift_stone",
+  "result": {
+    "id": "rifts:rift_stone_bricks"
+  }
+}

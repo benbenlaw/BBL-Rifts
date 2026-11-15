@@ -1,5 +1,6 @@
 package com.benbenlaw.rifts.data.custom;
 
+import com.benbenlaw.core.recipe.ChanceResult;
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.recipe.QuarryRecipe;
 import net.minecraft.advancements.Advancement;
@@ -30,7 +31,7 @@ public class QuarryRecipeBuilder implements RecipeBuilder {
 
     protected String group;
     protected final SizedIngredient focus;
-    protected final List<QuarryRecipe.Result> results = new ArrayList<>();
+    protected final List<ChanceResult> results = new ArrayList<>();
     protected int processingTime = DEFAULT_PROCESSING_TIME;
     protected int riftEnergyPerTick = DEFAULT_ENERGY_PER_TICK;
     protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
@@ -43,8 +44,8 @@ public class QuarryRecipeBuilder implements RecipeBuilder {
         return new QuarryRecipeBuilder(focus);
     }
 
-    public QuarryRecipeBuilder result(SizedIngredient item, int chance) {
-        this.results.add(new QuarryRecipe.Result(java.util.Optional.of(item), chance));
+    public QuarryRecipeBuilder result(ItemStackTemplate item, float chance) {
+        this.results.add(new ChanceResult(item, chance));
         return this;
     }
 

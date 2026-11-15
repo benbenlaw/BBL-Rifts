@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_polished_rift_stone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rifts:polished_rift_stone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rifts:rift_stone_bricks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_polished_rift_stone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rifts:rift_stone_bricks"
+    ]
+  }
+}

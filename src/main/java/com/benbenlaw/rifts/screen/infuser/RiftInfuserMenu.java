@@ -4,7 +4,7 @@ import com.benbenlaw.core.screen.SimpleAbstractContainerMenu;
 import com.benbenlaw.core.screen.util.slot.InputSlot;
 import com.benbenlaw.core.screen.util.slot.ResultSlot;
 import com.benbenlaw.rifts.block.entity.RiftInfuserBlockEntity;
-import com.benbenlaw.rifts.screen.EpochopolisMenuTypes;
+import com.benbenlaw.rifts.screen.RiftsMenuTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,7 +26,7 @@ public class RiftInfuserMenu extends SimpleAbstractContainerMenu {
     }
 
     public RiftInfuserMenu(int containerID, Inventory inventory, BlockPos pos, ContainerData data) {
-        super(EpochopolisMenuTypes.RIFT_INFUSER_MENU.get(), containerID, inventory, pos, 5);
+        super(RiftsMenuTypes.RIFT_INFUSER_MENU.get(), containerID, inventory, pos, 5);
         this.player = inventory.player;
         this.level = inventory.player.level();
         this.data = data;

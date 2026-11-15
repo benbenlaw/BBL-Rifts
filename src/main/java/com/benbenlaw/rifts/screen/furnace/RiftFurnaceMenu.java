@@ -4,54 +4,76 @@ import com.benbenlaw.core.screen.SimpleAbstractContainerMenu;
 import com.benbenlaw.core.screen.util.slot.InputSlot;
 import com.benbenlaw.core.screen.util.slot.ResultSlot;
 import com.benbenlaw.rifts.block.entity.RiftFurnaceBlockEntity;
-import com.benbenlaw.rifts.screen.EpochopolisMenuTypes;
+import com.benbenlaw.rifts.screen.RiftsMenuTypes;
+import com.benbenlaw.rifts.screen.MachineLayouts;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
 
 public class RiftFurnaceMenu extends SimpleAbstractContainerMenu {
 
-    public static final int LINES = RiftFurnaceBlockEntity.LINES;
-    public static final int[] INPUT_X = {34, 104};
-    public static final int[] OUTPUT_X = {80, 150};
-    public static final int[] ROW_Y = {16, 34, 52};
-    public static final int ARROW_OFFSET = 19;
-
+    private final int lines;
     protected ContainerData data;
 
-    public RiftFurnaceMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(LINES * 2 + 4));
+    public RiftFurnaceMenu(int tier, int containerID, Inventory inventory, FriendlyByteBuf extraData) {
+        this(tier, containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(MachineLayouts.TIER_LINES[tier] * 2 + 4));
     }
 
-    public RiftFurnaceMenu(int containerID, Inventory inventory, BlockPos pos, ContainerData data) {
-        super(EpochopolisMenuTypes.RIFT_FURNACE_MENU.get(), containerID, inventory, pos, LINES * 2);
+    public RiftFurnaceMenu(int tier, int containerID, Inventory inventory, BlockPos pos, ContainerData data) {
+        super(RiftsMenuTypes.RIFT_FURNACE_MENUS.get(tier).get(), containerID, inventory, pos, MachineLayouts.TIER_LINES[tier] * 2);
+        this.lines = MachineLayouts.TIER_LINES[tier];
         this.data = data;
 
         RiftFurnaceBlockEntity blockEntity = (RiftFurnaceBlockEntity) inventory.player.level().getBlockEntity(pos);
         assert blockEntity != null;
 
-        for (int line = 0; line < LINES; line++) {
-            this.addSlot(new InputSlot(blockEntity.getItemHandler(), blockEntity.getItemHandler()::set, line, inputX(line), rowY(line)));
+        for (int line = 0; line < lines; line++) {
+            this.addSlot(new InputSlot(blockEntity.getItemHandler(), blockEntity.getItemHandler()::set, line,
+                    MachineLayouts.furnaceInputX(line, lines), MachineLayouts.furnaceRowY(line, lines)));
         }
-        for (int line = 0; line < LINES; line++) {
-            this.addSlot(new ResultSlot(blockEntity.getItemHandler(), blockEntity.getItemHandler()::set, LINES + line, outputX(line), rowY(line)));
+        for (int line = 0; line < lines; line++) {
+            this.addSlot(new ResultSlot(blockEntity.getItemHandler(), blockEntity.getItemHandler()::set, lines + line,
+                    MachineLayouts.furnaceOutputX(line, lines), MachineLayouts.furnaceRowY(line, lines)));
         }
 
         this.addDataSlots(data);
     }
 
-    public static int inputX(int line) {
-        return INPUT_X[line / ROW_Y.length];
+    private static int linesOf(MenuType<?> type) {
+        for (int tier = 0; tier < MachineLayouts.TIER_LINES.length; tier++) {
+            if (RiftsMenuTypes.RIFT_FURNACE_MENUS.get(tier).get() == type) return MachineLayouts.TIER_LINES[tier];
+        }
+        return MachineLayouts.TIER_LINES[0];
     }
 
-    public static int outputX(int line) {
-        return OUTPUT_X[line / ROW_Y.length];
+    @Override
+    protected void addPlayerInventory(Inventory playerInventory) {
+        int extra = MachineLayouts.furnaceExtraHeight(linesOf(getType()));
+        for (int i = 0; i < 3; ++i) {
+            for (int l = 0; l < 9; ++l) {
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 84 + extra + i * 18));
+            }
+        }
     }
 
-    public static int rowY(int line) {
-        return ROW_Y[line % ROW_Y.length];
+    @Override
+    protected void addPlayerHotbar(Inventory playerInventory) {
+        int extra = MachineLayouts.furnaceExtraHeight(linesOf(getType()));
+        for (int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142 + extra));
+        }
+    }
+
+    public int getLines() {
+        return lines;
+    }
+
+    public int getExtraHeight() {
+        return MachineLayouts.furnaceExtraHeight(lines);
     }
 
     public boolean isCooking(int line) {
@@ -60,18 +82,18 @@ public class RiftFurnaceMenu extends SimpleAbstractContainerMenu {
 
     public int getScaledProgress(int line) {
         int progress = data.get(line);
-        int maxProgress = data.get(LINES + line);
+        int maxProgress = data.get(lines + line);
         int arrowSize = 24;
 
         return maxProgress != 0 && progress != 0 ? progress * arrowSize / maxProgress : 0;
     }
 
     public int getEnergy() {
-        return (data.get(LINES * 2) & 0xFFFF) | (data.get(LINES * 2 + 1) << 16);
+        return (data.get(lines * 2) & 0xFFFF) | (data.get(lines * 2 + 1) << 16);
     }
 
     public int getCapacity() {
-        return (data.get(LINES * 2 + 2) & 0xFFFF) | (data.get(LINES * 2 + 3) << 16);
+        return (data.get(lines * 2 + 2) & 0xFFFF) | (data.get(lines * 2 + 3) << 16);
     }
 
     public boolean hasEnergy() {

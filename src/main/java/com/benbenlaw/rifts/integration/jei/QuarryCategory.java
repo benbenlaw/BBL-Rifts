@@ -1,13 +1,14 @@
 package com.benbenlaw.rifts.integration.jei;
 
+import com.benbenlaw.core.recipe.ChanceResult;
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.block.RiftsBlocks;
-import com.benbenlaw.rifts.event.client.ClientRecipeCache;
 import com.benbenlaw.rifts.recipe.QuarryRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -30,27 +31,23 @@ public class QuarryCategory implements IRecipeCategory<QuarryJeiRecipe> {
     public static final IRecipeType<QuarryJeiRecipe> RECIPE_TYPE =
             IRecipeType.create(Rifts.identifier("quarry"), QuarryJeiRecipe.class);
 
-    private static final int COLUMNS = 6;
-    private static final int FOCUS_X = 4;
-    private static final int ARROW_X = 28;
-    private static final int RESULTS_X = 58;
+    private static final int COLUMNS = 4;
+    private static final int VISIBLE_ROWS = 2;
+    private static final int SCROLL_BAR_WIDTH = 12;
+    private static final int FOCUS_X = 2;
+    private static final int ARROW_X = 22;
+    private static final int RESULTS_X = 46;
     private static final int ARROW_WIDTH = 24;
     private static final int ARROW_HEIGHT = 17;
     private static final int SLOT = 18;
-    private static final int PADDING = 4;
-    private static final int WIDTH = RESULTS_X + COLUMNS * SLOT + PADDING;
+    private static final int PADDING = 2;
+    private static final int WIDTH = RESULTS_X + COLUMNS * SLOT + SCROLL_BAR_WIDTH + PADDING;
+    private static final int HEIGHT = VISIBLE_ROWS * SLOT + PADDING * 2;
 
     private final IDrawable icon;
-    private final int height;
 
     public QuarryCategory(IGuiHelper helper) {
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(RiftsBlocks.RIFT_QUARRY.get()));
-
-        // Tall enough to show every result of the largest recipe
-        int mostResults = ClientRecipeCache.getQuarryRecipes().values().stream()
-                .mapToInt(recipe -> recipe.validResults().size()).max().orElse(COLUMNS);
-        int rows = Math.max(2, (mostResults + COLUMNS - 1) / COLUMNS);
-        this.height = rows * SLOT + PADDING * 2;
     }
 
     @Override
@@ -70,7 +67,7 @@ public class QuarryCategory implements IRecipeCategory<QuarryJeiRecipe> {
 
     @Override
     public int getHeight() {
-        return height;
+        return HEIGHT;
     }
 
     @Override
@@ -86,7 +83,7 @@ public class QuarryCategory implements IRecipeCategory<QuarryJeiRecipe> {
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, QuarryJeiRecipe jeiRecipe, IFocusGroup focuses) {
         QuarryRecipe recipe = jeiRecipe.recipe();
-        int centreY = (height - SLOT) / 2;
+        int centreY = (HEIGHT - SLOT) / 2;
 
         builder.addSlot(RecipeIngredientRole.INPUT, FOCUS_X, centreY)
                 .setStandardSlotBackground()
@@ -94,33 +91,41 @@ public class QuarryCategory implements IRecipeCategory<QuarryJeiRecipe> {
                         .map(holder -> new ItemStack(holder.value(), recipe.focus().count()))
                         .toList());
 
-        int total = recipe.totalChance();
-        List<QuarryRecipe.Result> results = recipe.validResults();
+        float total = recipe.totalChance();
+        List<ChanceResult> results = recipe.results();
         for (int i = 0; i < results.size(); i++) {
-            QuarryRecipe.Result result = results.get(i);
+            ChanceResult result = results.get(i);
             double percent = total <= 0 ? 0 : result.chance() * 100.0 / total;
 
-            builder.addSlot(RecipeIngredientRole.OUTPUT, RESULTS_X + (i % COLUMNS) * SLOT, PADDING + (i / COLUMNS) * SLOT)
+            boolean visible = i < COLUMNS * VISIBLE_ROWS;
+            int slotX = visible ? RESULTS_X + (i % COLUMNS) * SLOT : RESULTS_X;
+            int slotY = visible ? PADDING + (i / COLUMNS) * SLOT : PADDING;
+
+            builder.addSlot(RecipeIngredientRole.OUTPUT, slotX, slotY)
                     .setStandardSlotBackground()
-                    .add(result.resolve())
+                    .add(result.template().create())
                     .addRichTooltipCallback((slotView, tooltip) ->
                             tooltip.add(Component.translatable("jei.rifts.chance", formatPercent(percent)).withStyle(ChatFormatting.GOLD)));
         }
     }
 
-    // Whole percentages read as in the cloche (50%), odd weights keep one decimal (7.5%)
     private static String formatPercent(double percent) {
         return Math.abs(percent - Math.rint(percent)) < 0.05 ? String.valueOf((long) Math.rint(percent)) : String.format(Locale.ROOT, "%.1f", percent);
     }
 
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, QuarryJeiRecipe jeiRecipe, IFocusGroup focuses) {
-        builder.addRecipeArrow().setPosition(ARROW_X, (height - ARROW_HEIGHT) / 2);
+        builder.addRecipeArrow().setPosition(ARROW_X, (HEIGHT - ARROW_HEIGHT) / 2);
+
+        List<IRecipeSlotDrawable> outputs = builder.getRecipeSlots().getSlots(RecipeIngredientRole.OUTPUT);
+        if (outputs.size() > COLUMNS * VISIBLE_ROWS) {
+            builder.addScrollGridWidget(outputs, COLUMNS, VISIBLE_ROWS).setPosition(RESULTS_X, PADDING);
+        }
     }
 
     @Override
     public void getTooltip(ITooltipBuilder tooltip, QuarryJeiRecipe jeiRecipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        int arrowY = (height - ARROW_HEIGHT) / 2;
+        int arrowY = (HEIGHT - ARROW_HEIGHT) / 2;
         if (mouseX >= ARROW_X && mouseX < ARROW_X + ARROW_WIDTH && mouseY >= arrowY && mouseY < arrowY + ARROW_HEIGHT) {
             QuarryRecipe recipe = jeiRecipe.recipe();
             tooltip.add(Component.translatable("jei.rifts.quarry.energy", recipe.riftEnergyPerTick(), recipe.processingTime()));

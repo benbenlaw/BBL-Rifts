@@ -1,0 +1,15 @@
+{
+  "type": "rifts:converter",
+  "from_dimension": "minecraft:overworld",
+  "input": {
+    "Name": "minecraft:iron_block"
+  },
+  "output": {
+    "block_state": {
+      "Name": "minecraft:gold_block"
+    }
+  },
+  "processing_time": 300,
+  "rift_energy_per_tick": 300,
+  "to_dimension": "minecraft:the_nether"
+}

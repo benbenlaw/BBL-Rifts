@@ -7,45 +7,43 @@
   "processing_time": 200,
   "results": [
     {
-      "chance": 40,
+      "chance": 40.0,
       "item": {
         "count": 4,
-        "ingredient": "minecraft:cobblestone"
+        "id": "minecraft:cobblestone"
       }
     },
     {
-      "chance": 20,
+      "chance": 20.0,
       "item": {
         "count": 2,
-        "ingredient": "minecraft:gravel"
+        "id": "minecraft:gravel"
       }
     },
     {
-      "chance": 20,
+      "chance": 20.0,
       "item": {
         "count": 2,
-        "ingredient": "minecraft:sand"
+        "id": "minecraft:sand"
       }
     },
     {
-      "chance": 8,
+      "chance": 8.0,
       "item": {
-        "count": 1,
-        "ingredient": "minecraft:flint"
+        "id": "minecraft:flint"
       }
     },
     {
-      "chance": 8,
+      "chance": 8.0,
       "item": {
         "count": 2,
-        "ingredient": "minecraft:coal"
+        "id": "minecraft:coal"
       }
     },
     {
-      "chance": 4,
+      "chance": 4.0,
       "item": {
-        "count": 1,
-        "ingredient": "minecraft:raw_iron"
+        "id": "minecraft:raw_iron"
       }
     }
   ],

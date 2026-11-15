@@ -1,15 +1,17 @@
 package com.benbenlaw.rifts.item;
 
 import com.benbenlaw.rifts.Rifts;
-import com.benbenlaw.rifts.entity.EpochopolisEntities;
+import com.benbenlaw.rifts.entity.RiftsEntities;
 import com.benbenlaw.rifts.item.energy.RiftArmorItem;
 import com.benbenlaw.rifts.item.energy.RiftAxeItem;
 import com.benbenlaw.rifts.item.energy.RiftHoeItem;
 import com.benbenlaw.rifts.item.energy.RiftShovelItem;
 import com.benbenlaw.rifts.item.energy.RiftToolItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.equipment.ArmorType;
+import com.benbenlaw.rifts.data.worldgen.RiftsWorldGen;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -17,14 +19,15 @@ public class RiftsItems {
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Rifts.MOD_ID);
 
-    public static final DeferredItem<Item> DISPLACER = ITEMS.registerItem("displacer", DisplacerItem::new);
+    public static final DeferredItem<Item> DISPLACER = ITEMS.registerItem("displacer",
+            properties -> new DisplacerItem(properties.component(RiftsDataComponents.DISPLACER_DIMENSION.get(), RiftsWorldGen.RIFT_LEVEL)));
 
     public static final DeferredItem<Item> RIFT_STEEL_INGOT = ITEMS.registerItem("rift_steel_ingot", Item::new);
     public static final DeferredItem<Item> RIFT_STEEL_NUGGET = ITEMS.registerItem("rift_steel_nugget", Item::new);
     public static final DeferredItem<Item> RIFT_PEARL = ITEMS.registerItem("rift_pearl", Item::new);
 
     public static final DeferredItem<Item> RIFT_ELEMENTAL_SPAWN_EGG = ITEMS.registerItem("rift_elemental_spawn_egg",
-            properties -> new SpawnEggItem(properties.spawnEgg(EpochopolisEntities.RIFT_ELEMENTAL.get())));
+            properties -> new SpawnEggItem(properties.spawnEgg(RiftsEntities.RIFT_ELEMENTAL.get())));
 
     public static final DeferredItem<Item> RIFT_STEEL_SWORD = ITEMS.registerItem("rift_steel_sword",
             properties -> new RiftToolItem(properties.sword(RiftsMaterials.RIFT_STEEL_TOOLS, 3.0F, -2.4F)));
@@ -70,6 +73,11 @@ public class RiftsItems {
 
     public static final DeferredItem<Item> RIFT_WRENCH = ITEMS.registerItem("rift_wrench",
             properties -> new Item(properties.stacksTo(1)));
+
+    public static final DeferredItem<Item> RIFT_PORTAL_GUN = ITEMS.registerItem("rift_portal_gun",
+            properties -> new RiftPortalGunItem(properties.stacksTo(1)
+                    .component(RiftsDataComponents.PORTAL_GUN_FIRST_COLOR.get(), DyeColor.BLUE)
+                    .component(RiftsDataComponents.PORTAL_GUN_SECOND_COLOR.get(), DyeColor.ORANGE)));
 
     public static final DeferredItem<Item> RIFT_SCANNER = ITEMS.registerItem("rift_scanner",
             properties -> new RiftScannerItem(properties.stacksTo(1)));

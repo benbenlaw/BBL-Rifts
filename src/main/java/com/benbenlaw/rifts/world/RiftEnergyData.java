@@ -3,7 +3,7 @@ package com.benbenlaw.rifts.world;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
 import com.benbenlaw.rifts.datamaps.RiftsDataMaps;
 import com.benbenlaw.rifts.datamaps.RiftEnergyModifier;
-import com.benbenlaw.rifts.entity.EpochopolisEntities;
+import com.benbenlaw.rifts.entity.RiftsEntities;
 import com.benbenlaw.rifts.entity.RiftElemental;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -97,7 +97,6 @@ public class RiftEnergyData extends SavedData {
         return (float) (1.0 + n * RiftsStartupConfig.CHUNK_NOISE_VARIATION.get());
     }
 
-    // Uncached noise biome so sampling neighbours never loads or generates their chunks
     private float biomeMultiplier(ServerLevel level, ChunkPos pos) {
         var biome = level.getUncachedNoiseBiome(QuartPos.fromBlock(pos.getMiddleBlockX()), QuartPos.fromBlock(level.getSeaLevel()), QuartPos.fromBlock(pos.getMiddleBlockZ()));
         RiftEnergyModifier modifier = biome.getData(RiftsDataMaps.BIOME_RIFT_ENERGY);
@@ -202,14 +201,12 @@ public class RiftEnergyData extends SavedData {
     }
 
     private void place(ServerLevel level, BlockPos pos) {
-        RiftElemental elemental = EpochopolisEntities.RIFT_ELEMENTAL.get().spawn(level, pos, EntitySpawnReason.EVENT);
+        RiftElemental elemental = RiftsEntities.RIFT_ELEMENTAL.get().spawn(level, pos, EntitySpawnReason.EVENT);
         if (elemental != null) {
             elemental.setPersistenceRequired();
         }
     }
 
-    // Moves energy from fuller chunks to emptier orthogonal neighbours. Only chunks with a saved entry (plus their
-    // neighbours) take part, so cost scales with the drained area, and chunks that end up full drop their entry.
     public void tickDiffusion(ServerLevel level) {
         double rate = RiftsStartupConfig.CHUNK_DIFFUSION_RATE.get();
         if (rate <= 0 || chunks.isEmpty()) return;

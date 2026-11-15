@@ -1,5 +1,6 @@
 package com.benbenlaw.rifts.data;
 
+import net.minecraft.client.data.models.ModelProvider;
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.block.RiftsBlocks;
 import com.benbenlaw.rifts.block.custom.RiftPipeBlock;
@@ -28,7 +29,7 @@ import java.util.Optional;
 
 import static net.minecraft.client.data.models.BlockModelGenerators.*;
 
-public class RiftsModelProvider extends net.minecraft.client.data.models.ModelProvider {
+public class RiftsModelProvider extends ModelProvider {
 
     private static final ModelTemplate PIPE_CORE = pipeTemplate("template_rift_pipe_core", "_core");
     private static final ModelTemplate PIPE_CORE_T = pipeTemplate("template_rift_pipe_core_t", "_core_t");
@@ -47,23 +48,27 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
         machine(blockModels, RiftsBlocks.RIFT_GENERATOR.get());
         machine(blockModels, RiftsBlocks.RIFT_INFUSER.get());
-        litMachine(blockModels, RiftsBlocks.RIFT_FURNACE.get());
-        litMachine(blockModels, RiftsBlocks.RIFT_CRUSHER.get());
+        RiftsBlocks.RIFT_FURNACES.forEach(block -> litMachine(blockModels, block.get()));
+        RiftsBlocks.RIFT_CRUSHERS.forEach(block -> litMachine(blockModels, block.get()));
         litMachine(blockModels, RiftsBlocks.RIFT_QUARRY.get());
         machine(blockModels, RiftsBlocks.RIFT_CHARGER.get());
+        machine(blockModels, RiftsBlocks.RIFT_CONVERTER.get());
+        machine(blockModels, RiftsBlocks.RIFT_SURGE_CORE.get());
 
         blockModels.createTrivialCube(RiftsBlocks.RIFT_STORAGE.get());
         blockModels.createTrivialCube(RiftsBlocks.CREATIVE_RIFT_STORAGE.get());
         blockModels.createTrivialCube(RiftsBlocks.RIFT_STEEL_BLOCK.get());
 
-        blockModels.createTrivialCube(RiftsBlocks.RIFT_STONE.get());
         blockModels.createTrivialBlock(RiftsBlocks.RIFT_LEAVES.get(), TexturedModel.LEAVES);
 
-        blockModels.woodProvider(RiftsBlocks.RIFT_LOG.get()).log(RiftsBlocks.RIFT_LOG.get());
+        blockModels.woodProvider(RiftsBlocks.RIFT_LOG.get()).log(RiftsBlocks.RIFT_LOG.get()).wood(RiftsBlocks.RIFT_WOOD.get());
+        blockModels.woodProvider(RiftsBlocks.STRIPPED_RIFT_LOG.get()).log(RiftsBlocks.STRIPPED_RIFT_LOG.get()).wood(RiftsBlocks.STRIPPED_RIFT_WOOD.get());
 
-        blockModels.family(RiftsBlocks.RIFT_PLANKS.get())
-                .slab(RiftsBlocks.RIFT_PLANK_SLAB.get())
-                .stairs(RiftsBlocks.RIFT_PLANK_STAIRS.get());
+        blockModels.family(RiftsBlocks.RIFT_PLANKS.get()).generateFor(RiftsBlockFamilies.RIFT_PLANKS);
+        blockModels.createHangingSign(RiftsBlocks.STRIPPED_RIFT_LOG.get(), RiftsBlocks.RIFT_HANGING_SIGN.get(), RiftsBlocks.RIFT_WALL_HANGING_SIGN.get());
+        blockModels.family(RiftsBlocks.RIFT_STONE.get()).generateFor(RiftsBlockFamilies.RIFT_STONE);
+        blockModels.family(RiftsBlocks.POLISHED_RIFT_STONE.get()).generateFor(RiftsBlockFamilies.POLISHED_RIFT_STONE);
+        blockModels.family(RiftsBlocks.RIFT_STONE_BRICKS.get()).generateFor(RiftsBlockFamilies.RIFT_STONE_BRICKS);
 
 
 
@@ -81,6 +86,7 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
 
         itemModels.generateFlatItem(RiftsItems.DISPLACER.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_SCANNER.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(RiftsItems.RIFT_PORTAL_GUN.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_WRENCH.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_PEARL.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.BASIC_RIFT_FOCUS.get(), ModelTemplates.FLAT_ITEM);
@@ -138,7 +144,6 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
         MultiVariant arm = plainVariant(PIPE_ARM.create(block, texture, blockModels.modelOutput));
         Identifier inventory = PIPE_INVENTORY.create(block, texture, blockModels.modelOutput);
 
-        // The larger junction core is added everywhere except on a plain straight run
         Direction[] directions = {Direction.UP, Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
         List<ConditionBuilder> junctions = new ArrayList<>();
         for (int mask = 0; mask < 64; mask++) {
@@ -163,7 +168,6 @@ public class RiftsModelProvider extends net.minecraft.client.data.models.ModelPr
         blockModels.registerSimpleItemModel(block, inventory);
     }
 
-    // Bits are up, down, north, south, west, east; a straight run is exactly one opposite pair
     private static boolean isStraightRun(int mask) {
         return mask == 0b000011 || mask == 0b001100 || mask == 0b110000;
     }

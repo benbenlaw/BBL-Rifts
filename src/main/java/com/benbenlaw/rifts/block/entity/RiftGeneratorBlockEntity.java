@@ -1,5 +1,6 @@
 package com.benbenlaw.rifts.block.entity;
 
+import net.minecraft.world.level.block.Blocks;
 import com.benbenlaw.rifts.item.RiftsDataComponents;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
@@ -309,9 +310,9 @@ public class RiftGeneratorBlockEntity extends SyncableBlockEntity implements Men
 
     private BlockPos buildEmergencyPlatform(ServerLevel level, int x, int y, int z) {
         BlockPos base = new BlockPos(x, y, z);
-        level.setBlockAndUpdate(base.below(), net.minecraft.world.level.block.Blocks.NETHERRACK.defaultBlockState());
-        level.setBlockAndUpdate(base, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
-        level.setBlockAndUpdate(base.above(), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
+        level.setBlockAndUpdate(base.below(), Blocks.NETHERRACK.defaultBlockState());
+        level.setBlockAndUpdate(base, Blocks.AIR.defaultBlockState());
+        level.setBlockAndUpdate(base.above(), Blocks.AIR.defaultBlockState());
         return base;
     }
 

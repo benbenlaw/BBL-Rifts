@@ -30,7 +30,7 @@ public class CrusherCategory implements IRecipeCategory<CrusherJeiRecipe> {
     private final IDrawable icon;
 
     public CrusherCategory(IGuiHelper helper) {
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(RiftsBlocks.RIFT_CRUSHER.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(RiftsBlocks.BASIC_RIFT_CRUSHER.get()));
     }
 
     @Override

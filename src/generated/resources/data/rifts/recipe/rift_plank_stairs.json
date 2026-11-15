@@ -1,13 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "category": "building",
+  "group": "wooden_stairs",
   "key": {
-    "A": "rifts:rift_planks"
+    "#": "rifts:rift_planks"
   },
   "pattern": [
-    "A  ",
-    "AA ",
-    "AAA"
+    "#  ",
+    "## ",
+    "###"
   ],
   "result": {
     "count": 4,

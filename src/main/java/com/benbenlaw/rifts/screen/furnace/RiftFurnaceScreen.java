@@ -2,6 +2,7 @@ package com.benbenlaw.rifts.screen.furnace;
 
 import com.benbenlaw.core.Core;
 import com.benbenlaw.rifts.Rifts;
+import com.benbenlaw.rifts.screen.MachineLayouts;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -14,12 +15,14 @@ import net.minecraft.world.entity.player.Inventory;
 import java.util.List;
 
 public class RiftFurnaceScreen extends AbstractContainerScreen<RiftFurnaceMenu> {
-    private static final Identifier TEXTURE = Rifts.identifier("textures/gui/rift_furnace_gui.png");
     private static final Identifier ENERGY_BAR = Rifts.identifier("energy_bar");
     private static final Identifier PROGRESS_ARROW = Core.identifier("progress_arrow");
 
+    private final Identifier texture;
+
     public RiftFurnaceScreen(RiftFurnaceMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title);
+        super(menu, inventory, title, 176, 166 + menu.getExtraHeight());
+        this.texture = Rifts.identifier("textures/gui/" + MachineLayouts.TIER_NAMES[MachineLayouts.tierOf(menu.getLines())] + "_rift_furnace_gui.png");
     }
 
     @Override
@@ -28,13 +31,14 @@ public class RiftFurnaceScreen extends AbstractContainerScreen<RiftFurnaceMenu> 
 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
+        int lines = menu.getLines();
 
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
 
-        for (int line = 0; line < RiftFurnaceMenu.LINES; line++) {
+        for (int line = 0; line < lines; line++) {
             if (menu.isCooking(line)) {
                 guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, PROGRESS_ARROW, 24, 16, 0, 0,
-                        x + RiftFurnaceMenu.inputX(line) + RiftFurnaceMenu.ARROW_OFFSET, y + RiftFurnaceMenu.rowY(line),
+                        x + MachineLayouts.furnaceArrowX(line, lines), y + MachineLayouts.furnaceRowY(line, lines),
                         menu.getScaledProgress(line) + 1, 16);
             }
         }

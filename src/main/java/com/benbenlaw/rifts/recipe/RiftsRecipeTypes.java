@@ -15,6 +15,9 @@ public class RiftsRecipeTypes {
     public static final DeferredRegister<RecipeType<?>> TYPES =
             DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, Rifts.MOD_ID);
 
+    public static final Supplier<RecipeSerializer<PortalGunRecipe>> PORTAL_GUN_SERIALIZER =
+            SERIALIZER.register("portal_gun", () -> PortalGunRecipe.SERIALIZER);
+
     //Rift
     public static final Supplier<RecipeSerializer<RiftRecipe>> RIFT_SERIALIZER =
             SERIALIZER.register("rift", () -> RiftRecipe.SERIALIZER);
@@ -26,6 +29,12 @@ public class RiftsRecipeTypes {
             SERIALIZER.register("crusher", () -> CrusherRecipe.SERIALIZER);
     public static final Supplier<RecipeType<CrusherRecipe>> CRUSHER_TYPE =
             TYPES.register("crusher", () -> CrusherRecipe.TYPE);
+
+    //Converter
+    public static final Supplier<RecipeSerializer<ConverterRecipe>> CONVERTER_SERIALIZER =
+            SERIALIZER.register("converter", () -> ConverterRecipe.SERIALIZER);
+    public static final Supplier<RecipeType<ConverterRecipe>> CONVERTER_TYPE =
+            TYPES.register("converter", () -> ConverterRecipe.TYPE);
 
     //Quarry
     public static final Supplier<RecipeSerializer<QuarryRecipe>> QUARRY_SERIALIZER =

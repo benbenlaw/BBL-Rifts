@@ -3,19 +3,21 @@ package com.benbenlaw.rifts;
 import com.benbenlaw.rifts.block.RiftsBlockEntities;
 import com.benbenlaw.rifts.entity.RiftsAttachments;
 import com.benbenlaw.rifts.block.RiftsBlocks;
+import com.benbenlaw.rifts.block.entity.renderer.RiftConverterBlockEntityRenderer;
 import com.benbenlaw.rifts.block.entity.renderer.RiftGeneratorBlockEntityRenderer;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
-import com.benbenlaw.rifts.entity.EpochopolisEntities;
-import com.benbenlaw.rifts.item.EpochopolisCreativeTab;
+import com.benbenlaw.rifts.entity.RiftsEntities;
+import com.benbenlaw.rifts.item.RiftsCreativeTab;
 import com.benbenlaw.rifts.item.RiftsDataComponents;
 import com.benbenlaw.rifts.item.RiftsItems;
 import com.benbenlaw.rifts.particle.RiftAbsorbParticle;
 import com.benbenlaw.rifts.particle.RiftsParticles;
 import com.benbenlaw.rifts.recipe.RiftsRecipeTypes;
-import com.benbenlaw.rifts.screen.EpochopolisMenuTypes;
+import com.benbenlaw.rifts.screen.RiftsMenuTypes;
 import com.benbenlaw.rifts.screen.charger.RiftChargerScreen;
 import com.benbenlaw.rifts.screen.crusher.RiftCrusherScreen;
 import com.benbenlaw.rifts.screen.quarry.RiftQuarryScreen;
+import com.benbenlaw.rifts.screen.surge.RiftSurgeCoreScreen;
 import com.benbenlaw.rifts.screen.furnace.RiftFurnaceScreen;
 import com.benbenlaw.rifts.screen.generator.RiftGeneratorScreen;
 import com.benbenlaw.rifts.screen.infuser.RIftInfuserScreen;
@@ -49,9 +51,9 @@ public class Rifts {
         RiftsItems.ITEMS.register(eventBus);
         RiftsDataComponents.COMPONENTS.register(eventBus);
         RiftsAttachments.ATTACHMENTS.register(eventBus);
-        EpochopolisCreativeTab.CREATIVE_MODE_TABS.register(eventBus);
-        EpochopolisEntities.ENTITY_TYPES.register(eventBus);
-        EpochopolisMenuTypes.MENUS.register(eventBus);
+        RiftsCreativeTab.CREATIVE_MODE_TABS.register(eventBus);
+        RiftsEntities.ENTITY_TYPES.register(eventBus);
+        RiftsMenuTypes.MENUS.register(eventBus);
         RiftsParticles.PARTICLES.register(eventBus);
         RiftsRecipeTypes.SERIALIZER.register(eventBus);
         RiftsRecipeTypes.TYPES.register(eventBus);
@@ -69,6 +71,7 @@ public class Rifts {
         @SubscribeEvent
         public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
             event.registerBlockEntityRenderer(RiftsBlockEntities.RIFT_GENERATOR_BLOCK_ENTITY.get(), RiftGeneratorBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(RiftsBlockEntities.RIFT_CONVERTER_BLOCK_ENTITY.get(), RiftConverterBlockEntityRenderer::new);
         }
 
         @SubscribeEvent
@@ -78,13 +81,14 @@ public class Rifts {
 
         @SubscribeEvent
         public static void registerScreens(RegisterMenuScreensEvent event) {
-            event.register(EpochopolisMenuTypes.RIFT_GENERATOR_MENU.get(), RiftGeneratorScreen::new);
-            event.register(EpochopolisMenuTypes.RIFT_INFUSER_MENU.get(), RIftInfuserScreen::new);
-            event.register(EpochopolisMenuTypes.RIFT_PYLON_MENU.get(), RiftPylonScreen::new);
-            event.register(EpochopolisMenuTypes.RIFT_FURNACE_MENU.get(), RiftFurnaceScreen::new);
-            event.register(EpochopolisMenuTypes.RIFT_CRUSHER_MENU.get(), RiftCrusherScreen::new);
-            event.register(EpochopolisMenuTypes.RIFT_QUARRY_MENU.get(), RiftQuarryScreen::new);
-            event.register(EpochopolisMenuTypes.RIFT_CHARGER_MENU.get(), RiftChargerScreen::new);
+            event.register(RiftsMenuTypes.RIFT_GENERATOR_MENU.get(), RiftGeneratorScreen::new);
+            event.register(RiftsMenuTypes.RIFT_INFUSER_MENU.get(), RIftInfuserScreen::new);
+            event.register(RiftsMenuTypes.RIFT_PYLON_MENU.get(), RiftPylonScreen::new);
+            RiftsMenuTypes.RIFT_FURNACE_MENUS.forEach(menu -> event.register(menu.get(), RiftFurnaceScreen::new));
+            RiftsMenuTypes.RIFT_CRUSHER_MENUS.forEach(menu -> event.register(menu.get(), RiftCrusherScreen::new));
+            event.register(RiftsMenuTypes.RIFT_QUARRY_MENU.get(), RiftQuarryScreen::new);
+            event.register(RiftsMenuTypes.RIFT_SURGE_CORE_MENU.get(), RiftSurgeCoreScreen::new);
+            event.register(RiftsMenuTypes.RIFT_CHARGER_MENU.get(), RiftChargerScreen::new);
         }
     }
 

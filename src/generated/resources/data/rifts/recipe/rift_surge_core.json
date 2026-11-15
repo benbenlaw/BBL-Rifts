@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "rifts:rift_steel_block",
+    "B": "rifts:rift_pearl",
+    "C": "minecraft:tnt"
+  },
+  "pattern": [
+    "ABA",
+    "BCB",
+    "ABA"
+  ],
+  "result": {
+    "id": "rifts:rift_surge_core"
+  }
+}

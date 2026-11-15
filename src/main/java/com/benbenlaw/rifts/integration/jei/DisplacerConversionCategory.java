@@ -65,7 +65,7 @@ public class DisplacerConversionCategory implements IRecipeCategory<DisplacerCon
     public void setRecipe(IRecipeLayoutBuilder builder, DisplacerConversionRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 4, 4)
                 .setStandardSlotBackground()
-                .add(new ItemStack(RiftsItems.DISPLACER.get()));
+                .add(recipe.displacer());
 
         builder.addSlot(RecipeIngredientRole.INPUT, 30, 4)
                 .setStandardSlotBackground()

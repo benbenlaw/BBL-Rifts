@@ -3,7 +3,7 @@ package com.benbenlaw.rifts.event;
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.config.RiftsStartupConfig;
 import com.benbenlaw.rifts.data.worldgen.RiftsWorldGen;
-import com.benbenlaw.rifts.entity.EpochopolisEntities;
+import com.benbenlaw.rifts.entity.RiftsEntities;
 import com.benbenlaw.rifts.entity.NaturalRift;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -52,7 +52,7 @@ public class NaturalRiftSpawner {
         if (!level.getBlockState(feet.below()).blocksMotion() || !level.getFluidState(feet).isEmpty()
                 || !level.getBlockState(feet).canBeReplaced() || !level.getBlockState(feet.above()).canBeReplaced()) return;
 
-        NaturalRift rift = EpochopolisEntities.NATURAL_RIFT.get().create(level, EntitySpawnReason.EVENT);
+        NaturalRift rift = RiftsEntities.NATURAL_RIFT.get().create(level, EntitySpawnReason.EVENT);
         if (rift == null) return;
 
         rift.setPos(x + 0.5, feet.getY(), z + 0.5);

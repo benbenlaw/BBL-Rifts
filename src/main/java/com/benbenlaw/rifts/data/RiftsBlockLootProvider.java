@@ -37,9 +37,11 @@ public class RiftsBlockLootProvider extends BlockLootSubProvider {
         dropWithRiftEnergy(RiftsBlocks.RIFT_GENERATOR.get());
         dropWithRiftEnergy(RiftsBlocks.RIFT_INFUSER.get());
         dropWithRiftEnergy(RiftsBlocks.RIFT_CHARGER.get());
-        dropWithRiftEnergy(RiftsBlocks.RIFT_CRUSHER.get());
+        RiftsBlocks.RIFT_CRUSHERS.forEach(block -> dropWithRiftEnergy(block.get()));
+        RiftsBlocks.RIFT_FURNACES.forEach(block -> dropWithRiftEnergy(block.get()));
         dropWithRiftEnergy(RiftsBlocks.RIFT_QUARRY.get());
-        dropWithRiftEnergy(RiftsBlocks.RIFT_FURNACE.get());
+        dropWithRiftEnergy(RiftsBlocks.RIFT_SURGE_CORE.get());
+        dropWithRiftEnergy(RiftsBlocks.RIFT_CONVERTER.get());
         dropWithRiftEnergy(RiftsBlocks.BASIC_TICK_ACCELERATOR.get());
         dropWithRiftEnergy(RiftsBlocks.ADVANCED_TICK_ACCELERATOR.get());
         dropWithRiftEnergy(RiftsBlocks.ELITE_TICK_ACCELERATOR.get());
@@ -53,21 +55,31 @@ public class RiftsBlockLootProvider extends BlockLootSubProvider {
         dropSelf(RiftsBlocks.CREATIVE_RIFT_STORAGE.get());
         dropSelf(RiftsBlocks.RIFT_PIPE.get());
         dropSelf(RiftsBlocks.RIFT_STEEL_BLOCK.get());
-        dropSelf(RiftsBlocks.RIFT_STONE.get());
         dropSelf(RiftsBlocks.RIFT_LOG.get());
-        // No sapling yet, so leaves give only the occasional stick unless sheared or silk touched
+
         add(RiftsBlocks.RIFT_LEAVES.get(), createSilkTouchOrShearsTagDispatchTable(RiftsBlocks.RIFT_LEAVES.get(),
                 LootItem.lootTableItem(Items.STICK)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
                         .when(LootItemRandomChanceCondition.randomChance(0.1F))));
-        dropSelf(RiftsBlocks.RIFT_PLANKS.get());
-        dropSelf(RiftsBlocks.RIFT_PLANK_STAIRS.get());
 
-        this.add(RiftsBlocks.RIFT_PLANK_SLAB.get(), this::createSlabItemTable);
+        for (var family : RiftsBlockFamilies.ALL) {
+            dropSelf(family.getBaseBlock());
+            family.getVariants().forEach((variant, block) -> {
+                switch (variant) {
+                    case SLAB -> this.add(block, this::createSlabItemTable);
+                    case DOOR -> this.add(block, this::createDoorTable);
+                    case WALL_SIGN -> { }
+                    default -> dropSelf(block);
+                }
+            });
+        }
+        dropSelf(RiftsBlocks.RIFT_HANGING_SIGN.get());
+        dropSelf(RiftsBlocks.RIFT_WOOD.get());
+        dropSelf(RiftsBlocks.STRIPPED_RIFT_LOG.get());
+        dropSelf(RiftsBlocks.STRIPPED_RIFT_WOOD.get());
 
     }
 
-    // Vanilla only accepts the plain shears item, so match anything in the common shears tag instead
     private LootItemCondition.Builder hasShearsOrSilkTouch() {
         return MatchTool.toolMatches(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), Tags.Items.TOOLS_SHEAR))
                 .or(hasSilkTouch());

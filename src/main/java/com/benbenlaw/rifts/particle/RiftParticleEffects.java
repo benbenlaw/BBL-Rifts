@@ -5,7 +5,6 @@ import net.minecraft.util.RandomSource;
 
 public class RiftParticleEffects {
 
-    // Count 0 makes the client treat (dx, dy, dz) as the particle's offset, so each mote flies in from that offset to the centre
     public static void absorb(ServerLevel level, double x, double y, double z, int count, double minDistance, double maxDistance, double verticalSpread) {
         RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
@@ -18,7 +17,6 @@ public class RiftParticleEffects {
         }
     }
 
-    // One packet for the whole burst: with count > 0 the client gives each mote a gaussian offset scaled by spread
     public static void burst(ServerLevel level, double x, double y, double z, int count, double spread) {
         level.sendParticles(RiftsParticles.RIFT_ABSORB.get(), x, y, z, count, 0, 0, 0, spread);
     }

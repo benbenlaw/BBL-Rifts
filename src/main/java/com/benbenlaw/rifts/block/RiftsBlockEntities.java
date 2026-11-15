@@ -2,6 +2,7 @@ package com.benbenlaw.rifts.block;
 
 import com.benbenlaw.rifts.Rifts;
 import com.benbenlaw.rifts.block.entity.RiftChargerBlockEntity;
+import com.benbenlaw.rifts.block.entity.RiftConverterBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftCrusherBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftFurnaceBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftGeneratorBlockEntity;
@@ -9,6 +10,7 @@ import com.benbenlaw.rifts.block.entity.RiftInfuserBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftPipeBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftPylonBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftQuarryBlockEntity;
+import com.benbenlaw.rifts.block.entity.RiftSurgeCoreBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftStorageBlockEntity;
 import com.benbenlaw.rifts.block.entity.RiftTickAcceleratorBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,6 +19,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class RiftsBlockEntities {
 
@@ -36,7 +39,15 @@ public class RiftsBlockEntities {
 
     public static final Supplier<BlockEntityType<RiftCrusherBlockEntity>> RIFT_CRUSHER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("rift_crusher_block_entity", () ->
-                    new BlockEntityType<>(RiftCrusherBlockEntity::new, RiftsBlocks.RIFT_CRUSHER.get()));
+                    new BlockEntityType<>(RiftCrusherBlockEntity::new, RiftsBlocks.RIFT_CRUSHERS.stream().map(Supplier::get).collect(Collectors.toSet())));
+
+    public static final Supplier<BlockEntityType<RiftConverterBlockEntity>> RIFT_CONVERTER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("rift_converter_block_entity", () ->
+                    new BlockEntityType<>(RiftConverterBlockEntity::new, RiftsBlocks.RIFT_CONVERTER.get()));
+
+    public static final Supplier<BlockEntityType<RiftSurgeCoreBlockEntity>> RIFT_SURGE_CORE_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("rift_surge_core_block_entity", () ->
+                    new BlockEntityType<>(RiftSurgeCoreBlockEntity::new, RiftsBlocks.RIFT_SURGE_CORE.get()));
 
     public static final Supplier<BlockEntityType<RiftQuarryBlockEntity>> RIFT_QUARRY_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("rift_quarry_block_entity", () ->
@@ -44,7 +55,7 @@ public class RiftsBlockEntities {
 
     public static final Supplier<BlockEntityType<RiftFurnaceBlockEntity>> RIFT_FURNACE_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("rift_furnace_block_entity", () ->
-                    new BlockEntityType<>(RiftFurnaceBlockEntity::new, RiftsBlocks.RIFT_FURNACE.get()));
+                    new BlockEntityType<>(RiftFurnaceBlockEntity::new, RiftsBlocks.RIFT_FURNACES.stream().map(Supplier::get).collect(Collectors.toSet())));
 
     public static final Supplier<BlockEntityType<RiftPylonBlockEntity>> RIFT_PYLON_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("rift_pylon_block_entity", () ->
