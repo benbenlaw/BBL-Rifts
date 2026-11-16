@@ -12,4 +12,5 @@ navigation:
 
 Rifts is a mod about harnessing the power of Rift Energy to create new materials and items!
 
+
 ![Logo](assets/rifts.png)
