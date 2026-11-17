@@ -2,7 +2,7 @@
   "parent": "minecraft:block/orientable",
   "textures": {
     "front": "rifts:block/ultimate_rift_furnace_front_on",
-    "side": "rifts:block/ultimate_rift_furnace_side",
-    "top": "rifts:block/ultimate_rift_furnace_top"
+    "side": "rifts:block/ultimate_rift_furnace_side_on",
+    "top": "rifts:block/ultimate_rift_furnace_top_on"
   }
 }

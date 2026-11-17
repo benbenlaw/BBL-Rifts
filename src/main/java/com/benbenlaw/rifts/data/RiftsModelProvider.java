@@ -11,6 +11,8 @@ import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.ConditionBuilder;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
@@ -49,8 +51,8 @@ public class RiftsModelProvider extends ModelProvider {
         machine(blockModels, RiftsBlocks.RIFT_GENERATOR.get());
         machine(blockModels, RiftsBlocks.RIFT_INFUSER.get());
         RiftsBlocks.RIFT_FURNACES.forEach(block -> litMachine(blockModels, block.get()));
-        RiftsBlocks.RIFT_CRUSHERS.forEach(block -> litMachine(blockModels, block.get()));
-        litMachine(blockModels, RiftsBlocks.RIFT_QUARRY.get());
+        RiftsBlocks.RIFT_CRUSHERS.forEach(block -> machine(blockModels, block.get()));
+        machine(blockModels, RiftsBlocks.RIFT_QUARRY.get());
         machine(blockModels, RiftsBlocks.RIFT_CHARGER.get());
         machine(blockModels, RiftsBlocks.RIFT_CONVERTER.get());
         machine(blockModels, RiftsBlocks.RIFT_SURGE_CORE.get());
@@ -86,7 +88,7 @@ public class RiftsModelProvider extends ModelProvider {
 
         itemModels.generateFlatItem(RiftsItems.DISPLACER.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_SCANNER.get(), ModelTemplates.FLAT_ITEM);
-        itemModels.generateFlatItem(RiftsItems.RIFT_PORTAL_GUN.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.itemModelOutput.accept(RiftsItems.RIFT_PORTAL_GUN.get(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(RiftsItems.RIFT_PORTAL_GUN.get())));
         itemModels.generateFlatItem(RiftsItems.RIFT_WRENCH.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(RiftsItems.RIFT_PEARL.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(RiftsItems.BASIC_RIFT_FOCUS.get(), ModelTemplates.FLAT_ITEM);
@@ -116,8 +118,10 @@ public class RiftsModelProvider extends ModelProvider {
     private static void litMachine(BlockModelGenerators blockModels, Block block) {
         MultiVariant off = plainVariant(TexturedModel.ORIENTABLE_ONLY_TOP.create(block, blockModels.modelOutput));
         Material frontOn = TextureMapping.getBlockTexture(block, "_front_on");
+        Material sideOn = TextureMapping.getBlockTexture(block, "_side_on");
+        Material topOn = TextureMapping.getBlockTexture(block, "_top_on");
         MultiVariant on = plainVariant(TexturedModel.ORIENTABLE_ONLY_TOP.get(block)
-                .updateTextures(textures -> textures.put(TextureSlot.FRONT, frontOn))
+                .updateTextures(textures -> textures.put(TextureSlot.FRONT, frontOn).put(TextureSlot.SIDE, sideOn).put(TextureSlot.TOP, topOn))
                 .createWithSuffix(block, "_on", blockModels.modelOutput));
 
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
